@@ -10,21 +10,21 @@ rule multiqc:
         bowtie_input        = expand(WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile.txt", ERR = SAMPLES),
 
     output:
-        RESULT_DIR + "MultiQC/multiqc_report.html"
+        outdir      = directory(RESULT_DIR + "MultiQC/")
     params:
         bbduk_logs  = WORKING_DIR + "BBsuite/logs/bbduk/",
         bbmap_plots = WORKING_DIR + "BBsuite/logs/bbmap/",
         fastp_logs  = WORKING_DIR + "fastp/log/",
         bowtie_logs = WORKING_DIR + "Bowtie/logs/",
-        outdir      = RESULT_DIR + "MultiQC/"
+        
     conda: 
         "multiqc_env"
     message: "Summarising bbduk and bbmap reports with multiqc"
     shell:
-        "mkdir -p {RESULT_DIR}MultiQC; "
+        "mkdir -p {output.outdir}; "
         "multiqc "
         "--force "
-        "--outdir {params.outdir} "
+        "--outdir {output.outdir} "
         "{params.fastp_logs} "
         "{params.bowtie_logs} "
         "{params.bbduk_logs} "
