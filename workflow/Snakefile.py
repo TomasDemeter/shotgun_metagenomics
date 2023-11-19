@@ -32,7 +32,7 @@ MULTIQC = RESULT_DIR + "MultiQC/multiqc_report.html"
 #########
 include: "rules/bbsuite.smk"
 include: "rules/fastp.smk"
-include: "rules/bowtie.smk"
+include: "rules/bowtie2.smk"
 include: "rules/multiqc.smk"
 
 ############

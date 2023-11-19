@@ -45,10 +45,10 @@ rule bbmap_coarse:
         read_1 = rules.bbduk.output.output_1,
         read_2 = rules.bbduk.output.output_2
     output:
-        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"),
-        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"),
-        unmapped1           = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz"),
-        unmapped2           = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz"),
+        mapped_to_human1    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz", # temp
+        mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz", # temp
+        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz", # temp
+        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz", # temp
         stats               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile_coarse.txt"
     message:
         "filtering human sequences in {wildcards.ERR} using BBmap coarse parameters"

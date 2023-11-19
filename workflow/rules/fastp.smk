@@ -15,9 +15,9 @@ rule fastp:
     threads:
         config["fastp"]["threads"]
     conda: 
-        "fastp_bowtie"
+        "fastp_bowtie2"
     log:
-        log_file = WORKING_DIR + "fastp/log/{ERR}.log.txt"
+        log_file = WORKING_DIR + "fastp/logs/{ERR}.log.txt"
     params:
         phread_quality      = config["fastp"]["phread_quality"],
         base_limit          = config["fastp"]["base_limit"],

@@ -3,20 +3,19 @@
 ##################
 rule multiqc:
     input:
-        bbduk_input         = expand(WORKING_DIR + "BBsuite/logs/bbduk/{ERR}_bbduk_report.txt", ERR = SAMPLES),
-        bbmap_input         = expand(WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile.txt", ERR = SAMPLES),
-        fastp_input_html    = expand(WORKING_DIR + "fastp/logs/{ERR}_fastp.html", ERR = SAMPLES),
-        fastp_input_json    = expand(WORKING_DIR + "Bowtie/logs/{ERR}_fastp_Log.final.out", ERR = SAMPLES),
-        bowtie_input        = expand(WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile.txt", ERR = SAMPLES),
-
+        bbduk_input         = expand(rules.bbduk.output.stats, ERR=SAMPLES),
+        bbmap_input         = expand(rules.bbmap_default.output.stats, ERR=SAMPLES),
+        fastp_input_html    = expand(rules.fastp.output.html, ERR=SAMPLES),
+        fastp_input_json    = expand(rules.fastp.output.json, ERR=SAMPLES),
+        bowtie_input        = expand(rules.bowtie2_mapping.output.logs, ERR=SAMPLES),
     output:
-        outdir      = directory(RESULT_DIR + "MultiQC/")
+        outdir      = directory(RESULT_DIR + "MultiQC/"),
+        output      = RESULT_DIR + "MultiQC/multiqc_report.html"
     params:
         bbduk_logs  = WORKING_DIR + "BBsuite/logs/bbduk/",
         bbmap_plots = WORKING_DIR + "BBsuite/logs/bbmap/",
-        fastp_logs  = WORKING_DIR + "fastp/log/",
-        bowtie_logs = WORKING_DIR + "Bowtie/logs/",
-        
+        fastp_logs  = WORKING_DIR + "fastp/logs/",
+        bowtie_logs = WORKING_DIR + "Bowtie2/logs/",
     conda: 
         "multiqc_env"
     message: "Summarising bbduk and bbmap reports with multiqc"
