@@ -1,7 +1,7 @@
 #########################
 # DNA-seq read trimming #
 #########################
-'''
+
 rule bbduk:
     input:
         read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fastq.gz",
@@ -17,7 +17,7 @@ rule bbduk:
     resources:
         config["bbduk"]["mem_mb"]
     conda: 
-        "bbsuite"
+        "bbsuite_env"
     params:
         quality_treshold    = config["bbduk"]["trim_quality"],
         trimming_side       = config["bbduk"]["trim_side"],
@@ -39,14 +39,14 @@ rule bbduk:
         "stats={output.stats} "
         "tbo "
         "tpe"
-'''
+
 #########################
 # Filtering human reads #
 #########################
 rule bbmap_coarse:
     input:
-        read_1 = rules.fastp.output.trimmed_1,
-        read_2 = rules.fastp.output.trimmed_2
+        read_1 = rules.bbduk.output.output_1,
+        read_2 = rules.bbduk.output.output_2
     output:
         mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"), # temp
         mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"), # temp
@@ -60,7 +60,7 @@ rule bbmap_coarse:
     resources:
         mem_mb = config["bbmap"]["mem_mb"]
     conda: 
-        "bbsuite"
+        "bbsuite_env"
     params:
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
@@ -113,7 +113,7 @@ rule bbmap_default:
     params:
         human_genome    = config["refs"]["human_genome"]
     conda: 
-        "bbsuite"
+        "bbsuite_env"
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
         "bbmap.sh "
