@@ -1,6 +1,7 @@
 #########################
 # DNA-seq read trimming #
 #########################
+'''
 rule bbduk:
     input:
         read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fastq.gz",
@@ -38,17 +39,17 @@ rule bbduk:
         "stats={output.stats} "
         "tbo "
         "tpe"
-
+'''
 #########################
 # Filtering human reads #
 #########################
 rule bbmap_coarse:
     input:
-        read_1 = rules.bbduk.output.output_1,
-        read_2 = rules.bbduk.output.output_2
+        read_1 = rules.fastp.output.trimmed_1,
+        read_2 = rules.fastp.output.trimmed_2
     output:
-        mapped_to_human1    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz", # temp
-        mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz", # temp
+        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"), # temp
+        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"), # temp
         unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz", # temp
         unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz", # temp
         stats               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile_coarse.txt"
@@ -65,7 +66,8 @@ rule bbmap_coarse:
         fast            = config["bbmap"]["fast"],
         minratio        = config["bbmap"]["minratio"],
         maxindel        = config["bbmap"]["maxindel"],
-        kmer_length     = config["bbmap"]["k"]
+        kmer_length     = config["bbmap"]["k"],
+        index_path      = config["refs"]["bbsuite_index"]
         
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
@@ -78,7 +80,8 @@ rule bbmap_coarse:
         "outu1={output.unmapped1} "
         "outu2={output.unmapped2} "
         "statsfile={output.stats} "
-        "ref={params.human_genome}"
+        "ref={params.human_genome} "
+        "path={params.index_path}"
 
 rule bbmap_default:
     input:

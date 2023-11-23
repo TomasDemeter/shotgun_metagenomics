@@ -5,7 +5,7 @@ rule bowtie2_index:
     input:
         human_genome = config["refs"]["human_genome"]
     output:
-        genome_index = directory(config["refs"]["index"])
+        genome_index = directory(config["refs"]["bowtie_index"])
     message:
         "generating Bowtie2 genome index"
     threads:

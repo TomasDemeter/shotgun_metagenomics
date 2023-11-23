@@ -4,7 +4,8 @@ working_dir: ../inputs/      # can be removed (temporary files)
 
 # samples to condition
 refs:
-  index: ../inputs/genomes/human/bowtie_indices/
+  bowtie_index: ../inputs/genomes/human/bowtie_indices/
+  bbsuite_index: ../inputs/genomes/human/bbmap_indices
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
   samples: ../inputs/raw_reads/metadata.csv
   adapters: ../inputs/adapters/adapters.fasta

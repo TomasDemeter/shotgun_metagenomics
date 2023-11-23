@@ -1,6 +1,10 @@
 ########################################################
 # Snakemake pipeline for shotgun metagenomics analysis #
 ########################################################
+'''
+snakemake -s Snakefile.py --use-conda --rerun-incomplete --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=24:00:00 --cpus-per-task=56 --mem=200G" --jobs 4
+snakemake -s Snakefile.py --use-conda --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=5-00:00:00 --cpus-per-task=56 --mem=200G" --jobs 4
+'''
 
 ####################
 # Python pacakages #
@@ -32,6 +36,7 @@ MULTIQC = RESULT_DIR + "MultiQC/multiqc_report.html"
 #########
 include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"
+include: "rules/bbsuite.smk"
 include: "rules/multiqc.smk"
 
 ############
