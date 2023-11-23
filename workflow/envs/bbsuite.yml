@@ -1,4 +1,4 @@
-name: mpa
+name: bbsuite
 channels:
   - bioconda/label/cf201901
   - pytorch
@@ -278,7 +278,7 @@ dependencies:
   - pluggy=1.0.0=py37h89c1867_3
   - ply=3.11=py_1
   - prettytable=3.7.0=pyhd8ed1ab_0
-  - prometheus_client
+  - prometheus_client=0.18.0=pyhd8ed1ab_0
   - prompt-toolkit=3.0.39=pyha770c72_0
   - prompt_toolkit=3.0.39=hd8ed1ab_0
   - protobuf=4.21.8=py37hd23a5d3_0
@@ -421,4 +421,4 @@ dependencies:
   - zipp=3.15.0=pyhd8ed1ab_0
   - zlib=1.2.13=hd590300_5
   - zstd=1.5.5=hfc55251_0
-prefix: /home/tomasd/miniconda3/envs/mpa
+prefix: /home/tomasd/miniconda3/envs/bbsuite

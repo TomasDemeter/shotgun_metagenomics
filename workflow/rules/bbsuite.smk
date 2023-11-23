@@ -16,7 +16,7 @@ rule bbduk:
     resources:
         config["bbduk"]["mem_mb"]
     conda: 
-        "bbmap"
+        "bbsuite"
     params:
         quality_treshold    = config["bbduk"]["trim_quality"],
         trimming_side       = config["bbduk"]["trim_side"],
@@ -59,7 +59,7 @@ rule bbmap_coarse:
     resources:
         mem_mb = config["bbmap"]["mem_mb"]
     conda: 
-        "bbmap"
+        "bbsuite"
     params:
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
@@ -110,7 +110,7 @@ rule bbmap_default:
     params:
         human_genome    = config["refs"]["human_genome"]
     conda: 
-        "bbmap"
+        "bbsuite"
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
         "bbmap.sh "
