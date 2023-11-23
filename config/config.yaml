@@ -6,12 +6,13 @@ working_dir: ../inputs/      # can be removed (temporary files)
 refs:
   index: ../inputs/genomes/human/bowtie_indices/
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-  samples: ../inputs/raw_reads/ERR_metadata.csv
+  samples: ../inputs/raw_reads/metadata.csv
   adapters: ../inputs/adapters/adapters.fasta
 
 # BBduk
 bbduk:
   threads: 14
+  mem_mb: 40000
   trim_quality: 10 # 5-10 for resequencing
   trim_side: r
   kmer_size: 23 # default 23; depends on adapter size
@@ -20,6 +21,7 @@ bbduk:
   # BBmap
 bbmap:
   threads: 14
+  mem_mb: 40000
   fast: true
   minratio: 0.9
   maxindel: 3
@@ -28,10 +30,13 @@ bbmap:
 
 # read quality trimming
 fastp:
+  threads: 14
+  mem_mb: 40000
   phread_quality: 20 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
   percent_limit: 50
   base_limit: 1
-  threads: 14
+
 
 bowtie:
   threads: 14
+  mem_mb: 40000

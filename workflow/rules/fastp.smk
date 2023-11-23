@@ -3,8 +3,8 @@
 #########################
 rule fastp:
     input:
-        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fastq.gz",
-        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fastq.gz"
+        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fq.gz",
+        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fq.gz"
     output:
         trimmed_1   = WORKING_DIR + "fastp/{ERR}_1.fastq.gz",
         trimmed_2   = WORKING_DIR + "fastp/{ERR}_2.fastq.gz",
@@ -14,6 +14,8 @@ rule fastp:
         "trimming {wildcards.ERR} reads"
     threads:
         config["fastp"]["threads"]
+    resources:
+        mem_mb = config["fastp"]["mem_mb"]
     conda: 
         "fastp_bowtie2"
     log:

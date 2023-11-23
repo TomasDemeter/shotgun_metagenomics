@@ -10,6 +10,8 @@ rule bowtie2_index:
         "generating Bowtie2 genome index"
     threads:
         config["bowtie"]["threads"]
+    resources:
+        mem_mb = config["bowtie"]["mem_mb"]
     conda: 
         "fastp_bowtie2"
     shell:
@@ -38,6 +40,8 @@ rule bowtie2_mapping:
         "Mapping {wildcards.ERR} reads to human genome using Bowtie2"
     threads:
         config["bowtie"]["threads"]
+    resources:
+        mem_mb = config["bowtie"]["mem_mb"]
     conda: 
         "fastp_bowtie2"
     shell:
@@ -49,4 +53,5 @@ rule bowtie2_mapping:
         "-S {output.aligned_sam} "
         "--un-conc-gz {params.unmapped_prefix}.gz "
         "--threads {threads} "
+        "--very-strict "
         "2> {output.logs}"

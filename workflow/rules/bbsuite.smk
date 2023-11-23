@@ -13,6 +13,8 @@ rule bbduk:
         "trimming {wildcards.ERR} reads"
     threads:
         config["bbduk"]["threads"]
+    resources:
+        config["bbduk"]["mem_mb"]
     conda: 
         "bbmap"
     params:
@@ -54,6 +56,8 @@ rule bbmap_coarse:
         "filtering human sequences in {wildcards.ERR} using BBmap coarse parameters"
     threads:
         config["bbmap"]["threads"]
+    resources:
+        mem_mb = config["bbmap"]["mem_mb"]
     conda: 
         "bbmap"
     params:
@@ -101,6 +105,8 @@ rule bbmap_default:
         "filtering human sequences in {wildcards.ERR} using BBmap default parameters"
     threads:
         config["bbmap"]["threads"]
+    resources:
+        mem_mb = config["bbmap"]["mem_mb"]
     params:
         human_genome    = config["refs"]["human_genome"]
     conda: 
