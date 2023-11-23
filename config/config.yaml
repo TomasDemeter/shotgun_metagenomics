@@ -8,7 +8,7 @@ refs:
   bbsuite_index: ../inputs/genomes/human/bbmap_indices
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
   samples: ../inputs/raw_reads/metadata.csv
-  adapters: ../inputs/adapters/adapters.fasta
+  adapters: ../inputs/adapters/adapters.fa
 
 # BBduk
 bbduk:

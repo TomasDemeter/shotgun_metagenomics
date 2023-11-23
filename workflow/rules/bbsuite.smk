@@ -4,18 +4,18 @@
 
 rule bbduk:
     input:
-        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fastq.gz",
-        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fastq.gz"
+        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fq.gz",
+        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fq.gz"
     output:
-        output_1    = WORKING_DIR + "BBsuite/BBduk/{ERR}_1.fastq.gz",
-        output_2    = WORKING_DIR + "BBsuite/BBduk/{ERR}_2.fastq.gz",
+        output_1    = WORKING_DIR + "BBsuite/BBduk/{ERR}_1.fq.gz",
+        output_2    = WORKING_DIR + "BBsuite/BBduk/{ERR}_2.fq.gz",
         stats       = WORKING_DIR + "BBsuite/logs/bbduk/{ERR}_bbduk_report.txt" 
     message:
         "trimming {wildcards.ERR} reads"
     threads:
         config["bbduk"]["threads"]
     resources:
-        config["bbduk"]["mem_mb"]
+        mem_mb = config["bbduk"]["mem_mb"]
     conda: 
         "bbsuite_env"
     params:

@@ -11,7 +11,7 @@ rule fastp:
         html        = WORKING_DIR + "fastp/logs/{ERR}_fastp.html",
         json        = WORKING_DIR + "fastp/logs/{ERR}_fastp.json"
     message:
-        "trimming {wildcards.ERR} reads"
+        "fastp trimming {wildcards.ERR} reads"
     threads:
         config["fastp"]["threads"]
     resources:
