@@ -11,7 +11,7 @@ rule bbduk:
         output_2    = WORKING_DIR + "BBsuite/BBduk/{ERR}_2.fq.gz",
         stats       = WORKING_DIR + "BBsuite/logs/bbduk/{ERR}_bbduk_report.txt" 
     message:
-        "trimming {wildcards.ERR} reads"
+        "trimming {wildcards.ERR} reads with bbduk"
     threads:
         config["bbduk"]["threads"]
     resources:

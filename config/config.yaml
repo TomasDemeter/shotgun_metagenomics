@@ -34,9 +34,9 @@ fastp:
   threads: 14
   mem_mb: 40000
   phread_quality: 20 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
-  percent_limit: 50
-  base_limit: 1
-
+  cut_window_size: 4
+  cut_mean_quality: 20
+  length_required: 50 
 
 bowtie:
   threads: 14

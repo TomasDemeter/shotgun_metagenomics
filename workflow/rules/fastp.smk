@@ -9,7 +9,7 @@ rule fastp:
         trimmed_1   = WORKING_DIR + "fastp/{ERR}_1.fastq.gz",
         trimmed_2   = WORKING_DIR + "fastp/{ERR}_2.fastq.gz",
         html        = WORKING_DIR + "fastp/logs/{ERR}_fastp.html",
-        json        = WORKING_DIR + "fastp/logs/{ERR}_fastp.json"
+        json        = WORKING_DIR + "fastp/logs/{ERR}_fastp.json"        
     message:
         "fastp trimming {wildcards.ERR} reads"
     threads:
@@ -21,9 +21,11 @@ rule fastp:
     log:
         log_file = WORKING_DIR + "fastp/logs/{ERR}.log.txt"
     params:
+        cut_window_size     = config["fastp"]["cut_window_size"],
+        cut_mean_quality    = config["fastp"]["cut_mean_quality"], 
+        length_required     = config["fastp"]["length_required"],
         phread_quality      = config["fastp"]["phread_quality"],
-        base_limit          = config["fastp"]["base_limit"],
-        percent_limit       = config["fastp"]["percent_limit"]
+        adapters            = config["refs"]["adapters"]
     shell:
         "mkdir -p {WORKING_DIR}fastp/logs; "
         "fastp "
@@ -33,8 +35,12 @@ rule fastp:
         "-O {output.trimmed_2} "
         "--thread {threads} "
         "--qualified_quality_phred {params.phread_quality} "
-        "--unqualified_percent_limit {params.percent_limit} "
-        "--n_base_limit {params.base_limit} "
+        "--cut_front "
+        "--cut_tail "
+        "--cut_window_size {params.cut_window_size} "
+        "--cut_mean_quality {params.cut_mean_quality} "
+        "--length_required {params.length_required} "
         "--html {output.html} "
         "--json {output.json} "
+        "--adapter_fasta {params.adapters} "
         "2>{log.log_file}"

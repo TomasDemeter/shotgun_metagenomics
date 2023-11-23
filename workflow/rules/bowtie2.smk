@@ -53,4 +53,6 @@ rule bowtie2_mapping:
         "-S {output.aligned_sam} "
         "--un-conc-gz {params.unmapped_prefix}.gz "
         "--threads {threads} "
+        "--very-sensitive "
+        "--dovetail "
         "2> {output.logs}"

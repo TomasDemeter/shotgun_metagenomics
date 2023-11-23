@@ -3,7 +3,7 @@
 ########################################################
 '''
 snakemake -s Snakefile.py --use-conda --rerun-incomplete --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=24:00:00 --cpus-per-task=56 --mem=200G" --jobs 4
-snakemake -s Snakefile.py --use-conda --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=5-00:00:00 --cpus-per-task=56 --mem=200G" --jobs 4
+snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=5-00:00:00 --cpus-per-task=56 --mem=200G" --jobs 4
 '''
 
 ####################
