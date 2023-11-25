@@ -64,10 +64,11 @@ rule bbmap_coarse:
     params:
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
-        minratio        = config["bbmap"]["minratio"],
+        minid        = config["bbmap"]["minid"],
         maxindel        = config["bbmap"]["maxindel"],
         kmer_length     = config["bbmap"]["k"],
-        index_path      = config["refs"]["bbsuite_index"]
+        index_path      = config["refs"]["bbsuite_index"],
+        minhits         = config["bbmap"]["minhits"]
         
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
@@ -81,7 +82,12 @@ rule bbmap_coarse:
         "outu2={output.unmapped2} "
         "statsfile={output.stats} "
         "ref={params.human_genome} "
-        "path={params.index_path}"
+        "path={params.index_path} "
+        "fast={params.fast} "
+        "minhits={params.minhits} "
+        "k={params.kmer_length} "
+        "maxindel={params.maxindel} "
+        "minid={params.minid}"
 
 rule bbmap_default:
     input:

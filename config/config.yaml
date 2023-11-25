@@ -12,8 +12,8 @@ refs:
 
 # BBduk
 bbduk:
-  threads: 14
-  mem_mb: 40000
+  threads: 32
+  mem_mb: 100000
   trim_quality: 10 # 5-10 for resequencing
   trim_side: r
   kmer_size: 23 # default 23; depends on adapter size
@@ -21,23 +21,23 @@ bbduk:
 
   # BBmap
 bbmap:
-  threads: 14
-  mem_mb: 40000
+  threads: 32
+  mem_mb: 100000
   fast: true
-  minratio: 0.9
+  minid: 0.9
   maxindel: 3
   minhits: 2
   k: 14
 
 # read quality trimming
 fastp:
-  threads: 14
-  mem_mb: 40000
+  threads: 32
+  mem_mb: 100000
   phread_quality: 20 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
   cut_window_size: 4
   cut_mean_quality: 20
   length_required: 50 
 
 bowtie:
-  threads: 14
-  mem_mb: 40000
+  threads: 32
+  mem_mb: 100000
