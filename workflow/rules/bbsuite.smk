@@ -64,7 +64,7 @@ rule bbmap_coarse:
     params:
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
-        minid        = config["bbmap"]["minid"],
+        minid           = config["bbmap"]["minid"],
         maxindel        = config["bbmap"]["maxindel"],
         kmer_length     = config["bbmap"]["k"],
         index_path      = config["refs"]["bbsuite_index"],
@@ -117,7 +117,8 @@ rule bbmap_default:
     resources:
         mem_mb = config["bbmap"]["mem_mb"]
     params:
-        human_genome    = config["refs"]["human_genome"]
+        human_genome    = config["refs"]["human_genome"],
+        index_path      = config["refs"]["bbsuite_index"]
     conda: 
         "bbsuite_env"
     shell:
@@ -131,6 +132,7 @@ rule bbmap_default:
         "outu1={output.unmapped1} "
         "outu2={output.unmapped2} "
         "ref={params.human_genome} "
+        "path={params.index_path} "
         "statsfile={output.stats} "
         "bhist={output.bhist} "
         "aqhist={output.aqhist} "
