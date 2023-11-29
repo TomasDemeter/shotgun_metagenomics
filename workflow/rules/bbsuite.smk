@@ -48,10 +48,8 @@ rule bbmap_coarse:
         read_1 = rules.bbduk.output.output_1,
         read_2 = rules.bbduk.output.output_2
     output:
-        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"), # temp
-        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"), # temp
-        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz", # temp
-        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz", # temp
+        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz",
+        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz",
         stats               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile_coarse.txt"
     message:
         "filtering human sequences in {wildcards.ERR} using BBmap coarse parameters"
@@ -62,6 +60,8 @@ rule bbmap_coarse:
     conda: 
         "bbsuite_env"
     params:
+        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"),
+        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"),
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
         minid           = config["bbmap"]["minid"],
@@ -76,8 +76,8 @@ rule bbmap_coarse:
         "threads={threads} "
         "in1={input.read_1} "
         "in2={input.read_2} "
-        "outm1={output.mapped_to_human1} "
-        "outm2={output.mapped_to_human2} "
+        "outm1={params.mapped_to_human1} "
+        "outm2={params.mapped_to_human2} "
         "outu1={output.unmapped1} "
         "outu2={output.unmapped2} "
         "statsfile={output.stats} "

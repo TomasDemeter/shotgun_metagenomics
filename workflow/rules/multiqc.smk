@@ -25,6 +25,6 @@ rule multiqc:
         "--force "
         "--outdir {output.outdir} "
         "{params.fastp_logs} "
-        "{params.bowtie_logs}"
+        "{params.bowtie_logs} "
         "{params.bbduk_logs} "
         "{params.bbmap_plots}"
