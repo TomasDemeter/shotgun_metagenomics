@@ -50,7 +50,7 @@ rule bbmap_coarse:
     output:
         unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz",
         unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz",
-        stats               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile_coarse.txt"
+        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_statsfile_coarse.txt"
     message:
         "filtering human sequences in {wildcards.ERR} using BBmap coarse parameters"
     threads:
@@ -98,13 +98,13 @@ rule bbmap_default:
         mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz",
         unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1.fq.gz",
         unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2.fq.gz",
-        stats               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_statsfile.txt",
+        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_statsfile.txt",
         bhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_bhist.txt",
         aqhist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_aqhist.txt",
         lhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_lhist.txt",
         ihist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_ihist.txt",
         ehist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_ehist.txt",
-        qahist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_qahist.txt",
+        qahist              = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_qahist.txt",
         indelhist           = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_indelhist.txt",
         mhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_mhist.txt",
         gchist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_gchist.txt",
