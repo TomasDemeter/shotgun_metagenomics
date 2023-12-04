@@ -29,6 +29,7 @@ SAMPLES = samples.index.tolist()
 # Desired outputs #
 ###################
 MULTIQC = RESULT_DIR + "MultiQC/multiqc_report.html"
+METAPHLAN = RESULT_DIR + "MetaPhlAn4/merged_abundance_table.txt"
 
 #########
 # rules #
@@ -37,12 +38,14 @@ include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"
 include: "rules/bbsuite.smk"
 include: "rules/multiqc.smk"
+include: "rules/metaphlan.smk"
 
 ############
 # Pipeline #
 ############
 rule all:
     input:
-        MULTIQC
+        MULTIQC,
+        METAPHLAN
     message:
         "Metagenomic pipeline run complete!"
