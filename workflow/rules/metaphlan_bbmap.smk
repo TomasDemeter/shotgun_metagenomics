@@ -10,27 +10,27 @@ If you install the database in a different location, remember to run MetaPhlAn u
 #####################################################################
 # MetaPhlAn 4 profiling of the composition of microbial communities #
 #####################################################################
-rule MetaPhlAn4_profiling:
+rule MetaPhlAn4_bbmap_profiling:
     input:
-        read_1 = rules.bowtie2_mapping.output.unmapped1,
-        read_2 = rules.bowtie2_mapping.output.unmapped2
+        read_1 = rules.bbmap_default.output.unmapped1,
+        read_2 = rules.bbmap_default.output.unmapped2
     output:
-        composition_profile = RESULT_DIR + "MetaPhlAn4/{ERR}_profile.txt",
-        bowtie2out          = RESULT_DIR + "MetaPhlAn4/bowtie2out/{ERR}_bowtie2out_metagenome.bz2"
+        composition_profile = RESULT_DIR + "MetaPhlAn4_bbmap/{ERR}_composition_profile.txt",
+        bowtie2out          = RESULT_DIR + "MetaPhlAn4_bbmap/bowtie2out/{ERR}_bowtie2out_metagenome.bz2"
     params:
-        input_type  = config["MetaPhlAn4_profiling"]["input_type"],
-        bowtie2db   = config["MetaPhlAn4_profiling"]["bowtie2db"],
-        index       = config["MetaPhlAn4_profiling"]["index"]
+        input_type  = config["MetaPhlAn4_bbmap_profiling"]["input_type"],
+        bowtie2db   = config["MetaPhlAn4_bbmap_profiling"]["bowtie2db"],
+        index       = config["MetaPhlAn4_bbmap_profiling"]["index"]
     message:
         "Profiling the composition of microbial communities in {wildcards.ERR} using MetaPhlAn 4"
     threads:
-        config["MetaPhlAn4_profiling"]["threads"]
+        config["MetaPhlAn4_bbmap_profiling"]["threads"]
     resources:
-        mem_mb = config["MetaPhlAn4_profiling"]["mem_mb"]
+        mem_mb = config["MetaPhlAn4_bbmap_profiling"]["mem_mb"]
     conda: 
         "mpa"
     shell:
-        "mkdir -p {RESULT_DIR}MetaPhlAn4/bowtie2out/; "
+        "mkdir -p {RESULT_DIR}MetaPhlAn4_bbmap/bowtie2out/; "
         "metaphlan "
         "{input.read_1},"
         "{input.read_2} "
@@ -45,17 +45,17 @@ rule MetaPhlAn4_profiling:
 ############################################
 # Merging MetaPhlAn 4 composition profiles #
 ############################################
-rule MetaPhlAn4_merging:
+rule MetaPhlAn4_bbmap_merging:
     input:
-        composition_profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, ERR = SAMPLES)
+        composition_profiles = expand(rules.MetaPhlAn4_bbmap_profiling.output.composition_profile, ERR = SAMPLES)
     output:
-        merged_abundance_table = RESULT_DIR + "MetaPhlAn4/merged_abundance_table.txt"
+        merged_abundance_table = RESULT_DIR + "MetaPhlAn4_bbmap/merged_abundance_table.txt"
     message:
         "Merging MetaPhlAn 4 composition profiles"
     conda: 
         "mpa"
     shell:
         "merge_metaphlan_tables.py "
-        "{RESULT_DIR}MetaPhlAn4/*_profile.txt "
+        "{RESULT_DIR}MetaPhlAn4_bbmap/*_composition_profile.txt "
         "> {output.merged_abundance_table}"
 

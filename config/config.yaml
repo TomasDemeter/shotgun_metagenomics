@@ -47,3 +47,16 @@ MetaPhlAn4_profiling:
   mem_mb: 100000
   input_type: fastq # run with fastq if running for the first time, otherwise use bowtie2out to speed up the mapping
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
+  index: mpa_vOct22_CHOCOPhlAnSGB_202212
+
+MetaPhlAn4_bbmap_profiling:
+  threads: 32
+  mem_mb: 100000
+  input_type: fastq # run with fastq if running for the first time, otherwise use bowtie2out to speed up the mapping
+  bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
+  index: mpa_vOct22_CHOCOPhlAnSGB_202212
+
+FastQC:
+  installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
+  threads: 32
+  mem_mb: 2000
