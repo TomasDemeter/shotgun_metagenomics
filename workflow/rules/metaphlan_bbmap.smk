@@ -15,7 +15,7 @@ rule MetaPhlAn4_bbmap_profiling:
         read_1 = rules.bbmap_default.output.unmapped1,
         read_2 = rules.bbmap_default.output.unmapped2
     output:
-        composition_profile = RESULT_DIR + "MetaPhlAn4_bbmap/{ERR}_composition_profile.txt",
+        composition_profile = RESULT_DIR + "MetaPhlAn4_bbmap/{ERR}_metaphlan4.txt",
         bowtie2out          = RESULT_DIR + "MetaPhlAn4_bbmap/bowtie2out/{ERR}_bowtie2out_metagenome.bz2"
     params:
         input_type  = config["MetaPhlAn4_bbmap_profiling"]["input_type"],
@@ -39,6 +39,7 @@ rule MetaPhlAn4_bbmap_profiling:
         "--input_type {params.input_type} "
         "--index {params.index} "
         "--bowtie2db {params.bowtie2db} "
+        "--nreads "
         "--output_file {output.composition_profile}"
 
 
@@ -56,6 +57,6 @@ rule MetaPhlAn4_bbmap_merging:
         "mpa"
     shell:
         "merge_metaphlan_tables.py "
-        "{RESULT_DIR}MetaPhlAn4_bbmap/*_composition_profile.txt "
+        "{RESULT_DIR}MetaPhlAn4_bbmap/*_metaphlan4.txt "
         "> {output.merged_abundance_table}"
 

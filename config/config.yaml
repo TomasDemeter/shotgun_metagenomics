@@ -60,3 +60,11 @@ FastQC:
   installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
   threads: 32
   mem_mb: 2000
+
+kraken2:
+  threads: 32
+  mem_mb: 100000
+  kraken2_db: ../inputs/genomes/kraken2db/
+  paired: paired
+  gzip_compressed: gzip-compressed
+  file_format: use-mpa-style
