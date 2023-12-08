@@ -18,9 +18,10 @@ rule MetaPhlAn4_profiling:
         composition_profile = RESULT_DIR + "MetaPhlAn4/{ERR}_metaphlan4.txt",
         bowtie2out          = RESULT_DIR + "MetaPhlAn4/bowtie2out/{ERR}_bowtie2out_metagenome.bz2"
     params:
-        input_type  = config["MetaPhlAn4_profiling"]["input_type"],
-        bowtie2db   = config["MetaPhlAn4_profiling"]["bowtie2db"],
-        index       = config["MetaPhlAn4_profiling"]["index"]
+        input_type      = config["MetaPhlAn4_profiling"]["input_type"],
+        bowtie2db       = config["MetaPhlAn4_profiling"]["bowtie2db"],
+        index           = config["MetaPhlAn4_profiling"]["index"],
+        analysis_type   = config["MetaPhlAn4_profiling"]["analysis_type"]
     message:
         "Profiling the composition of microbial communities in {wildcards.ERR} using MetaPhlAn 4"
     threads:
@@ -28,7 +29,7 @@ rule MetaPhlAn4_profiling:
     resources:
         mem_mb = config["MetaPhlAn4_profiling"]["mem_mb"]
     conda: 
-        "mpa"
+        "metaphlan_env"
     shell:
         "mkdir -p {RESULT_DIR}MetaPhlAn4/bowtie2out/; "
         "metaphlan "
@@ -39,7 +40,8 @@ rule MetaPhlAn4_profiling:
         "--input_type {params.input_type} "
         "--index {params.index} "
         "--bowtie2db {params.bowtie2db} "
-        "--nreads "
+        "-t {params.analysis_type} "
+        "--add_viruses "
         "--output_file {output.composition_profile}"
 
 
@@ -54,7 +56,7 @@ rule MetaPhlAn4_merging:
     message:
         "Merging MetaPhlAn 4 composition profiles"
     conda: 
-        "mpa"
+        "metaphlan_env"
     shell:
         "merge_metaphlan_tables.py "
         "{RESULT_DIR}MetaPhlAn4/*_metaphlan4.txt "
