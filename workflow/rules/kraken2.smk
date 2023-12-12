@@ -15,9 +15,9 @@ rule kraken2:
         kraken2_db = config["kraken2"]["kraken2_db"],
         paired = config["kraken2"]["paired"],
         gzip_compressed = config["kraken2"]["gzip_compressed"],
-        file_format = config["kraken2"]["file_format"],
         classified = RESULT_DIR + "Kraken2/{ERR}_classified#.fq",
-        unclassified = RESULT_DIR + "Kraken2/{ERR}_unclassified#.fq"
+        unclassified = RESULT_DIR + "Kraken2/{ERR}_unclassified#.fq",
+        confidence = config["kraken2"]["confidence"],
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -36,12 +36,35 @@ rule kraken2:
         "--unclassified-out {params.unclassified} "
         "{input.unmapped1} "
         "{input.unmapped2} "
-        "--{params.file_format} "
+        "--confidence {params.confidence} "
         "--report {output.report}"
 
+####################################################
+# Generating metaphlan style reports from Kraken2 #
+####################################################
+rule kraken2mpa:
+    input:
+        report = rules.kraken2.output.report
+    output:
+        mpa_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/{ERR}_kraken2_mpa_report.txt"
+    params:
+        report_style = config["kraken2"]["report_style"]
+    conda:
+        "kraken2_env"
+    message:
+        "Converting Kraken 2 report to MetaPhlAn style report"
+    shell:
+        "python3 scripts/kraken2mpa_modified.py "
+        "--{params.report_style} "
+        "-r{input.report} "
+        "-o{output.mpa_report}"
+
+#################################################
+# Merging Kraken2 reports from multiple samples #
+#################################################
 rule merge_kraken2:
     input:
-        reports = expand(rules.kraken2.output.report, ERR = SAMPLES)
+        reports = expand(rules.kraken2mpa.output.mpa_report, ERR = SAMPLES)
     params:
         kraken2_dir = RESULT_DIR + "Kraken2/"
     output:

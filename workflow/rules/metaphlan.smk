@@ -52,13 +52,14 @@ rule MetaPhlAn4_merging:
     input:
         composition_profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, ERR = SAMPLES)
     output:
-        merged_abundance_table = RESULT_DIR + "MetaPhlAn4/merged_abundance_table.txt"
+        merged_abundance_table = RESULT_DIR + "MetaPhlAn4/metaphlan_output_merged.csv"
+    params:
+        file_dir = RESULT_DIR + "MetaPhlAn4/"
     message:
         "Merging MetaPhlAn 4 composition profiles"
     conda: 
         "metaphlan_env"
     shell:
-        "merge_metaphlan_tables.py "
-        "{RESULT_DIR}MetaPhlAn4/*_metaphlan4.txt "
-        "> {output.merged_abundance_table}"
+        "python3 scripts/metaphlan4_merging.py "
+        "{params.file_dir}"
 

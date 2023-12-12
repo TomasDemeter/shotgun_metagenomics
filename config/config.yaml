@@ -69,5 +69,7 @@ kraken2:
   mem_mb: 100000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
+  confidence: 0.50
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
+  report_style: both

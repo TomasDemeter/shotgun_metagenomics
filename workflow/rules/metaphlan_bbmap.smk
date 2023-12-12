@@ -50,15 +50,17 @@ rule MetaPhlAn4_bbmap_profiling:
 ############################################
 rule MetaPhlAn4_bbmap_merging:
     input:
-        composition_profiles = expand(rules.MetaPhlAn4_bbmap_profiling.output.composition_profile, ERR = SAMPLES)
+        composition_profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, ERR = SAMPLES)
     output:
-        merged_abundance_table = RESULT_DIR + "MetaPhlAn4_bbmap/merged_abundance_table.txt"
+        merged_abundance_table = RESULT_DIR + "MetaPhlAn4_bbmap/metaphlan_output_merged.csv"
+    params:
+        file_dir = RESULT_DIR + "MetaPhlAn4_bbmap/"
     message:
         "Merging MetaPhlAn 4 composition profiles"
     conda: 
         "metaphlan_env"
     shell:
-        "merge_metaphlan_tables.py "
-        "{RESULT_DIR}MetaPhlAn4_bbmap/*_metaphlan4.txt "
-        "> {output.merged_abundance_table}"
+        "python3 scripts/metaphlan4_merging.py "
+        "{params.file_dir}"
+
 
