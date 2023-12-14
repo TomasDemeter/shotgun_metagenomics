@@ -18,14 +18,29 @@ def process_files(dir_path):
     df_concat = df_concat.iloc[:,0:6]
     return df_concat
 
+def metaphlan_reformating(df):
+    split_df = df['clade_name'].str.split('|', expand=True)
+    for col in split_df.columns:
+            split_df[col] = split_df[col].str.split('__', expand=True)[1]
+    split_df.columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
+
+    split_df.reset_index(drop=True, inplace=True)
+    df = df.join(split_df)
+    df = df.drop(columns=['clade_name'])
+    column_order = ['sample','Domain', 'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'relative_abundance', 'estimated_number_of_reads_from_the_clade']
+    df = df.reindex(columns=column_order)
+    return df
+
 def main():
     parser = argparse.ArgumentParser(description='Process files.')
     parser.add_argument('dir_path', type=str, help='Directory path containing the files')
     parser.add_argument('--delimiter', type=str, default=',', help='Delimiter for the output CSV file')
     args = parser.parse_args()
     df = process_files(args.dir_path)
+    df2 = metaphlan_reformating(df)
+
     output_file = os.path.join(args.dir_path, 'metaphlan_output_merged.csv')
-    df.to_csv(output_file, index=False, sep=args.delimiter)
+    df2.to_csv(output_file, index=False, sep=args.delimiter)
 
 if __name__ == "__main__":
     main()
