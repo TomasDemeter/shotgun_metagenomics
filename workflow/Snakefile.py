@@ -36,6 +36,7 @@ MULTIQC         = RESULT_DIR + "MultiQC/multiqc_report.html"
 METAPHLAN       = RESULT_DIR + "MetaPhlAn4/metaphlan_output_merged.csv"
 METAPHLAN_BBMAP = RESULT_DIR + "MetaPhlAn4_bbmap/metaphlan_output_merged.csv"
 KRAKEN2         = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
+KRAKEN2_BBMAP   = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/kraken2_output_merged.csv"
 
 #########
 # rules #
@@ -48,6 +49,7 @@ include: "rules/multiqc.smk"
 include: "rules/metaphlan.smk"
 include: "rules/metaphlan_bbmap.smk"
 include: "rules/kraken2.smk"
+include: "rules/kraken2_bbmap.smk"
 
 ############
 # Pipeline #
@@ -57,6 +59,7 @@ rule all:
         MULTIQC,
         METAPHLAN,
         METAPHLAN_BBMAP,
-        KRAKEN2
+        KRAKEN2,
+        KRAKEN2_BBMAP
     message:
         "Metagenomic pipeline run complete!"

@@ -1,23 +1,23 @@
 #####################################################################
 # Kraken 2 profiling of the composition of microbial communities #
 #####################################################################
-rule kraken2:
+rule kraken2_bbmap:
     input:
-        unmapped1 = rules.bowtie2_mapping.output.unmapped1,
-        unmapped2 = rules.bowtie2_mapping.output.unmapped2
+        unmapped1 = rules.bbmap_default.output.unmapped1,
+        unmapped2 = rules.bbmap_default.output.unmapped2
     output:
-        report          = RESULT_DIR + "Kraken2/{ERR}_kraken2_report.txt",
-        classified1     = RESULT_DIR + "Kraken2/{ERR}_classified_1.fq",
-        classified2     = RESULT_DIR + "Kraken2/{ERR}_classified_2.fq",
-        unclassified1   = RESULT_DIR + "Kraken2/{ERR}_unclassified_1.fq",
-        unclassified2   = RESULT_DIR + "Kraken2/{ERR}_unclassified_2.fq"
+        report          = RESULT_DIR + "Kraken2_bbmap/{ERR}_kraken2_report.txt",
+        classified1     = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified_1.fq",
+        classified2     = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified_2.fq",
+        unclassified1   = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified_1.fq",
+        unclassified2   = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified_2.fq"
     params:
         kraken2_db      = config["kraken2"]["kraken2_db"],
         paired          = config["kraken2"]["paired"],
-        confidence      = config["kraken2"]["confidence"],
         gzip_compressed = config["kraken2"]["gzip_compressed"],
-        classified      = RESULT_DIR + "Kraken2/{ERR}_classified#.fq",
-        unclassified    = RESULT_DIR + "Kraken2/{ERR}_unclassified#.fq"
+        confidence      = config["kraken2"]["confidence"],
+        classified      = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified#.fq",
+        unclassified    = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified#.fq"
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -42,11 +42,11 @@ rule kraken2:
 ####################################################
 # Generating metaphlan style reports from Kraken2 #
 ####################################################
-rule kraken2mpa:
+rule kraken2mpa_bbmap:
     input:
-        report = rules.kraken2.output.report
+        report = rules.kraken2_bbmap.output.report
     output:
-        mpa_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/{ERR}_kraken2_mpa_report.txt"
+        mpa_report = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/{ERR}_kraken2_mpa_report.txt"
     params:
         report_style = config["kraken2"]["report_style"]
     conda:
@@ -62,13 +62,13 @@ rule kraken2mpa:
 #################################################
 # Merging Kraken2 reports from multiple samples #
 #################################################
-rule merge_kraken2:
+rule merge_kraken2_bbmap:
     input:
-        reports = expand(rules.kraken2mpa.output.mpa_report, ERR = SAMPLES)
+        reports = expand(rules.kraken2mpa_bbmap.output.mpa_report, ERR = SAMPLES)
     params:
-        kraken2_dir = RESULT_DIR + "Kraken2/metaphlan_style_reports/"
+        kraken2_dir = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/"
     output:
-        merged_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
+        merged_report = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/kraken2_output_merged.csv"
     conda:
         "kraken2_env"
     message:

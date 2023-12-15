@@ -14,6 +14,7 @@ dependencies:
   - c-ares=1.23.0=hd590300_0
   - ca-certificates=2023.11.17=hbcca054_0
   - certifi=2023.11.17=pyhd8ed1ab_0
+  - colormaps=0.4.1=pyhd8ed1ab_0
   - comm=0.1.4=pyhd8ed1ab_0
   - contourpy=1.2.0=py39ha90811c_0
   - curl=8.5.0=hca28451_0
