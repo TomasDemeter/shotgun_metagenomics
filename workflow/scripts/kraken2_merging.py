@@ -18,38 +18,28 @@ def process_files(dir_path):
     df_concat = df_concat.iloc[:,0:6]
     return df_concat
 
-def shift_row(df):
-    # Create a subset of the DataFrame where the first column is 'Bacteria'
-    subset = df[df["Domain"] == 'Bacteria'].copy()
+def shift_values(df):
+    # Create a mask where 'Domain' column is 'Bacteria'
+    mask = df['Domain'] == 'Bacteria'
+    
+    # Select rows where mask is True and shift values to the right
+    df.loc[mask, "Kingdom":"Species"] = df.loc[mask, "Domain":"Species"].shift(periods=1, axis="columns")
+    
+    # Fill 'Domain' with 'Bacteria' and 'Kingdom' with 'None' for the rows where mask is True
+    df.loc[mask, 'Domain'] = 'Bacteria'
+    df.loc[mask, 'Kingdom'] = None
+    return df
 
-    # Drop the last column of the subset
-    subset.drop(subset.columns[-1], axis=1, inplace=True)
-
-    # Insert a column with None values at index 1
-    subset.insert(1, '', None)
-    subset.columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
-
-    return subset
-
-def process_dataframe(df, shift_row):
-    split_df = df['clade_name'].str.split('|', expand=True)
-    for col in split_df.columns:
-        split_df[col] = split_df[col].str.split('__', expand=True)[1]
-
-    # Filter rows where the first column is Bacteria, Eukaryota, or unclassified
-    split_df = split_df[split_df[0].isin(['Bacteria', 'Eukaryota', 'unclassified'])]
-    split_df.columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
-    shift_bact = shift_row(split_df)
-    split_df = split_df[split_df["Domain"] != "Bacteria"]
-    split_df = pd.concat([split_df, shift_bact])
-
-    split_df.reset_index(drop=True, inplace=True)
-    df.reset_index(drop=True, inplace=True)
-    df = df.join(split_df)
-    df = df.drop(columns=['clade_name'])
+def process_dataframe(df):
+    taxa_columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
     column_order = ['sample','Domain', 'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'relative_abundance', 'estimated_number_of_reads_from_the_clade']
-    df = df.reindex(columns=column_order)
 
+    df[taxa_columns] = df['clade_name'].str.split('|', expand=True)
+    for col in df[taxa_columns]:
+        df[col] = df[col].str.split('__', expand=True)[1]
+    df = df.drop(columns=['clade_name'])
+    df = shift_values(df)
+    df = df.reindex(columns=column_order)
     return df
 
 def main():
@@ -58,7 +48,7 @@ def main():
     parser.add_argument('--delimiter', type=str, default=',', help='Delimiter for the output CSV file')
     args = parser.parse_args()
     df = process_files(args.dir_path)
-    df2 = process_dataframe(df, shift_row)
+    df2 = process_dataframe(df)
 
     # Save the DataFrame to a CSV file
     output_file = os.path.join(args.dir_path, 'kraken2_output_merged.csv')

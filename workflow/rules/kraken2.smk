@@ -66,9 +66,9 @@ rule merge_kraken2:
     input:
         reports = expand(rules.kraken2mpa.output.mpa_report, ERR = SAMPLES)
     params:
-        kraken2_dir = RESULT_DIR + "Kraken2/"
+        kraken2_dir = RESULT_DIR + "Kraken2/metaphlan_style_reports/"
     output:
-        merged_report = RESULT_DIR + "Kraken2/merged_kraken2_report.csv"
+        merged_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
     conda:
         "kraken2_env"
     message:

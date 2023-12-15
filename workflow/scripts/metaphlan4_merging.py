@@ -19,15 +19,17 @@ def process_files(dir_path):
     return df_concat
 
 def metaphlan_reformating(df):
-    split_df = df['clade_name'].str.split('|', expand=True)
-    for col in split_df.columns:
-            split_df[col] = split_df[col].str.split('__', expand=True)[1]
-    split_df.columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
-
-    split_df.reset_index(drop=True, inplace=True)
-    df = df.join(split_df)
-    df = df.drop(columns=['clade_name'])
+    taxa_columns = ["Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
+    all_columns = ['relative_abundance', 'estimated_number_of_reads_from_the_clade', 'sample','Domain', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species']
     column_order = ['sample','Domain', 'Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'relative_abundance', 'estimated_number_of_reads_from_the_clade']
+    
+    
+    df[taxa_columns] = df['clade_name'].str.split('|', expand=True)
+    for col in df[taxa_columns]:
+        df[col] = df[col].str.split('__', expand=True)[1]
+    df = df.drop(columns=['clade_name', 'clade_taxid', 'coverage', 'Species'])
+    df.columns = all_columns
+    df["Kingdom"] = None
     df = df.reindex(columns=column_order)
     return df
 
