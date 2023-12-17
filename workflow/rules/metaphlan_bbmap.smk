@@ -50,7 +50,7 @@ rule MetaPhlAn4_bbmap_profiling:
 ############################################
 rule MetaPhlAn4_bbmap_merging:
     input:
-        composition_profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, ERR = SAMPLES)
+        composition_profiles = expand(rules.MetaPhlAn4_bbmap_profiling.output.composition_profile, ERR = SAMPLES)
     output:
         merged_abundance_table = RESULT_DIR + "MetaPhlAn4_bbmap/metaphlan_output_merged.csv"
     params:
