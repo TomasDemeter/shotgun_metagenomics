@@ -6,18 +6,18 @@ rule kraken2_bbmap:
         unmapped1 = rules.bbmap_default.output.unmapped1,
         unmapped2 = rules.bbmap_default.output.unmapped2
     output:
-        report          = RESULT_DIR + "Kraken2_bbmap/{ERR}_kraken2_report.txt",
-        classified1     = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified_1.fq",
-        classified2     = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified_2.fq",
-        unclassified1   = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified_1.fq",
-        unclassified2   = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified_2.fq"
+        report          = RESULT_DIR + "Kraken2_bbmap/{sample}_kraken2_report.txt",
+        classified1     = RESULT_DIR + "Kraken2_bbmap/{sample}_classified_1.fq",
+        classified2     = RESULT_DIR + "Kraken2_bbmap/{sample}_classified_2.fq",
+        unclassified1   = RESULT_DIR + "Kraken2_bbmap/{sample}_unclassified_1.fq",
+        unclassified2   = RESULT_DIR + "Kraken2_bbmap/{sample}_unclassified_2.fq"
     params:
         kraken2_db      = config["kraken2"]["kraken2_db"],
         paired          = config["kraken2"]["paired"],
         gzip_compressed = config["kraken2"]["gzip_compressed"],
         confidence      = config["kraken2"]["confidence"],
-        classified      = RESULT_DIR + "Kraken2_bbmap/{ERR}_classified#.fq",
-        unclassified    = RESULT_DIR + "Kraken2_bbmap/{ERR}_unclassified#.fq"
+        classified      = RESULT_DIR + "Kraken2_bbmap/{sample}_classified#.fq",
+        unclassified    = RESULT_DIR + "Kraken2_bbmap/{sample}_unclassified#.fq"
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -25,7 +25,7 @@ rule kraken2_bbmap:
     conda:
         "kraken2_env"
     message:
-        "Kraken 2 profiling of the composition of microbial communities in {wildcards.ERR}"
+        "Kraken 2 profiling of the composition of microbial communities in {wildcards.sample}"
     shell:
         "kraken2 "
         "--db {params.kraken2_db} "
@@ -46,7 +46,7 @@ rule kraken2mpa_bbmap:
     input:
         report = rules.kraken2_bbmap.output.report
     output:
-        mpa_report = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/{ERR}_kraken2_mpa_report.txt"
+        mpa_report = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/{sample}_kraken2_mpa_report.txt"
     params:
         report_style = config["kraken2"]["report_style"]
     conda:
@@ -64,14 +64,19 @@ rule kraken2mpa_bbmap:
 #################################################
 rule merge_kraken2_bbmap:
     input:
-        reports = expand(rules.kraken2mpa_bbmap.output.mpa_report, ERR = SAMPLES)
-    params:
-        kraken2_dir = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/"
+        reports = expand(rules.kraken2mpa_bbmap.output.mpa_report, sample = SAMPLES)
     output:
-        merged_report = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/kraken2_output_merged.csv"
-    conda:
-        "kraken2_env"
+        merged_report = RESULT_DIR + "merged_csv_files/Kraken2_Bbmap_merged.csv"
+    params:
+        file_dir    = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/",
+        output_file = "Kraken2_Bbmap_merged.csv",
+        output_dir  = RESULT_DIR + "merged_csv_files/"
     message:
-        "Merging Kraken 2 reports"
+        "Merging MetaPhlAn 4 composition profiles"
+    conda: 
+        "metaphlan_env"
     shell:
-        "python3 scripts/kraken2_merging.py {params.kraken2_dir}"
+        "python3 scripts/kraken2_merging.py "
+        "{params.file_dir} "
+        "{params.output_dir} "
+        "{params.output_file}"

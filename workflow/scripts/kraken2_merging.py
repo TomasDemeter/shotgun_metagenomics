@@ -45,13 +45,15 @@ def process_dataframe(df):
 def main():
     parser = argparse.ArgumentParser(description='Process files.')
     parser.add_argument('dir_path', type=str, help='Directory path containing the files')
+    parser.add_argument('output_dir', type=str, help='Output directory for the CSV file')
+    parser.add_argument('output_file', type=str, help='Name of the output CSV file')
     parser.add_argument('--delimiter', type=str, default=',', help='Delimiter for the output CSV file')
     args = parser.parse_args()
     df = process_files(args.dir_path)
     df2 = process_dataframe(df)
 
     # Save the DataFrame to a CSV file
-    output_file = os.path.join(args.dir_path, 'kraken2_output_merged.csv')
+    output_file = os.path.join(args.output_dir, args.output_file)
     df2.to_csv(output_file, index=False, sep=args.delimiter)
 
 if __name__ == "__main__":

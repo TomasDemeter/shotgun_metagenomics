@@ -4,14 +4,14 @@
 
 rule bbduk:
     input:
-        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fq.gz",
-        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fq.gz"
+        read_1 = WORKING_DIR + "raw_reads/{sample}_1.fq.gz",
+        read_2 = WORKING_DIR + "raw_reads/{sample}_2.fq.gz"
     output:
-        output_1    = WORKING_DIR + "BBsuite/BBduk/{ERR}_1.fq.gz",
-        output_2    = WORKING_DIR + "BBsuite/BBduk/{ERR}_2.fq.gz",
-        stats       = WORKING_DIR + "BBsuite/logs/bbduk/{ERR}_bbduk_report.txt" 
+        output_1    = WORKING_DIR + "BBsuite/BBduk/{sample}_1.fq.gz",
+        output_2    = WORKING_DIR + "BBsuite/BBduk/{sample}_2.fq.gz",
+        stats       = WORKING_DIR + "BBsuite/logs/bbduk/{sample}_bbduk_report.txt" 
     message:
-        "trimming {wildcards.ERR} reads with bbduk"
+        "trimming {wildcards.sample} reads with bbduk"
     threads:
         config["bbduk"]["threads"]
     resources:
@@ -48,11 +48,11 @@ rule bbmap_coarse:
         read_1 = rules.bbduk.output.output_1,
         read_2 = rules.bbduk.output.output_2
     output:
-        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1_coarse.fq.gz",
-        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2_coarse.fq.gz",
-        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_statsfile_coarse.txt"
+        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped1_coarse.fq.gz",
+        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped2_coarse.fq.gz",
+        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{sample}_statsfile_coarse.txt"
     message:
-        "filtering human sequences in {wildcards.ERR} using BBmap coarse parameters"
+        "filtering human sequences in {wildcards.sample} using BBmap coarse parameters"
     threads:
         config["bbmap"]["threads"]
     resources:
@@ -60,8 +60,8 @@ rule bbmap_coarse:
     conda: 
         "bbsuite_env"
     params:
-        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz"),
-        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz"),
+        mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{sample}_human1.fq.gz"),
+        mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{sample}_human2.fq.gz"),
         human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
         minid           = config["bbmap"]["minid"],
@@ -94,24 +94,24 @@ rule bbmap_default:
         read_1 = rules.bbmap_coarse.output.unmapped1,
         read_2 = rules.bbmap_coarse.output.unmapped2
     output:
-        mapped_to_human1    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human1.fq.gz",
-        mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{ERR}_human2.fq.gz",
-        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped1.fq.gz",
-        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{ERR}_unmapped2.fq.gz",
-        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_statsfile.txt",
-        bhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_bhist.txt",
-        aqhist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_aqhist.txt",
-        lhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_lhist.txt",
-        ihist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_ihist.txt",
-        ehist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_ehist.txt",
-        qahist              = WORKING_DIR + "BBsuite/logs/bbmap_stats/{ERR}_qahist.txt",
-        indelhist           = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_indelhist.txt",
-        mhist               = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_mhist.txt",
-        gchist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_gchist.txt",
-        idhist              = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_idhist.txt",
-        scafstats           = WORKING_DIR + "BBsuite/logs/bbmap/{ERR}_scafstats.txt"
+        mapped_to_human1    = WORKING_DIR + "BBsuite/BBmap/{sample}_human1.fq.gz",
+        mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{sample}_human2.fq.gz",
+        unmapped1           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped1.fq.gz",
+        unmapped2           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped2.fq.gz",
+        stats               = WORKING_DIR + "BBsuite/logs/bbmap_stats/{sample}_statsfile.txt",
+        bhist               = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_bhist.txt",
+        aqhist              = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_aqhist.txt",
+        lhist               = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_lhist.txt",
+        ihist               = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_ihist.txt",
+        ehist               = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_ehist.txt",
+        qahist              = WORKING_DIR + "BBsuite/logs/bbmap_stats/{sample}_qahist.txt",
+        indelhist           = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_indelhist.txt",
+        mhist               = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_mhist.txt",
+        gchist              = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_gchist.txt",
+        idhist              = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_idhist.txt",
+        scafstats           = WORKING_DIR + "BBsuite/logs/bbmap/{sample}_scafstats.txt"
     message:
-        "filtering human sequences in {wildcards.ERR} using BBmap default parameters"
+        "filtering human sequences in {wildcards.sample} using BBmap default parameters"
     threads:
         config["bbmap"]["threads"]
     resources:

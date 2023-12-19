@@ -3,15 +3,15 @@
 #########################
 rule fastp:
     input:
-        read_1 = WORKING_DIR + "raw_reads/{ERR}_1.fq.gz",
-        read_2 = WORKING_DIR + "raw_reads/{ERR}_2.fq.gz"
+        read_1 = WORKING_DIR + "raw_reads/{sample}_1.fq.gz",
+        read_2 = WORKING_DIR + "raw_reads/{sample}_2.fq.gz"
     output:
-        trimmed_1   = WORKING_DIR + "fastp/{ERR}_1.fastq.gz",
-        trimmed_2   = WORKING_DIR + "fastp/{ERR}_2.fastq.gz",
-        html        = WORKING_DIR + "fastp/logs/{ERR}_fastp.html",
-        json        = WORKING_DIR + "fastp/logs/{ERR}_fastp.json"        
+        trimmed_1   = WORKING_DIR + "fastp/{sample}_1.fastq.gz",
+        trimmed_2   = WORKING_DIR + "fastp/{sample}_2.fastq.gz",
+        html        = WORKING_DIR + "fastp/logs/{sample}_fastp.html",
+        json        = WORKING_DIR + "fastp/logs/{sample}_fastp.json"        
     message:
-        "fastp trimming {wildcards.ERR} reads"
+        "fastp trimming {wildcards.sample} reads"
     threads:
         config["fastp"]["threads"]
     resources:
@@ -19,7 +19,7 @@ rule fastp:
     conda: 
         "fastp_bowtie2"
     log:
-        log_file = WORKING_DIR + "fastp/logs/{ERR}.log.txt"
+        log_file = WORKING_DIR + "fastp/logs/{sample}.log.txt"
     params:
         cut_window_size     = config["fastp"]["cut_window_size"],
         cut_mean_quality    = config["fastp"]["cut_mean_quality"], 

@@ -2,11 +2,7 @@
 # Snakemake pipeline for shotgun metagenomics analysis #
 ########################################################
 '''
-snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=5-00:00:00 --cpus-per-task=32 --mem=100G --mail-type=BEGIN,FAIL,END --mail-user=tomas.demeter@uzh.ch" --jobs 8
-
-snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=24:00:00 --cpus-per-task=32 --mem=100G --mail-type=BEGIN,FAIL,END --mail-user=tomas.demeter@uzh.ch" --jobs 8
-
-snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=09:00:00 --cpus-per-task=32 --mem=100G --mail-type=FAIL,END --mail-user=tomas.demeter@uzh.ch --output=slurm_out/slurm-%j.out" --jobs 16
+snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=05:00:00 --cpus-per-task=32 --mem=100G --mail-type=FAIL,END --mail-user=tomas.demeter@uzh.ch --output=slurm_out/slurm-%j.out" --jobs 16
 '''
 
 ####################
@@ -33,10 +29,10 @@ SAMPLES = samples.index.tolist()
 # Desired outputs #
 ###################
 MULTIQC         = RESULT_DIR + "MultiQC/multiqc_report.html"
-METAPHLAN       = RESULT_DIR + "MetaPhlAn4/metaphlan_output_merged.csv"
-METAPHLAN_BBMAP = RESULT_DIR + "MetaPhlAn4_bbmap/metaphlan_output_merged.csv"
-KRAKEN2         = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
-KRAKEN2_BBMAP   = RESULT_DIR + "Kraken2_bbmap/metaphlan_style_reports/kraken2_output_merged.csv"
+METAPHLAN       = RESULT_DIR + "merged_csv_files/Metaphlan4_Bowtie2_merged.csv"
+METAPHLAN_BBMAP = RESULT_DIR + "merged_csv_files/Metaphlan4_Bbmap_merged.csv"
+KRAKEN2         = RESULT_DIR + "merged_csv_files/Kraken2_Bowtie2_merged.csv"
+KRAKEN2_BBMAP   = RESULT_DIR + "merged_csv_files/Kraken2_Bbmap_merged.csv"
 
 #########
 # rules #

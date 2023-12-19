@@ -3,13 +3,13 @@
 ##################
 rule multiqc:
     input:
-        bbduk_input         = expand(rules.bbduk.output.stats, ERR=SAMPLES),
-        bbmap_input         = expand(rules.bbmap_default.output.stats, ERR=SAMPLES),
-        fastp_input_html    = expand(rules.fastp.output.html, ERR=SAMPLES),
-        fastp_input_json    = expand(rules.fastp.output.json, ERR=SAMPLES),
-        bowtie_input        = expand(rules.bowtie2_mapping.output.logs, ERR=SAMPLES),
-        fastqc_input_1      = expand(rules.FastQC.output.zip_file_1, ERR=SAMPLES),
-        fastqc_input_2      = expand(rules.FastQC.output.zip_file_2, ERR=SAMPLES)
+        bbduk_input         = expand(rules.bbduk.output.stats, sample=SAMPLES),
+        bbmap_input         = expand(rules.bbmap_default.output.stats, sample=SAMPLES),
+        fastp_input_html    = expand(rules.fastp.output.html, sample=SAMPLES),
+        fastp_input_json    = expand(rules.fastp.output.json, sample=SAMPLES),
+        bowtie_input        = expand(rules.bowtie2_mapping.output.logs, sample=SAMPLES),
+        fastqc_input_1      = expand(rules.FastQC.output.zip_file_1, sample=SAMPLES),
+        fastqc_input_2      = expand(rules.FastQC.output.zip_file_2, sample=SAMPLES)
 
     output:
         outdir      = directory(RESULT_DIR + "MultiQC/"),
