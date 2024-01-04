@@ -30,14 +30,14 @@ rule bowtie2_mapping:
         read_1 = rules.fastp.output.trimmed_1,
         read_2 = rules.fastp.output.trimmed_2
     output:
-        aligned_sam         = temp(WORKING_DIR + "Bowtie2/{ERR}_aligned.sam"),
-        unmapped1           = WORKING_DIR + "Bowtie2/{ERR}_unmapped.1.gz",
-        unmapped2           = WORKING_DIR + "Bowtie2/{ERR}_unmapped.2.gz",
-        logs                = WORKING_DIR + "Bowtie2/logs/{ERR}_bowtie2.txt"
+        aligned_sam         = temp(WORKING_DIR + "Bowtie2/{sample}_aligned.sam"),
+        unmapped1           = WORKING_DIR + "Bowtie2/{sample}_unmapped.1.gz",
+        unmapped2           = WORKING_DIR + "Bowtie2/{sample}_unmapped.2.gz",
+        logs                = WORKING_DIR + "Bowtie2/logs/{sample}_bowtie2.txt"
     params:
-        unmapped_prefix     = WORKING_DIR + "Bowtie2/{ERR}_unmapped",
+        unmapped_prefix     = WORKING_DIR + "Bowtie2/{sample}_unmapped",
     message:
-        "Mapping {wildcards.ERR} reads to human genome using Bowtie2"
+        "Mapping {wildcards.sample} reads to human genome using Bowtie2"
     threads:
         config["bowtie"]["threads"]
     resources:

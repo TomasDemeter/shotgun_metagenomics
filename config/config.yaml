@@ -45,19 +45,13 @@ bowtie:
 MetaPhlAn4_profiling:
   threads: 32
   mem_mb: 100000
-  input_type: fastq # run with fastq if running for the first time, otherwise use bowtie2out to speed up the mapping
+  input_type: fastq # run with "fastq" if running for the first time, otherwise use "bowtie2out" to speed up the mapping
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
   index: mpa_vOct22_CHOCOPhlAnSGB_202212
   analysis_type: rel_ab_w_read_stats
-
-MetaPhlAn4_bbmap_profiling:
-  threads: 32
-  mem_mb: 100000
-  input_type: fastq # run with fastq if running for the first time, otherwise use bowtie2out to speed up the mapping
-  bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
-  index: mpa_vOct22_CHOCOPhlAnSGB_202212
-  analysis_type: rel_ab_w_read_stats
-
+  mapq_threshold: 5
+  read_min_length: 70
+  robust_average: 0.2
 
 FastQC:
   installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
@@ -69,5 +63,7 @@ kraken2:
   mem_mb: 100000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
+  confidence: 0.80
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
+  report_style: both
