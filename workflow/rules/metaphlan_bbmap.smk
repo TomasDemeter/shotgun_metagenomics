@@ -16,7 +16,9 @@ rule MetaPhlAn4_bbmap_profiling:
         read_2 = rules.bbmap_default.output.unmapped2
     output:
         composition_profile = RESULT_DIR + "MetaPhlAn4_bbmap/{sample}_metaphlan4.txt",
-        bowtie2out          = RESULT_DIR + "MetaPhlAn4_bbmap/bowtie2out/{sample}_bowtie2out_metagenome.bz2"
+        bowtie2out          = RESULT_DIR + "MetaPhlAn4_bbmap/bowtie2out/{sample}_bowtie2out_metagenome.bz2",
+        sams                = RESULT_DIR + "MetaPhlAn4_bbmap/sams/{sample}.sam.bz2"
+
     params:
         input_type      = config["MetaPhlAn4_profiling"]["input_type"],
         bowtie2db       = config["MetaPhlAn4_profiling"]["bowtie2db"],
@@ -39,6 +41,7 @@ rule MetaPhlAn4_bbmap_profiling:
         "metaphlan "
         "{input.read_1},"
         "{input.read_2} "
+        "-s {output.sams} "
         "--bowtie2out {output.bowtie2out} "
         "--nproc {threads} "
         "--input_type {params.input_type} "
