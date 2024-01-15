@@ -31,7 +31,7 @@ rule kraken2:
         "--db {params.kraken2_db} "
         "--{params.paired} "
         "--threads {threads} "
-        "--{params.gzip_compressed} " 
+        "--{params.gzip_compressed} "
         "--classified-out {params.classified} "
         "--unclassified-out {params.unclassified} "
         "{input.unmapped1} "

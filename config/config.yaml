@@ -67,3 +67,7 @@ kraken2:
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
   report_style: both
+
+StrainPhlAn:
+  threads: 32
+  bowtie_db: ../inputs/genomes/metaphlan_bowtie2db/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl
