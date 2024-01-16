@@ -1,8 +1,14 @@
+
 ########################################################
 # Snakemake pipeline for shotgun metagenomics analysis #
 ########################################################
+
+
+########################################
+# to run the pipeline use this command #
+########################################
 '''
-snakemake -s Snakefile.py --use-conda --rerun-incomplete --keep-going --cluster "sbatch --account=kouyos.virology.uzh --partition=standard --time=05:00:00 --cpus-per-task=32 --mem=100G --mail-type=BEGIN,FAIL,END --mail-user=tomas.demeter@uzh.ch --output=logs/slurm-%j.out" --jobs 16
+snakemake -s Snakefile.py --profile slurm_snakemake
 '''
 
 ####################

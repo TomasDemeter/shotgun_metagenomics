@@ -15,7 +15,7 @@ rule MetaPhlAn4_profiling:
         read_1 = rules.bowtie2_mapping.output.unmapped1,
         read_2 = rules.bowtie2_mapping.output.unmapped2
     output:
-        composition_profile = RESULT_DIR + "MetaPhlAn4/{sample}_metaphlan4.txt",
+        composition_profile = RESULT_DIR + "MetaPhlAn4/profiles/{sample}_metaphlan4.txt",
         bowtie2out          = RESULT_DIR + "MetaPhlAn4/bowtie2out/{sample}_bowtie2out_metagenome.bz2",
         sams                = RESULT_DIR + "MetaPhlAn4/sams/{sample}.sam.bz2"
     params:
