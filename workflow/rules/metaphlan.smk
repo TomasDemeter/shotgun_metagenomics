@@ -39,7 +39,7 @@ rule MetaPhlAn4_profiling:
         "metaphlan "
         "{input.read_1},"
         "{input.read_2} "
-        "-s {output.sams} "
+        "--samout {output.sams} "
         "--bowtie2out {output.bowtie2out} "
         "--nproc {threads} "
         "--input_type {params.input_type} "
@@ -62,7 +62,7 @@ rule MetaPhlAn4_merging:
     output:
         merged_report = RESULT_DIR + "merged_csv_files/Metaphlan4_Bowtie2_merged.csv"
     params:
-        file_dir    = RESULT_DIR + "MetaPhlAn4/",
+        file_dir    = RESULT_DIR + "MetaPhlAn4/profiles/",
         output_file = "Metaphlan4_Bowtie2_merged.csv",
         output_dir = RESULT_DIR + "merged_csv_files/"
     message:

@@ -54,7 +54,6 @@ rule MetaPhlAn4_bbmap_profiling:
         "--min_mapq_val {params.mapq_threshold} "
         "--output_file {output.composition_profile}"
 
-
 ############################################
 # Merging MetaPhlAn 4 composition profiles #
 ############################################
@@ -64,7 +63,7 @@ rule MetaPhlAn4_bbmap_merging:
     output:
         merged_report = RESULT_DIR + "merged_csv_files/Metaphlan4_Bbmap_merged.csv"
     params:
-        file_dir    = RESULT_DIR + "MetaPhlAn4_bbmap/",
+        file_dir    = RESULT_DIR + "MetaPhlAn4_bbmap/profiles/",
         output_file = "Metaphlan4_Bbmap_merged.csv",
         output_dir = RESULT_DIR + "merged_csv_files/"
     message:

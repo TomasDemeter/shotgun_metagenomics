@@ -1,6 +1,6 @@
 # directories
-result_dir:  ../results/         # should be kept
-working_dir: ../inputs/      # can be removed (temporary files)
+result_dir:  ../results/          # should be kept
+working_dir: ../inputs/           
 
 # samples to condition
 refs:
@@ -70,6 +70,7 @@ kraken2:
 
 StrainPhlAn:
   threads: 32
-  bowtie_db: ../inputs/genomes/metaphlan_bowtie2db/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl
+  mem_mb: 100000
   clade: t__SGB17097
   strainphlan_samples: ["0010009_unknown_Nasal_Nostrilright", "0010020_unknown_Nasal_Nostrilleft", "0010026_Burn_031_RightLeg"]
+  database: /home/tdemet/data/conda/envs/metaphlan_env/lib/python3.7/site-packages/metaphlan/metaphlan_databases/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl
