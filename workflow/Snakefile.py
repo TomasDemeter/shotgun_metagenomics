@@ -39,8 +39,8 @@ METAPHLAN       = RESULT_DIR + "merged_csv_files/Metaphlan4_Bowtie2_merged.csv"
 METAPHLAN_BBMAP = RESULT_DIR + "merged_csv_files/Metaphlan4_Bbmap_merged.csv"
 KRAKEN2         = RESULT_DIR + "merged_csv_files/Kraken2_Bowtie2_merged.csv"
 KRAKEN2_BBMAP   = RESULT_DIR + "merged_csv_files/Kraken2_Bbmap_merged.csv"
-STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
-#STRAINPHLAN    = RESULT_DIR + "StrainPhlAn/alignments/RAxML_bestTree." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
+#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+STRAINPHLAN    = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 
 #########
 # rules #

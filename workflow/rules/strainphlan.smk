@@ -61,9 +61,9 @@ rule StrainPhlAn_profiling:
         markers_output      = rules.consensus_markers.output.markers_outputs,
         clade_markers       = rules.extract_markers.output.clade_markers
     output:
-        #output_tree         = RESULT_DIR + "StrainPhlAn/alignments/RAxML_bestTree." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
+        output_tree         = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
         alignments_dir      = directory(RESULT_DIR + "StrainPhlAn/alignments/"),
-        clades_list         = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+        #clades_list         = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
     params:
         reference_genomes   = WORKING_DIR + "genomes/strainphlan_genomes/*.bz2",
         consensus_markers   = RESULT_DIR + "StrainPhlAn/consensus_markers/*.pkl",
@@ -81,11 +81,13 @@ rule StrainPhlAn_profiling:
         "mkdir -p {output.alignments_dir}; "
         "strainphlan "
         "--samples {params.consensus_markers} "
-        #"--clade_markers {input.clade_markers} "
+        "--clade_markers {input.clade_markers} "
         "--references {params.reference_genomes} "
         "--output_dir {output.alignments_dir} "
         "--nprocs {threads} "
         "--clade {params.clade} "
         "--database {params.database} "
-        "--mutation_rate "
-        "--print_clades_only"
+        "--marker_in_n_samples 1 "
+        "--sample_with_n_markers 1 "
+        "--mutation_rate"
+        #"--print_clades_only"
