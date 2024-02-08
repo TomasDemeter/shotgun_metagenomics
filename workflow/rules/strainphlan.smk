@@ -1,7 +1,7 @@
 ##########################################################################
 # Produce the consensus-marker files which are the input for StrainPhlAn #
 ##########################################################################
-rule consensus_markers:
+rule sample2markers:
     input:
         metaphlan_inputs = expand(RESULT_DIR + "MetaPhlAn4/sams/{sample}.sam.bz2", sample=config["StrainPhlAn"]["strainphlan_samples"])
     output:
@@ -30,7 +30,7 @@ rule consensus_markers:
 #######################################
 rule extract_markers:
     input:
-        consensus_markers_dir = rules.consensus_markers.output.consensus_markers_dir
+        consensus_markers_dir = rules.sample2markers.output.consensus_markers_dir
     output:
         clade_markers_dir   = directory(RESULT_DIR + "StrainPhlAn/clade_markers/"),
         clade_markers       = RESULT_DIR + "StrainPhlAn/clade_markers/" + config["StrainPhlAn"]["clade"] + ".fna"
@@ -58,17 +58,18 @@ rule extract_markers:
 rule StrainPhlAn_profiling:
     input:
         clade_markers_dir   = rules.extract_markers.output.clade_markers_dir,
-        markers_output      = rules.consensus_markers.output.markers_outputs,
+        consensus_markers      = rules.sample2markers.output.markers_outputs,
         clade_markers       = rules.extract_markers.output.clade_markers
     output:
-        output_tree         = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
+        #output_tree         = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
         alignments_dir      = directory(RESULT_DIR + "StrainPhlAn/alignments/"),
-        #clades_list         = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+        clades_list         = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv" # clade_list and output_tree are exclusive
     params:
-        reference_genomes   = WORKING_DIR + "genomes/strainphlan_genomes/*.bz2",
-        consensus_markers   = RESULT_DIR + "StrainPhlAn/consensus_markers/*.pkl",
-        clade               = config["StrainPhlAn"]["clade"],
-        database            = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl"
+        reference_genomes       = config["StrainPhlAn"]["reference_genomes"],
+        clade                   = config["StrainPhlAn"]["clade"],
+        database                = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl",
+        marker_in_n_samples     = config["StrainPhlAn"]["marker_in_n_samples"],
+        sample_with_n_markers   = config["StrainPhlAn"]["sample_with_n_markers"]
     conda:
         "metaphlan_env"
     threads:
@@ -80,14 +81,14 @@ rule StrainPhlAn_profiling:
     shell:
         "mkdir -p {output.alignments_dir}; "
         "strainphlan "
-        "--samples {params.consensus_markers} "
-        "--clade_markers {input.clade_markers} "
+        "--samples {input.consensus_markers} "
+        #"--clade_markers {input.clade_markers} "
         "--references {params.reference_genomes} "
         "--output_dir {output.alignments_dir} "
         "--nprocs {threads} "
         "--clade {params.clade} "
+        "--print_clades_only "  # clade_markers and print_clades_only are exclusive
         "--database {params.database} "
-        "--marker_in_n_samples 1 "
-        "--sample_with_n_markers 1 "
+        "--marker_in_n_samples {params.marker_in_n_samples} "
+        "--sample_with_n_markers {params.sample_with_n_markers} "
         "--mutation_rate"
-        #"--print_clades_only"

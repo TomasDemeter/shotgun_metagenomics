@@ -1,7 +1,7 @@
 import os
 
 # Define the path to the directory
-path = '../../inputs/full_sequences/'
+path = '../../inputs/raw_reads/'
 
 # Read the metadata file
 with open(os.path.join(path, 'metadata.csv'), 'r') as f:
