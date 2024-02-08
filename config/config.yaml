@@ -33,7 +33,7 @@ bbmap:
 fastp:
   threads: 32
   mem_mb: 100000
-  phread_quality: 20 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
+  phread_quality: 30 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
   cut_window_size: 4
   cut_mean_quality: 20
   length_required: 50 
@@ -72,5 +72,7 @@ StrainPhlAn:
   threads: 32
   mem_mb: 100000
   clade: t__SGB17097
-  strainphlan_samples: ["0010009_unknown_Nasal_Nostrilright", "0010020_unknown_Nasal_Nostrilleft", "0010009_unknown_Nasal_Nostrilright_copy", "0010020_unknown_Nasal_Nostrilleft_copy"]
-  database: /home/tdemet/data/conda/envs/metaphlan_env/lib/python3.7/site-packages/metaphlan/metaphlan_databases/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl
+  reference_genomes: ../inputs/genomes/strainphlan_genomes/Corynebacterium_accolens/*.bz2
+  strainphlan_samples: ["0010009_unknown_Nasal_Nostrilright", "0010020_unknown_Nasal_Nostrilleft"]
+  marker_in_n_samples: 0 # how many samples need the marker for the sample to be kept (default 80)
+  sample_with_n_markers: 0 # how many samples need to ahve a marker for the amrker to be kept (default 80)
