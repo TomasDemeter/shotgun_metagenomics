@@ -78,3 +78,4 @@ StrainPhlAn:
   sample_with_n_markers: 0 # how many samples need to ahve a marker for the amrker to be kept (default 80)
   breadth_thres: 5 # percetage of marker sequence that has to be covered by reads (default 80)
   trim_sequences: 0 # number of bases to trim from the start and end of the marker sequence (default 50)
+  
