@@ -69,7 +69,9 @@ rule StrainPhlAn_profiling:
         clade                   = config["StrainPhlAn"]["clade"],
         database                = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl",
         marker_in_n_samples     = config["StrainPhlAn"]["marker_in_n_samples"],
-        sample_with_n_markers   = config["StrainPhlAn"]["sample_with_n_markers"]
+        sample_with_n_markers   = config["StrainPhlAn"]["sample_with_n_markers"],
+        breadth_thres           = config["StrainPhlAn"]["breadth_thres"],
+        trim_sequences          = config["StrainPhlAn"]["trim_sequences"]
     conda:
         "metaphlan_env"
     threads:
@@ -91,4 +93,6 @@ rule StrainPhlAn_profiling:
         "--database {params.database} "
         "--marker_in_n_samples {params.marker_in_n_samples} "
         "--sample_with_n_markers {params.sample_with_n_markers} "
+        "--breadth_thres {params.breadth_thres} "
+        "--trim_sequences {params.trim_sequences} "
         "--mutation_rate"

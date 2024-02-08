@@ -76,3 +76,5 @@ StrainPhlAn:
   strainphlan_samples: ["0010009_unknown_Nasal_Nostrilright", "0010020_unknown_Nasal_Nostrilleft"]
   marker_in_n_samples: 0 # how many samples need the marker for the sample to be kept (default 80)
   sample_with_n_markers: 0 # how many samples need to ahve a marker for the amrker to be kept (default 80)
+  breadth_thres: 5 # percetage of marker sequence that has to be covered by reads (default 80)
+  trim_sequences: 0 # number of bases to trim from the start and end of the marker sequence (default 50)
