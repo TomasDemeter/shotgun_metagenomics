@@ -22,7 +22,7 @@ bbduk:
   # BBmap
 bbmap:
   threads: 32
-  mem_mb: 100000
+  mem_mb: 1500000
   fast: true
   minid: 0.9
   maxindel: 3
@@ -40,7 +40,12 @@ fastp:
 
 bowtie:
   threads: 32
-  mem_mb: 100000
+  mem_mb: 2500000
+
+FastQC:
+  installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
+  threads: 32
+  mem_mb: 10000
 
 MetaPhlAn4_profiling:
   threads: 32
@@ -52,11 +57,6 @@ MetaPhlAn4_profiling:
   mapq_threshold: 5
   read_min_length: 70
   robust_average: 0.2
-
-FastQC:
-  installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
-  threads: 32
-  mem_mb: 2000
 
 kraken2:
   threads: 32

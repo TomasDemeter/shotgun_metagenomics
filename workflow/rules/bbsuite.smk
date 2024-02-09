@@ -41,12 +41,36 @@ rule bbduk:
         "tpe"
 
 #########################
-# Filtering human reads #
+# Build index for BBmap #
 #########################
+rule build_bbmap_index:
+    input:
+        genome = config["refs"]["human_genome"]
+    output:
+        index = directory(config["refs"]["bbsuite_index"])
+    message:
+        "building BBmap index for human genome"
+    threads:
+        config["bbmap"]["threads"]
+    resources:
+        mem_mb = config["bbmap"]["mem_mb"]
+    conda:
+        "bbsuite_env"
+    shell:
+        "mkdir -p {output.index}; "
+        "bbmap.sh "
+        "threads={threads} "
+        "ref={input.genome} "
+        "path={output.index}"
+
+################################################
+# Filtering human reads with coarse parameters #
+################################################
 rule bbmap_coarse:
     input:
         read_1 = rules.bbduk.output.output_1,
-        read_2 = rules.bbduk.output.output_2
+        read_2 = rules.bbduk.output.output_2,
+        index  = rules.build_bbmap_index.output.index
     output:
         unmapped1           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped1_coarse.fq.gz",
         unmapped2           = WORKING_DIR + "BBsuite/BBmap/{sample}_unmapped2_coarse.fq.gz",
@@ -62,12 +86,10 @@ rule bbmap_coarse:
     params:
         mapped_to_human1    = temp(WORKING_DIR + "BBsuite/BBmap/{sample}_human1.fq.gz"),
         mapped_to_human2    = temp(WORKING_DIR + "BBsuite/BBmap/{sample}_human2.fq.gz"),
-        human_genome    = config["refs"]["human_genome"],
         fast            = config["bbmap"]["fast"],
         minid           = config["bbmap"]["minid"],
         maxindel        = config["bbmap"]["maxindel"],
         kmer_length     = config["bbmap"]["k"],
-        index_path      = config["refs"]["bbsuite_index"],
         minhits         = config["bbmap"]["minhits"]
         
     shell:
@@ -81,18 +103,21 @@ rule bbmap_coarse:
         "outu1={output.unmapped1} "
         "outu2={output.unmapped2} "
         "statsfile={output.stats} "
-        "ref={params.human_genome} "
-        "path={params.index_path} "
+        "path={input.index} "
         "fast={params.fast} "
         "minhits={params.minhits} "
         "k={params.kmer_length} "
         "maxindel={params.maxindel} "
         "minid={params.minid}"
 
+#################################################
+# Filtering human reads with default parameters #
+#################################################
 rule bbmap_default:
     input:
         read_1 = rules.bbmap_coarse.output.unmapped1,
-        read_2 = rules.bbmap_coarse.output.unmapped2
+        read_2 = rules.bbmap_coarse.output.unmapped2,
+        index  = rules.build_bbmap_index.output.index
     output:
         mapped_to_human1    = WORKING_DIR + "BBsuite/BBmap/{sample}_human1.fq.gz",
         mapped_to_human2    = WORKING_DIR + "BBsuite/BBmap/{sample}_human2.fq.gz",
@@ -117,8 +142,7 @@ rule bbmap_default:
     resources:
         mem_mb = config["bbmap"]["mem_mb"]
     params:
-        human_genome    = config["refs"]["human_genome"],
-        index_path      = config["refs"]["bbsuite_index"]
+        human_genome    = config["refs"]["human_genome"]
     conda: 
         "bbsuite_env"
     shell:
@@ -132,7 +156,7 @@ rule bbmap_default:
         "outu1={output.unmapped1} "
         "outu2={output.unmapped2} "
         "ref={params.human_genome} "
-        "path={params.index_path} "
+        "path={input.index} "
         "statsfile={output.stats} "
         "bhist={output.bhist} "
         "aqhist={output.aqhist} "
