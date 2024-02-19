@@ -10,7 +10,6 @@ rule multiqc:
         bowtie_input        = expand(rules.bowtie2_mapping.output.logs, sample=SAMPLES),
         fastqc_input_1      = expand(rules.FastQC.output.zip_file_1, sample=SAMPLES),
         fastqc_input_2      = expand(rules.FastQC.output.zip_file_2, sample=SAMPLES)
-
     output:
         outdir      = directory(RESULT_DIR + "MultiQC/"),
         output      = RESULT_DIR + "MultiQC/multiqc_report.html"
@@ -22,6 +21,8 @@ rule multiqc:
         fastqc_zip  = WORKING_DIR + "FastQC/"
     conda: 
         "multiqc_env"
+    resources:
+        mem_mb = config["Multiqc"]["mem_mb"]
     message: "Summarising reports with multiqc"
     shell:
         "mkdir -p {output.outdir}; "

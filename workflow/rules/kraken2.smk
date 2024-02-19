@@ -3,8 +3,9 @@
 #####################################################################
 rule kraken2:
     input:
-        unmapped1 = rules.bowtie2_mapping.output.unmapped1,
-        unmapped2 = rules.bowtie2_mapping.output.unmapped2
+        unmapped1   = rules.bowtie2_mapping.output.unmapped1,
+        unmapped2   = rules.bowtie2_mapping.output.unmapped2,
+        kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
     output:
         report          = RESULT_DIR + "Kraken2/{sample}_kraken2_report.txt",
         classified1     = RESULT_DIR + "Kraken2/{sample}_classified_1.fq",
@@ -12,7 +13,6 @@ rule kraken2:
         unclassified1   = RESULT_DIR + "Kraken2/{sample}_unclassified_1.fq",
         unclassified2   = RESULT_DIR + "Kraken2/{sample}_unclassified_2.fq"
     params:
-        kraken2_db      = config["kraken2"]["kraken2_db"],
         paired          = config["kraken2"]["paired"],
         confidence      = config["kraken2"]["confidence"],
         gzip_compressed = config["kraken2"]["gzip_compressed"],
@@ -28,7 +28,7 @@ rule kraken2:
         "Kraken 2 profiling of the composition of microbial communities in {wildcards.sample}"
     shell:
         "kraken2 "
-        "--db {params.kraken2_db} "
+        "--db {input.kraken2_db} "
         "--{params.paired} "
         "--threads {threads} "
         "--{params.gzip_compressed} "

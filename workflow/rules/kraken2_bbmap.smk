@@ -4,7 +4,8 @@
 rule kraken2_bbmap:
     input:
         unmapped1 = rules.bbmap_default.output.unmapped1,
-        unmapped2 = rules.bbmap_default.output.unmapped2
+        unmapped2 = rules.bbmap_default.output.unmapped2,
+        kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
     output:
         report          = RESULT_DIR + "Kraken2_bbmap/{sample}_kraken2_report.txt",
         classified1     = RESULT_DIR + "Kraken2_bbmap/{sample}_classified_1.fq",
@@ -12,7 +13,6 @@ rule kraken2_bbmap:
         unclassified1   = RESULT_DIR + "Kraken2_bbmap/{sample}_unclassified_1.fq",
         unclassified2   = RESULT_DIR + "Kraken2_bbmap/{sample}_unclassified_2.fq"
     params:
-        kraken2_db      = config["kraken2"]["kraken2_db"],
         paired          = config["kraken2"]["paired"],
         gzip_compressed = config["kraken2"]["gzip_compressed"],
         confidence      = config["kraken2"]["confidence"],
@@ -28,11 +28,11 @@ rule kraken2_bbmap:
         "Kraken 2 profiling of the composition of microbial communities in {wildcards.sample}"
     shell:
         "kraken2 "
-        "--db {params.kraken2_db} "
+        "--db {input.kraken2_db} "
         "--{params.paired} "
         "--threads {threads} "
         "--{params.gzip_compressed} "
-        "--classified-out {params.classified}"
+        "--classified-out {params.classified} "
         "--unclassified-out {params.unclassified} "
         "{input.unmapped1} "
         "{input.unmapped2} "

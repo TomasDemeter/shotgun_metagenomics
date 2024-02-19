@@ -52,6 +52,7 @@ include: "rules/fastqc.smk"
 include: "rules/multiqc.smk"
 include: "rules/metaphlan.smk"
 include: "rules/metaphlan_bbmap.smk"
+include: "rules/kraken2_build.smk"
 include: "rules/kraken2.smk"
 include: "rules/kraken2_bbmap.smk"
 include: "rules/strainphlan.smk"
@@ -61,11 +62,11 @@ include: "rules/strainphlan.smk"
 ############
 rule all:
     input:
-        #MULTIQC,
+        MULTIQC,
         METAPHLAN,
         METAPHLAN_BBMAP,
-        #KRAKEN2,
-        #KRAKEN2_BBMAP,
+        KRAKEN2,
+        KRAKEN2_BBMAP,
         STRAINPHLAN
     message:
         "Metagenomic pipeline run complete!"

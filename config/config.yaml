@@ -40,12 +40,15 @@ fastp:
 
 bowtie:
   threads: 32
-  mem_mb: 2500000
+  mem_mb: 1000000
 
 FastQC:
   installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
   threads: 32
   mem_mb: 10000
+  
+Multiqc:
+  mem_mb: 100000
 
 MetaPhlAn4_profiling:
   threads: 32
@@ -60,13 +63,18 @@ MetaPhlAn4_profiling:
 
 kraken2:
   threads: 32
-  mem_mb: 100000
+  mem_mb: 250000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
   confidence: 0.80
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
   report_style: both
+  standard_db: ../inputs/genomes/kraken2/kraken2_standard_db/
+  standard_db_url: https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20240112.tar.gz
+  custom_kraken2_db: ../inputs/genomes/kraken2/kraken2_custom/kraken2_custom_db/
+  downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
+  domains: bacteria,archaea
 
 StrainPhlAn:
   threads: 32
