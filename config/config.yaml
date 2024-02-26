@@ -63,7 +63,7 @@ MetaPhlAn4_profiling:
 
 kraken2:
   threads: 32
-  mem_mb: 250000
+  mem_mb: 100000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
   confidence: 0.80

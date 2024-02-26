@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser(description='This script will download the late
                                          If a file called genomes.tsv exists in the directory that you run this script from, it will try to add the accession and taxonomy for these\
                                          This should be a tab delimited file with the first column being the genome accession name and the second being the taxonomy in the format d__;k__;p__;c__;o__;f__;g__;s__;s1__\
                                          i.e. in domain/kingdom/phylum/class/order/family/genus/species/strain format and including the prefixes for each level with two underscores.')
+
 parser.add_argument('--download_genomes', dest='download_genomes', default=True,
                     help="False if you don't want to download the GTDB genomes. Default is True")
 args = parser.parse_args()

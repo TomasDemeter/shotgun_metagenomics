@@ -7,4 +7,4 @@
 #SBATCH --time=24:00:00
 #SBATCH --mem=100G
 
-kraken2-build --standard --threads 32 --db ../../inputs/genomes/kraken2db
+kraken2-build --standard --threads 32 --db ../../inputs/genomes/kraken2/kraken2_standard_db/

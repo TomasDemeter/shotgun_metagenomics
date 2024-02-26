@@ -8,7 +8,7 @@
 # to run the pipeline use this command #
 ########################################
 '''
-snakemake -s Snakefile.py --profile slurm_snakemake -n
+snakemake -s Snakefile.py --profile slurm_snakemake -n --keep-incomplete
 '''
 
 ####################
