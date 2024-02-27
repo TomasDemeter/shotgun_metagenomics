@@ -1,8 +1,8 @@
 
 rule kraken2_build_standard_db:
     output:
-        standard_db     = touch(directory(config["kraken2"]["standard_db"])),
-        taxo_k2d        = touch(config["kraken2"]["standard_db"] + "taxo.k2d")
+        standard_db     = directory(config["kraken2"]["standard_db"]),
+        taxo_k2d        = config["kraken2"]["standard_db"] + "taxo.k2d"
     params:
         standard_db_url = config["kraken2"]["standard_db_url"]
     message:
@@ -34,10 +34,10 @@ rule download_NCBI_genomes:
 
 rule download_GTDB_genomes:
     output:
-        names_dmp               = touch("names.dmp"),
-        nodes_dmp               = touch("nodes.dmp"),
-        nucl_accession2taxid    = touch("nucl.accession2taxid"),
-        gtdb_genomes_reps_dir   = touch(directory("gtdb_genomes_reps"))
+        names_dmp               = "names.dmp",
+        nodes_dmp               = "nodes.dmp",
+        nucl_accession2taxid    = "nucl.accession2taxid",
+        gtdb_genomes_reps_dir   = directory("gtdb_genomes_reps")
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -49,17 +49,39 @@ rule download_GTDB_genomes:
     shell:
         "python3 scripts/download_GTDB_latest.py"
 
+
+rule rename_fasta_headers:
+    input:
+        downloaded_genomes_NCBI = rules.download_NCBI_genomes.output.downloaded_genomes,
+        downloaded_genomes_GTDB = rules.download_GTDB_genomes.output.gtdb_genomes_reps_dir
+    output:
+        rename_fasta_headers = directory(config["kraken2"]["rename_fasta_headers"])
+    threads:
+        config["kraken2"]["threads"]
+    resources:
+        mem_mb = config["kraken2"]["mem_mb"]
+    conda:
+        "kraken2_env"
+    message:
+        "Renaming fasta headers"
+    shell:
+        "mv {input.downloaded_genomes_GTDB}/* {input.downloaded_genomes_NCBI}; "
+        "python3 scripts/rename_fasta_headers.py "
+        "rm -r {input.downloaded_genomes_GTDB}; "
+
+
+
+
 rule kraken2_build_custom_db:
     input:
         downloaded_genomes      = rules.download_NCBI_genomes.output.downloaded_genomes,
         names_dmp               = rules.download_GTDB_genomes.output.names_dmp,
         nodes_dmp               = rules.download_GTDB_genomes.output.nodes_dmp,
         nucl_accession2taxid    = rules.download_GTDB_genomes.output.nucl_accession2taxid,
-        gtdb_genomes_reps_dir   = rules.download_GTDB_genomes.output.gtdb_genomes_reps_dir,
     output:
         custom_kraken2_db = directory(config["kraken2"]["custom_kraken2_db"]),
-        taxonomy_dir      = directory(config["kraken2"]["custom_kraken2_db"]) + "taxonomy",
-        test_build        = "test_build.txt"
+        #taxonomy_dir      = directory(config["kraken2"]["custom_kraken2_db"] + "taxonomy"), # this worked before. make dir and move names, nodes and nucl_accession2taxid to taxonomy folder
+        #test_build        = "test_build.txt"
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -69,11 +91,10 @@ rule kraken2_build_custom_db:
     message:
         "Building Kraken2 custom database"
     shell:
-        "mkdir -p {output.taxonomy_dir}; " 
-        "mv {input.names_dmp} {output.taxonomy_dir}; "
-        "mv {input.nodes_dmp} {output.taxonomy_dir}; "
-        "mv {input.nucl_accession2taxid} {output.taxonomy_dir}; "
-        "mv {input.gtdb_genomes_reps_dir}/* {input.downloaded_genomes}; " 
+        "mkdir -p {output.custom_kraken2_db}; " 
+        "mv {input.names_dmp} {output.custom_kraken2_db}; "
+        "mv {input.nodes_dmp} {output.custom_kraken2_db}; "
+        "mv {input.nucl_accession2taxid} {output.custom_kraken2_db}; "
         "python3 scripts/unzip_add_library.py "
         "--genome_folder {input.downloaded_genomes}/ "
         "--processors {threads} "
@@ -81,6 +102,5 @@ rule kraken2_build_custom_db:
         "kraken2-build "
         "--build "
         "--db {output.custom_kraken2_db} "
-        "--threads {threads}; "
-        "rm -r {input.gtdb_genomes_reps_dir}; "
-        "touch {output.test_build}"
+        "--threads {threads}"
+        #"touch {output.test_build}"

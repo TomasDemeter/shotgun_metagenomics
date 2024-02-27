@@ -75,6 +75,7 @@ kraken2:
   custom_kraken2_db: ../inputs/genomes/kraken2/kraken2_custom/kraken2_custom_db/
   downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
   domains: bacteria,archaea
+  rename_fasta_headers: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/fasta_renamed/
 
 StrainPhlAn:
   threads: 32
