@@ -89,7 +89,7 @@ rule kraken2_build_custom_db:
         config["kraken2"]["threads"]
     resources: 
         mem_mb = 600000,
-        time = "4-00:00:00"
+        time = "7-00:00:00"
     conda:
         "kraken2_env"
     message:
