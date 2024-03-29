@@ -52,26 +52,20 @@ rule MetaPhlAn4_profiling:
         "--min_mapq_val {params.mapq_threshold} "
         "--output_file {output.composition_profile}"
 
-
-############################################
-# Merging MetaPhlAn 4 composition profiles #
-############################################
-rule MetaPhlAn4_merging:
+################################################
+# Generating csv style reports from Metaphlan4 #
+################################################
+rule metaphlan4processing:
     input:
-        composition_profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, sample = SAMPLES)
+        profiles    = expand(rules.MetaPhlAn4_profiling.output.composition_profile, sample = SAMPLES),
+        reports     = RESULT_DIR + "MetaPhlAn4/profiles/"
     output:
-        merged_report = RESULT_DIR + "merged_csv_files/Metaphlan4_Bowtie2_merged.csv"
-    params:
-        file_dir    = RESULT_DIR + "MetaPhlAn4/profiles/",
-        output_file = "Metaphlan4_Bowtie2_merged.csv",
-        output_dir = RESULT_DIR + "merged_csv_files/"
+        merged_metaphlan4_report = config["MetaPhlAn4_profiling"]["csv_output_merged"] + "Metaphlan4_Bowtie_report.csv"
+    conda:
+        "kraken2_env"
     message:
-        "Merging MetaPhlAn 4 composition profiles"
-    conda: 
-        "metaphlan_env"
+        "Converting Metaphlan4 txt reports to csv merged report"
     shell:
-        "python3 scripts/metaphlan4_merging.py "
-        "{params.file_dir} "
-        "{params.output_dir} "
-        "{params.output_file}"
-
+        "python3 scripts/metaphlan4_processing.py "
+        "{input.reports} "
+        "{output.merged_metaphlan4_report}"

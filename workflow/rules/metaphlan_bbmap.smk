@@ -18,7 +18,6 @@ rule MetaPhlAn4_bbmap_profiling:
         composition_profile = RESULT_DIR + "MetaPhlAn4_bbmap/profiles/{sample}_metaphlan4.txt",
         bowtie2out          = RESULT_DIR + "MetaPhlAn4_bbmap/bowtie2out/{sample}_bowtie2out_metagenome.bz2",
         sams                = RESULT_DIR + "MetaPhlAn4_bbmap/sams/{sample}.sam.bz2"
-
     params:
         input_type      = config["MetaPhlAn4_profiling"]["input_type"],
         bowtie2db       = config["MetaPhlAn4_profiling"]["bowtie2db"],
@@ -54,24 +53,20 @@ rule MetaPhlAn4_bbmap_profiling:
         "--min_mapq_val {params.mapq_threshold} "
         "--output_file {output.composition_profile}"
 
-############################################
-# Merging MetaPhlAn 4 composition profiles #
-############################################
-rule MetaPhlAn4_bbmap_merging:
+################################################
+# Generating csv style reports from Metaphlan4 #
+################################################
+rule metaphlan4processing_bbmap:
     input:
-        composition_profiles = expand(rules.MetaPhlAn4_bbmap_profiling.output.composition_profile, sample = SAMPLES)
+        profiles    = expand(rules.MetaPhlAn4_bbmap_profiling.output.composition_profile, sample = SAMPLES),
+        reports     = RESULT_DIR + "MetaPhlAn4_bbmap/profiles/"
     output:
-        merged_report = RESULT_DIR + "merged_csv_files/Metaphlan4_Bbmap_merged.csv"
-    params:
-        file_dir    = RESULT_DIR + "MetaPhlAn4_bbmap/profiles/",
-        output_file = "Metaphlan4_Bbmap_merged.csv",
-        output_dir = RESULT_DIR + "merged_csv_files/"
+        merged_metaphlan4_report = config["MetaPhlAn4_profiling"]["csv_output_merged"] + "Metaphlan4_BBmap_report.csv"
+    conda:
+        "kraken2_env"
     message:
-        "Merging MetaPhlAn 4 composition profiles"
-    conda: 
-        "metaphlan_env"
+        "Converting Metaphlan4 txt reports to csv merged report"
     shell:
-        "python3 scripts/metaphlan4_merging.py "
-        "{params.file_dir} "
-        "{params.output_dir} "
-        "{params.output_file}"
+        "python3 scripts/metaphlan4_processing.py "
+        "{input.reports} "
+        "{output.merged_metaphlan4_report}"

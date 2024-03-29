@@ -39,44 +39,20 @@ rule kraken2:
         "--confidence {params.confidence} "
         "--report {output.report}"
 
-####################################################
-# Generating metaphlan style reports from Kraken2 #
-####################################################
-rule kraken2mpa:
+#############################################
+# Generating csv style reports from Kraken2 #
+#############################################
+rule kraken2processing:
     input:
-        report = rules.kraken2.output.report
+        report_inputs   = expand(rules.kraken2.output.report, sample = SAMPLES),
+        reports         = RESULT_DIR + "Kraken2/"
     output:
-        mpa_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/{sample}_kraken2_mpa_report.txt"
-    params:
-        report_style = config["kraken2"]["report_style"]
+        merged_kraken2_report = config["kraken2"]["csv_output_merged"] + "Kraken2_Bowtie_report.csv"
     conda:
         "kraken2_env"
     message:
-        "Converting Kraken 2 report to MetaPhlAn style report"
+        "Converting Kraken 2 txt reports to csv merged report"
     shell:
-        "python3 scripts/kraken2mpa_modified.py "
-        "--{params.report_style} "
-        "-r{input.report} "
-        "-o{output.mpa_report}"
-
-#################################################
-# Merging Kraken2 reports from multiple samples #
-#################################################
-rule merge_kraken2:
-    input:
-        reports = expand(rules.kraken2mpa.output.mpa_report, sample = SAMPLES)
-    output:
-        merged_report = RESULT_DIR + "merged_csv_files/Kraken2_Bowtie2_merged.csv"
-    params:
-        file_dir    = RESULT_DIR + "Kraken2/metaphlan_style_reports/",
-        output_file = "Kraken2_Bowtie2_merged.csv",
-        output_dir  = RESULT_DIR + "merged_csv_files/"
-    message:
-        "Merging MetaPhlAn 4 composition profiles"
-    conda: 
-        "metaphlan_env"
-    shell:
-        "python3 scripts/kraken2_merging.py "
-        "{params.file_dir} "
-        "{params.output_dir} "
-        "{params.output_file}"
+        "python3 scripts/kraken2_processing.py "
+        "{input.reports} "
+        "{output.merged_kraken2_report}"

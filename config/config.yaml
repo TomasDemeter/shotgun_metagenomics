@@ -60,13 +60,14 @@ MetaPhlAn4_profiling:
   mapq_threshold: 5
   read_min_length: 70
   robust_average: 0.2
+  csv_output_merged: ../.results/Kraken_Metaphlan_output/
 
 kraken2:
   threads: 32
-  mem_mb: 100000
+  mem_mb: 300000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
-  confidence: 0.80
+  confidence: 0.40 # was 0.80
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
   report_style: both
@@ -76,6 +77,7 @@ kraken2:
   downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
   domains: bacteria,archaea
   rename_fasta_headers: ../inputs/genomes/kraken2/kraken2_custom/fasta_renamed/
+  csv_output_merged: ../.results/Kraken_Metaphlan_output/
 
 StrainPhlAn:
   threads: 32
@@ -88,3 +90,6 @@ StrainPhlAn:
   breadth_thres: 5 # percetage of marker sequence that has to be covered by reads (default 80)
   trim_sequences: 0 # number of bases to trim from the start and end of the marker sequence (default 50)
   
+plotting_kraken_metaphlan:
+  csv_location: ../results/Kraken_Metaphlan_output/
+  min_reads: 10

@@ -8,7 +8,7 @@
 # to run the pipeline use this command #
 ########################################
 '''
-snakemake -s Snakefile.py --profile slurm_snakemake -n --keep-incomplete
+snakemake -s Snakefile.py --profile slurm_snakemake -n
 '''
 
 ####################
@@ -35,11 +35,12 @@ SAMPLES = samples.index.tolist()
 # Desired outputs #
 ###################
 MULTIQC         = RESULT_DIR + "MultiQC/multiqc_report.html"
-METAPHLAN       = RESULT_DIR + "merged_csv_files/Metaphlan4_Bowtie2_merged.csv"
-METAPHLAN_BBMAP = RESULT_DIR + "merged_csv_files/Metaphlan4_Bbmap_merged.csv"
-KRAKEN2         = RESULT_DIR + "merged_csv_files/Kraken2_Bowtie2_merged.csv"
-KRAKEN2_BBMAP   = RESULT_DIR + "merged_csv_files/Kraken2_Bbmap_merged.csv"
+METAPHLAN       = RESULT_DIR + "Kraken_Metaphlan_output/Metaphlan4_Bowtie_report.csv"
+METAPHLAN_BBMAP = RESULT_DIR + "Kraken_Metaphlan_output/Metaphlan4_BBmap_report.csv"
+KRAKEN2         = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_Bowtie_report.csv"
+KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_BBmap_report.csv"
 STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+PLOTS           = RESULT_DIR + "Kraken_Metaphlan_output/figures/kraken2_bbmap_kingdoms.png"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 
 #########
@@ -56,6 +57,7 @@ include: "rules/kraken2_build.smk"
 include: "rules/kraken2.smk"
 include: "rules/kraken2_bbmap.smk"
 include: "rules/strainphlan.smk"
+include: "rules/plotting_kraken_metaphlan.smk"
 
 ############
 # Pipeline #
@@ -67,6 +69,6 @@ rule all:
         METAPHLAN_BBMAP,
         KRAKEN2,
         KRAKEN2_BBMAP,
-        STRAINPHLAN
+        PLOTS
     message:
         "Metagenomic pipeline run complete!"
