@@ -41,7 +41,7 @@ KRAKEN2         = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_Bowtie_report.cs
 KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_BBmap_report.csv"
 STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 PLOTS           = RESULT_DIR + "Kraken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
-BRACKEN         = RESULT_DIR + "test.txt"
+BRACKEN         = RESULT_DIR + "Bracken/test.txt"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 
 #########
