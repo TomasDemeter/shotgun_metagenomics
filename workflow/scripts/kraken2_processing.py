@@ -6,24 +6,27 @@ import sys
 
 #functions go here
 
-def process_df(df: pd.DataFrame) -> pd.DataFrame:
+def process_df(df):
     df = df.drop([2,4], axis =1 )
     df.columns = ['relative_abundance', 'reads_from_clade', 'rank', 'name']
 
+    # Remove rows where 'rank' ends with a number
+    df = df[~df['rank'].str[-1].str.isdigit()]
+
     unclassified_row = df[df['name'] == 'unclassified'].copy()
-    df = df[~df['name'].isin(['unclassified', 'root'])].reset_index()
-    new_df = pd.DataFrame(columns=['D', 'K', 'P', 'C', 'O', 'F', 'G', 'S', 'S1', 'relative_abundance', 'reads_from_clade'])
+    df = df[~df['rank'].isin(['U', 'R'])].reset_index()
+    new_df = pd.DataFrame(columns=['D', 'K', 'P', 'C', 'O', 'F', 'G', 'S', 'relative_abundance', 'reads_from_clade'])
 
     for index, row in df.iterrows():
-        new_row = pd.Series([np.nan]*9 + [row['relative_abundance'], row['reads_from_clade']], index=new_df.columns).astype(object)
+        new_row = pd.Series([np.nan]*8 + [row['relative_abundance'], row['reads_from_clade']], index=new_df.columns).astype(object)
         new_row[row['rank']] = row['name']
         new_df = pd.concat([new_df, pd.DataFrame(new_row).T])
 
-    new_df = new_df.iloc[1:]
-    unclassified_row = pd.Series([np.nan, 'unclassified'] + [np.nan]*7 + list(unclassified_row[['relative_abundance', 'reads_from_clade']].values[0]), index=new_df.columns).astype(object)
+    #new_df = new_df.iloc[1:]
+    unclassified_row = pd.Series(['unclassified'] + [np.nan]*7 + list(unclassified_row[['relative_abundance', 'reads_from_clade']].values[0]), index=new_df.columns).astype(object)
     new_df = pd.concat([pd.DataFrame(unclassified_row).T, new_df])
-    new_df.drop(['D', 'S1'], axis=1, inplace=True)
-    new_df.columns = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'relative_abundance', 'reads_from_clade']
+    new_df.drop(['K'], axis=1, inplace=True)
+    new_df.columns = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'relative_abundance', 'reads_from_clade']
     new_df = new_df.drop_duplicates()
 
     return pd.DataFrame(new_df)
@@ -57,11 +60,14 @@ def fill_and_reorder_df(new_df: pd.DataFrame) -> pd.DataFrame:
     # Append the last two columns to the filled_df
     filled_df = pd.concat([filled_df, new_df.iloc[:,-2:]], axis=1)
 
+    # Remove leading and trailing spaces from each value in all the columns
+    filled_df = filled_df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
     return filled_df
 
 def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame:
     # Define the columns to be cleaned
-    cols_to_clean = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
+    cols_to_clean = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 
     # Apply the lambda function to each element of the DataFrame
     filled_df[cols_to_clean] = filled_df[cols_to_clean].apply(lambda col: col.map(lambda x: str(x).split('__')[-1] if pd.notnull(x) else x))

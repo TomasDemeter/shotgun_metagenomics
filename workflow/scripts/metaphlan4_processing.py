@@ -13,7 +13,7 @@ def process_df(df):
     split_df = df.iloc[:, 0].str.split('|', expand=True)
     
     # Define the column names
-    columns = ["kingdom", "phylum", "class", "order", "family", "genus", "species", "strain"]
+    columns = ["domain", "phylum", "class", "order", "family", "genus", "species", "strain"]
     
     # Add any missing columns to split_df
     for i in range(split_df.shape[1], len(columns)):
@@ -30,7 +30,7 @@ def process_df(df):
 
 def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame:
     # Define the columns to be cleaned
-    cols_to_clean = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
+    cols_to_clean = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 
     # Apply the lambda function to each element of the DataFrame
     filled_df[cols_to_clean] = filled_df[cols_to_clean].apply(lambda col: col.map(lambda x: str(x).split('__')[-1] if pd.notnull(x) else x))

@@ -60,14 +60,14 @@ MetaPhlAn4_profiling:
   mapq_threshold: 5
   read_min_length: 70
   robust_average: 0.2
-  csv_output_merged: ../.results/Kraken_Metaphlan_output/
+  csv_output_merged: ../results/Kraken_Metaphlan_output/
 
 kraken2:
   threads: 32
   mem_mb: 300000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
-  confidence: 0.40 # was 0.80
+  confidence: 0.80 # was 0.80
   gzip_compressed: gzip-compressed
   file_format: use-mpa-style
   report_style: both
@@ -77,7 +77,15 @@ kraken2:
   downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
   domains: bacteria,archaea
   rename_fasta_headers: ../inputs/genomes/kraken2/kraken2_custom/fasta_renamed/
-  csv_output_merged: ../.results/Kraken_Metaphlan_output/
+  csv_output_merged: ../results/Kraken_Metaphlan_output/
+
+bracken:
+  threads: 32
+  mem_mb: 300000
+  #time: 24:00:00
+  kmer_length: 35 # default 35 for kraken2
+  read_length: 100 # default 100
+
 
 StrainPhlAn:
   threads: 32

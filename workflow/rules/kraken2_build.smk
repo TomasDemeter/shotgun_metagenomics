@@ -84,7 +84,6 @@ rule kraken2_build_custom_db:
     output:
         custom_kraken2_db = directory(config["kraken2"]["custom_kraken2_db"]),
         taxonomy_dir      = directory(config["kraken2"]["custom_kraken2_db"] + "taxonomy"), # this worked before. make dir and move names, nodes and nucl_accession2taxid to taxonomy folder
-        #test_build        = "test_build.txt"
     threads:
         config["kraken2"]["threads"]
     resources: 
@@ -107,4 +106,3 @@ rule kraken2_build_custom_db:
         "--build "
         "--db {output.custom_kraken2_db} "
         "--threads {threads}"
-        #"touch {output.test_build}"

@@ -8,7 +8,7 @@ rule plotting_kraken_metaphlan:
         metaphlan4_bowtie   = rules.metaphlan4processing.output.merged_metaphlan4_report,
         metaphlan4_bbmap    = rules.metaphlan4processing_bbmap.output.merged_metaphlan4_report
     output:
-        fig = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/kraken2_bbmap_kingdoms.png"
+        fig = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/kraken2_bbmap_domains.png"
     params:
         csv_location   = config["plotting_kraken_metaphlan"]["csv_location"],
         output_dir     = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/", 
@@ -17,6 +17,8 @@ rule plotting_kraken_metaphlan:
         "Plotting results"
     conda: 
         "kraken2_env"
+    resources: 
+        mem_mb = config["kraken2"]["mem_mb"]
     shell:
         "mkdir -p {params.output_dir}; "
-        "python scripts/plotting_abundances.py -{params.csv_location} -{params.output_dir} -{params.min_reads}"
+        "python scripts/plotting_abundances.py {params.csv_location} {params.output_dir} {params.min_reads}"

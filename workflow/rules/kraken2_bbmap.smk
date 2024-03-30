@@ -5,7 +5,8 @@ rule kraken2_bbmap:
     input:
         unmapped1   = rules.bbmap_default.output.unmapped1,
         unmapped2   = rules.bbmap_default.output.unmapped2,
-        kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
+        #kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
+        kraken2_db  = rules.kraken2_build_standard_db.output.standard_db
     output:
         report          = RESULT_DIR + "Kraken2_bbmap/{sample}_kraken2_report.txt",
         classified1     = RESULT_DIR + "Kraken2_bbmap/{sample}_classified_1.fq",
@@ -45,14 +46,15 @@ rule kraken2_bbmap:
 rule kraken2processing_bbmap:
     input:
         report_inputs   = expand(rules.kraken2_bbmap.output.report, sample = SAMPLES),
-        reports = RESULT_DIR + "Kraken2_bbmap/"
     output:
         merged_kraken2_report = config["kraken2"]["csv_output_merged"] + "Kraken2_BBmap_report.csv"
+    params:
+        reports = RESULT_DIR + "Kraken2/"
     conda:
         "kraken2_env"
     message:
         "Converting Kraken 2 txt reports to csv merged report"
     shell:
         "python3 scripts/kraken2_processing.py "
-        "{input.reports} "
+        "{params.reports} "
         "{output.merged_kraken2_report}"
