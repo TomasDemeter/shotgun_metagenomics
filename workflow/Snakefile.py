@@ -72,6 +72,6 @@ rule all:
         KRAKEN2,
         KRAKEN2_BBMAP,
         PLOTS,
-        BRACKEN
+        #BRACKEN
     message:
         "Metagenomic pipeline run complete!"
