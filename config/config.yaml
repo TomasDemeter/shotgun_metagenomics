@@ -69,8 +69,6 @@ kraken2:
   paired: paired
   confidence: 0.60 # was 0.80
   gzip_compressed: gzip-compressed
-  file_format: use-mpa-style
-  report_style: both
   standard_db: ../inputs/genomes/kraken2/kraken2_standard_db/
   standard_db_url: https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20240112.tar.gz
   custom_kraken2_db: ../inputs/genomes/kraken2/kraken2_custom/kraken2_custom_db/
@@ -103,3 +101,4 @@ StrainPhlAn:
 plotting_kraken_metaphlan:
   csv_location: ../results/Kraken_Metaphlan_output/
   min_reads: 10
+  relative_abundance: 0.0

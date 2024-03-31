@@ -10,9 +10,10 @@ rule plotting_kraken_metaphlan:
     output:
         fig = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/kraken2_bbmap_domains.png"
     params:
-        csv_location   = config["plotting_kraken_metaphlan"]["csv_location"],
-        output_dir     = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/", 
-        min_reads      = config["plotting_kraken_metaphlan"]["min_reads"]
+        csv_location        = config["plotting_kraken_metaphlan"]["csv_location"],
+        output_dir          = config["plotting_kraken_metaphlan"]["csv_location"] + "figures/", 
+        min_reads           = config["plotting_kraken_metaphlan"]["min_reads"],
+        relative_abundance  = config["plotting_kraken_metaphlan"]["relative_abundance"]
     message:
         "Plotting results"
     conda: 
@@ -21,4 +22,4 @@ rule plotting_kraken_metaphlan:
         mem_mb = config["kraken2"]["mem_mb"]
     shell:
         "mkdir -p {params.output_dir}; "
-        "python scripts/plotting_abundances.py {params.csv_location} {params.output_dir} {params.min_reads}"
+        "python scripts/plotting_abundances.py {params.csv_location} {params.output_dir} {params.min_reads} {params.relative_abundance}"

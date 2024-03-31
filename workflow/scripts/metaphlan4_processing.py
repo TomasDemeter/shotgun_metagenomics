@@ -49,7 +49,7 @@ def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame
 def extract_filename_and_insert(file_path: str, filled_df: pd.DataFrame) -> pd.DataFrame:
     # Extract the filename from the file path
     file_name = os.path.basename(file_path)
-    file_name = "_".join(file_name.split("_")[:-2])
+    file_name = "_".join(file_name.split("_")[:-1])
     filled_df.insert(0, 'sample', file_name)
     return filled_df
 

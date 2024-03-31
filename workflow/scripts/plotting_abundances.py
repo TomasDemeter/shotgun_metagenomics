@@ -12,9 +12,9 @@ import sys
 
 
 # functions
-def plot_relative_abundance(df, num_reads, method):
+def plot_relative_abundance(df, num_reads, method, relative_abundance):
     # Filter and group the DataFrame
-    filtered_df = df[df["domain"].isin(["Bacteria", "Eukaryota", "unclassified"]) & df["domain"].notnull() & (df["reads_from_clade"] > num_reads) ]
+    filtered_df = df[df["domain"].isin(["Bacteria", "Eukaryota", "unclassified"]) & df["domain"].notnull() & (df["relative_abundance"] > relative_abundance) & (df["reads_from_clade"] > num_reads) ]
     filtered_df = filtered_df.groupby(['sample', "domain"])['relative_abundance'].sum().reset_index()
 
     # Pivot and normalize the DataFrame
@@ -48,8 +48,8 @@ def plot_relative_abundance(df, num_reads, method):
     plt.legend(title="domain", bbox_to_anchor=(1.05, 1), loc='upper left')
     return fig
 
-def plot_relative_abundance_bacteria(df, column, min_reads, method):
-    filtered_df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads) ]
+def plot_relative_abundance_bacteria(df, column, min_reads, method, relative_abundance):
+    filtered_df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads)  & (df["relative_abundance"] > relative_abundance)]
     # Aggregate the data
     filtered_df = filtered_df.groupby(['sample', column])['relative_abundance'].sum().reset_index()
     filtered_df = filtered_df.pivot(index='sample', columns=column, values='relative_abundance')
@@ -83,9 +83,9 @@ def plot_relative_abundance_bacteria(df, column, min_reads, method):
     plt.legend(title=column, bbox_to_anchor=(1.05, 1), loc='upper left')
     return fig
 
-def plot_number_of_reads(df, column, min_reads):
+def plot_number_of_reads(df, column, min_reads, relative_abundance):
     # Reset the index of the DataFrame
-    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads) ].drop_duplicates().reset_index(drop=True)
+    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["relative_abundance"] > relative_abundance) & (df["reads_from_clade"] > min_reads) ].drop_duplicates().reset_index(drop=True)
     df = df.reset_index()
 
     # Get the unique method name from the 'method' column
@@ -119,9 +119,9 @@ def plot_number_of_reads(df, column, min_reads):
     # Return the figure
     return fig
 
-def plot_number_of_reads_log(df, column, min_reads):
+def plot_number_of_reads_log(df, column, min_reads, relative_abundance):
     # Reset the index of the DataFrame
-    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads) ].drop_duplicates().reset_index(drop=True)
+    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["relative_abundance"] > relative_abundance) & (df["reads_from_clade"] > min_reads) ].drop_duplicates().reset_index(drop=True)
     df = df.reset_index()
 
     # Get the unique method name from the 'method' column
@@ -160,9 +160,9 @@ def plot_number_of_reads_log(df, column, min_reads):
     # Return the figure
     return fig
 
-def method_comparison_bact_taxa(df, taxa, minreads):
+def method_comparison_bact_taxa(df, taxa, minreads, relative_abundance):
     if taxa == "species":
-        filtered_merged = df[(df["domain"] == "Bacteria")  & (df["reads_from_clade"] > minreads) & (df[taxa].notnull())]
+        filtered_merged = df[(df["domain"] == "Bacteria")  & (df["reads_from_clade"] > minreads) & (df["relative_abundance"] > relative_abundance) & (df[taxa].notnull())]
     else:
         filtered_merged = df[(df["domain"] == "Bacteria")  & (df["reads_from_clade"] > minreads) & (df[taxa].notnull()) & (df.iloc[:,df.columns.get_loc(taxa)+1].isnull())]
 
@@ -198,84 +198,7 @@ def method_comparison_bact_taxa(df, taxa, minreads):
 
     # Specify the legend position
     plt.legend(loc='upper left')
-
-    # Return the figure
-    return fig
-
-def plot_number_of_reads_log(df, column, min_reads):
-    # Reset the index of the DataFrame
-    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads) & (df["relative_abundance"] > 0.1)].drop_duplicates().reset_index(drop=True)
-    df = df.reset_index()
-
-    # Get the unique method name from the 'method' column
-    method = df['method'].unique()[0]
-
-    # Create a figure and axis with larger width
-    fig, ax = plt.subplots(figsize=(10, 0.5*len(df)))  # Adjust the height of the figure based on the number of rows in the dataframe
-
-    # Create a horizontal bar plot colored by sample
-    sns.barplot(x='reads_from_clade', y='index', hue='sample', data=df, orient='h', ax=ax)
-
-    # Remove top and right borders
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.xaxis.grid(False)
-
-    # Set the title of the plot using the method name
-    plt.title(f'Reads per species per sample ({method})')
-    plt.xlabel('Log10 number of reads')
-    plt.ylabel('')
-
-    # Set the y-ticks to the index of the DataFrame
-    ax.set_yticks(df.index)
-
-    # Replace the y-tick labels with the species names
-    ax.set_yticklabels(df['species'])
-
-    # Set the x-axis to a logarithmic scale
-    ax.set_xscale('log')
-    ax.xaxis.set_major_locator(ticker.LogLocator(base=10))
-    ax.xaxis.set_major_formatter(ticker.LogFormatter(base=10))
-
-    # Specify the legend position
-    plt.legend(loc='lower right')
-
-    # Return the figure
-    return fig
-
-def plot_number_of_reads(df, column, min_reads):
-    # Reset the index of the DataFrame
-    df = df[(df["domain"] == "Bacteria") & (df[column].notnull()) & (df["reads_from_clade"] > min_reads) & (df["relative_abundance"] > 0.1)].drop_duplicates().reset_index(drop=True)
-    df = df.reset_index()
-
-    # Get the unique method name from the 'method' column
-    method = df['method'].unique()[0]
-
-    # Create a figure and axis with larger width
-    fig, ax = plt.subplots(figsize=(10, 0.5*len(df)))  # Adjust the height of the figure based on the number of rows in the dataframe
-
-    # Create a horizontal bar plot colored by sample
-    sns.barplot(x='reads_from_clade', y='index', hue='sample', data=df, orient='h', ax=ax)
-
-    # Remove top and right borders
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.xaxis.grid(False)
-
-    # Set the title of the plot using the method name
-    plt.title(f'Reads per species per sample ({method})')
-    plt.xlabel('Number of reads')
-    plt.ylabel('')
-
-    # Set the y-ticks to the index of the DataFrame
-    ax.set_yticks(df.index)
-
-    # Replace the y-tick labels with the species names
-    ax.set_yticklabels(df['species'])
-
-    # Specify the legend position
-    plt.legend(loc='lower right')
-
+    
     # Return the figure
     return fig
 
@@ -288,6 +211,7 @@ def plot_number_of_reads(df, column, min_reads):
 input_dir = sys.argv[1]
 output_file = sys.argv[2]
 minreads = int(sys.argv[3])
+relative_abundance = float(sys.argv[4])
 
 # Create a list of tuples containing the dataframes and their corresponding names
 dataframes = [
@@ -300,7 +224,7 @@ dataframes = [
 # Use separate loops to iterate over the dataframes and the plot functions
 for df, name in dataframes:
     # Call plot_relative_abundance function
-    plot = plot_relative_abundance(df, minreads, f"{name.split('_')[1]}, {name.split('_')[0]}")
+    plot = plot_relative_abundance(df, minreads, f"{name.split('_')[1]}, {name.split('_')[0]}", relative_abundance)
     plot.savefig(os.path.join(output_file, f"{name}_domains.png"), dpi=300, bbox_inches='tight')
     plt.close(plot)
 
@@ -313,7 +237,7 @@ rank_names = ["species", "genus", "family"]
 for df, name in dataframes:
     for rank in rank_names:
         # Call the function with the extra argument
-        plot = plot_relative_abundance_bacteria(df, rank, minreads, f"{name.split('_')[1]}, {name.split('_')[0]}")
+        plot = plot_relative_abundance_bacteria(df, rank, minreads, f"{name.split('_')[1]}, {name.split('_')[0]}", relative_abundance)
         plot.savefig(os.path.join(output_file, f"{name}_{rank}.png"), dpi=300, bbox_inches='tight')
         plt.close(plot)
 
@@ -328,14 +252,14 @@ merged_df = pd.concat(dfs, ignore_index=True).drop_duplicates()
 
 for rank in rank_names:
     # Call the function with the rank name
-    plot = method_comparison_bact_taxa(merged_df, rank, minreads)
+    plot = method_comparison_bact_taxa(merged_df, rank, minreads, relative_abundance)
     plot.savefig(os.path.join(output_file, f"{rank}_method_comparison.png"), dpi=300, bbox_inches='tight')
     plt.close(plot)
 
-    plot = plot_number_of_reads(merged_df, rank, minreads)
+    plot = plot_number_of_reads(merged_df, rank, minreads, relative_abundance)
     plot.savefig(os.path.join(output_file, f"{rank}_number_of_reads.png"), dpi=300, bbox_inches='tight')
     plt.close(plot)
 
-    plot = plot_number_of_reads_log(merged_df, rank, minreads)
+    plot = plot_number_of_reads_log(merged_df, rank, minreads, relative_abundance)
     plot.savefig(os.path.join(output_file, f"{rank}_number_of_reads_log.png"), dpi=300, bbox_inches='tight')
     plt.close(plot)

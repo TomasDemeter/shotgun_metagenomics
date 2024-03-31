@@ -41,6 +41,8 @@ KRAKEN2         = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_Bowtie_report.cs
 KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_BBmap_report.csv"
 STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 PLOTS           = RESULT_DIR + "Kraken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
+BRACKEN_DB_STD  = WORKING_DIR + "genomes/bracken_std_build_done"
+BRACKEN_DB_CST  = WORKING_DIR + "genomes/bracken_cst_build_done"
 BRACKEN         = RESULT_DIR + "Bracken/test.txt"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 
@@ -72,6 +74,8 @@ rule all:
         KRAKEN2,
         KRAKEN2_BBMAP,
         PLOTS,
+        BRACKEN_DB_STD,
+        BRACKEN_DB_CST
         #BRACKEN
     message:
         "Metagenomic pipeline run complete!"

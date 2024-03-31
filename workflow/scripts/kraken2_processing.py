@@ -13,7 +13,6 @@ def process_df(df):
     # Remove rows where 'rank' ends with a number
     df = df[~df['rank'].str[-1].str.isdigit()]
 
-    unclassified_row = df[df['name'] == 'unclassified'].copy()
     df = df[~df['rank'].isin(['U', 'R'])].reset_index()
     new_df = pd.DataFrame(columns=['D', 'K', 'P', 'C', 'O', 'F', 'G', 'S', 'relative_abundance', 'reads_from_clade'])
 
@@ -22,9 +21,6 @@ def process_df(df):
         new_row[row['rank']] = row['name']
         new_df = pd.concat([new_df, pd.DataFrame(new_row).T])
 
-    #new_df = new_df.iloc[1:]
-    unclassified_row = pd.Series(['unclassified'] + [np.nan]*7 + list(unclassified_row[['relative_abundance', 'reads_from_clade']].values[0]), index=new_df.columns).astype(object)
-    new_df = pd.concat([pd.DataFrame(unclassified_row).T, new_df])
     new_df.drop(['K'], axis=1, inplace=True)
     new_df.columns = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'relative_abundance', 'reads_from_clade']
     new_df = new_df.drop_duplicates()
