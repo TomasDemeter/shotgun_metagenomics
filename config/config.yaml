@@ -53,7 +53,7 @@ Multiqc:
 MetaPhlAn4_profiling:
   threads: 32
   mem_mb: 100000
-  input_type: fastq # run with "fastq" if running for the first time, otherwise use "bowtie2out" to speed up the mapping
+  input_type: fastq 
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
   index: mpa_vOct22_CHOCOPhlAnSGB_202212
   analysis_type: rel_ab_w_read_stats

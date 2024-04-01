@@ -10,7 +10,7 @@ rule bracken_build_std_db:
         kmer_length = config["bracken"]["kmer_length"],
         read_length = config["bracken"]["read_length"]
     message:
-        "Dividing each genome in Kraken2 database and classifying them with Bracken"
+        "Dividing each genome in Kraken2 standard database and classifying them with Bracken"
     threads:
         config["bracken"]["threads"]
     resources: 
@@ -37,7 +37,7 @@ rule bracken_build_cst_db:
         kmer_length = config["bracken"]["kmer_length"],
         read_length = config["bracken"]["read_length"]
     message:
-        "Dividing each genome in Kraken2 database and classifying them with Bracken"
+        "Dividing each genome in Kraken2 custom database and classifying them with Bracken"
     threads:
         config["bracken"]["threads"]
     resources: 

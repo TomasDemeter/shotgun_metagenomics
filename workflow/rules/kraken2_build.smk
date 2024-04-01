@@ -50,7 +50,6 @@ rule download_GTDB_genomes:
         "mkdir -p gtdb_genomes_reps; "
         "python3 scripts/download_GTDB_latest.py"
 
-
 rule rename_fasta_headers:
     input:
         downloaded_genomes_NCBI = rules.download_NCBI_genomes.output.downloaded_genomes,
@@ -70,9 +69,6 @@ rule rename_fasta_headers:
         "mkdir -p {output.rename_fasta_headers}; "
         "python3 scripts/rename_fasta_headers.py --processors {threads}; "
         "rm -r {input.downloaded_genomes_GTDB}"
-
-
-# remove creation of kraken2 parent folder as output. !!!!!
 
 rule kraken2_build_custom_db:
     input:
