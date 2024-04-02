@@ -99,17 +99,21 @@ master_df = pd.DataFrame()
 
 # Process each file
 for file_path in file_list:
-    # Read the file into a DataFrame
-    df = pd.read_csv(file_path, delimiter = "\t", header=None)
+    # Check if the file is empty
+    if os.path.getsize(file_path) > 0:
+        # Read the file into a DataFrame
+        df = pd.read_csv(file_path, delimiter = "\t", header=None)
+        
+        # Process the DataFrame
+        df = process_df(df)
+        df = fill_and_reorder_df(df)
+        df = clean_columns_and_remove_duplicates(df)
+        df = extract_filename_and_insert(file_path, df)
 
-    # Process the DataFrame
-    df = process_df(df)
-    df = fill_and_reorder_df(df)
-    df = clean_columns_and_remove_duplicates(df)
-    df = extract_filename_and_insert(file_path, df)
-
-    # Append the processed DataFrame to the master DataFrame
-    master_df = pd.concat([master_df, df])
+        # Append the processed DataFrame to the master DataFrame
+        master_df = pd.concat([master_df, df])
+    else:
+        print(f"File is empty: {file_path}")
 
 # Write the master DataFrame to the output CSV file
 master_df.to_csv(output_file, index=False)

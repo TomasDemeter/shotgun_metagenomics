@@ -35,15 +35,13 @@ SAMPLES = samples.index.tolist()
 # Desired outputs #
 ###################
 MULTIQC         = RESULT_DIR + "MultiQC/multiqc_report.html"
-METAPHLAN       = RESULT_DIR + "Kraken_Metaphlan_output/Metaphlan4_Bowtie_report.csv"
-METAPHLAN_BBMAP = RESULT_DIR + "Kraken_Metaphlan_output/Metaphlan4_BBmap_report.csv"
-KRAKEN2         = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_Bowtie_report.csv"
-KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Metaphlan_output/Kraken2_BBmap_report.csv"
+METAPHLAN       = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Metaphlan4_Bowtie_report.csv"
+METAPHLAN_BBMAP = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Metaphlan4_BBmap_report.csv"
+KRAKEN2         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_Bowtie_report.csv"
+KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_BBmap_report.csv"
+BRACKEN         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_Bowtie_report.csv"
+BRACKEN_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_BBmap_report.csv"
 STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
-PLOTS           = RESULT_DIR + "Kraken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
-BRACKEN_DB_STD  = WORKING_DIR + "genomes/bracken_std_build_done"
-BRACKEN_DB_CST  = WORKING_DIR + "genomes/bracken_cst_build_done"
-BRACKEN         = RESULT_DIR + "Bracken/test.txt"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 
 #########
@@ -61,7 +59,9 @@ include: "rules/kraken2.smk"
 include: "rules/kraken2_bbmap.smk"
 include: "rules/strainphlan.smk"
 include: "rules/plotting_kraken_metaphlan.smk"
+include: "rules/bracken_build.smk"
 include: "rules/bracken.smk"
+include: "rules/bracken_bbmap.smk"
 
 ############
 # Pipeline #
@@ -73,9 +73,7 @@ rule all:
         METAPHLAN_BBMAP,
         KRAKEN2,
         KRAKEN2_BBMAP,
-        PLOTS,
-        BRACKEN_DB_STD,
-        BRACKEN_DB_CST
-        #BRACKEN
+        BRACKEN,
+        BRACKEN_BBMAP
     message:
         "Metagenomic pipeline run complete!"

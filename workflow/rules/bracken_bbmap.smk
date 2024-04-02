@@ -1,14 +1,14 @@
 ###################
 # running bracken #
 ###################
-rule bracken:
+rule bracken_bbmap:
     input:
-        kraken_output = rules.kraken2.output.report,
+        kraken_output = rules.kraken2_bbmap.output.report,
         kraken_db     = rules.kraken2_build_standard_db.output.standard_db,
         bracken_db    = rules.bracken_build_std_db.output.sentinel
     output:
-        bracken_output   = config["bracken"]["output_dir"] + "{sample}.bracken",
-        bracken_report   = config["bracken"]["output_dir"] + "{sample}_bracken_report.txt"
+        bracken_output   = config["bracken"]["output_dir_bbmap"] + "{sample}.bracken",
+        bracken_report   = config["bracken"]["output_dir_bbmap"] + "{sample}_bracken_report.txt"
     params:
         classification_level    = config["bracken"]["classification_level"],
         treshold                = config["bracken"]["treshold"],
@@ -32,13 +32,13 @@ rule bracken:
 #############################################
 # Generating csv style reports from Bracken #
 #############################################
-rule bracken2processing:
+rule bracken2processing_bbmap:
     input:
-        report_inputs   = expand(rules.bracken.output.bracken_report, sample = SAMPLES),
+        report_inputs   = expand(rules.bracken_bbmap.output.bracken_report, sample = SAMPLES),
     output:
-        merged_bracken_report = config["kraken2"]["csv_output_merged"] + "Bracken_Bowtie_report.csv"
+        merged_bracken_report = config["kraken2"]["csv_output_merged"] + "Bracken_BBmap_report.csv"
     params:
-        reports = config["bracken"]["output_dir"]
+        reports = config["bracken"]["output_dir_bbmap"]
     conda:
         "kraken2_env"
     message:

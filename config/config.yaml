@@ -60,7 +60,7 @@ MetaPhlAn4_profiling:
   mapq_threshold: 5
   read_min_length: 70
   robust_average: 0.2
-  csv_output_merged: ../results/Kraken_Metaphlan_output/
+  csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 
 kraken2:
   threads: 32
@@ -75,16 +75,17 @@ kraken2:
   downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
   domains: bacteria,archaea
   rename_fasta_headers: ../inputs/genomes/kraken2/kraken2_custom/fasta_renamed/
-  csv_output_merged: ../results/Kraken_Metaphlan_output/
+  csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 
 bracken:
   threads: 32
   mem_mb: 300000
-  #time: 24:00:00
   kmer_length: 35 # default 35 for kraken2
   read_length: 100 # default 100
-  treshold: # [Default = 10]:: specifies the minimum number of reads required for a classification
+  treshold: 10 # [Default = 10]:: specifies the minimum number of reads required for a classification
   classification_level: 'S' # [Default = 'S', Options = 'D','P','C','O','F','G','S']:: specifies the taxonomic rank to analyze
+  output_dir: ../results/Bracken/
+  output_dir_bbmap: ../results/Bracken_bbmap/
 
 
 StrainPhlAn:
@@ -99,6 +100,6 @@ StrainPhlAn:
   trim_sequences: 0 # number of bases to trim from the start and end of the marker sequence (default 50)
   
 plotting_kraken_metaphlan:
-  csv_location: ../results/Kraken_Metaphlan_output/
+  csv_location: ../results/Kraken_Bracken_Metaphlan_output/
   min_reads: 10
   relative_abundance: 0.0
