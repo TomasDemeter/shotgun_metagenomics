@@ -41,6 +41,9 @@ def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame
         'percentage': 'relative_abundance'
     })
 
+    # remove strain column
+    filled_df = filled_df.drop('strain', axis=1)
+
     # Remove duplicates
     filled_df = filled_df.drop_duplicates()
 
