@@ -5,6 +5,8 @@ rule plotting_kraken_metaphlan:
     input:
         kraken2_bowtie      = rules.kraken2processing.output.merged_kraken2_report,
         kraken2_bbmap       = rules.kraken2processing_bbmap.output.merged_kraken2_report,
+        bracken_bowtie      = rules.bracken2processing.output.merged_bracken_report,
+        bracken_bbmap       = rules.bracken2processing_bbmap.output.merged_bracken_report,
         metaphlan4_bowtie   = rules.metaphlan4processing.output.merged_metaphlan4_report,
         metaphlan4_bbmap    = rules.metaphlan4processing_bbmap.output.merged_metaphlan4_report
     output:
@@ -22,4 +24,5 @@ rule plotting_kraken_metaphlan:
         mem_mb = config["kraken2"]["mem_mb"]
     shell:
         "mkdir -p {params.output_dir}; "
-        "python scripts/plotting_abundances.py {params.csv_location} {params.output_dir} {params.min_reads} {params.relative_abundance}"
+        "python scripts/plotting_abundances.py {params.csv_location} {params.output_dir} {params.min_reads} {params.relative_abundance}; "
+        "python scripts/plotting_comparisons.py {params.csv_location} {params.output_dir} {params.min_reads} {params.relative_abundance}"

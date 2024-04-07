@@ -64,10 +64,10 @@ MetaPhlAn4_profiling:
 
 kraken2:
   threads: 32
-  mem_mb: 300000
+  mem_mb: 400000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
-  confidence: 0.60 # was 0.80
+  confidence: 0.80 # was 0.80
   gzip_compressed: gzip-compressed
   standard_db: ../inputs/genomes/kraken2/kraken2_standard_db/
   standard_db_url: https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20240112.tar.gz
@@ -79,7 +79,7 @@ kraken2:
 
 bracken:
   threads: 32
-  mem_mb: 300000
+  mem_mb: 400000
   kmer_length: 35 # default 35 for kraken2
   read_length: 100 # default 100
   treshold: 10 # [Default = 10]:: specifies the minimum number of reads required for a classification

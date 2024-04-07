@@ -160,49 +160,6 @@ def plot_number_of_reads_log(df, column, min_reads, relative_abundance):
     # Return the figure
     return fig
 
-def method_comparison_bact_taxa(df, taxa, minreads, relative_abundance):
-    if taxa == "species":
-        filtered_merged = df[(df["domain"] == "Bacteria")  & (df["reads_from_clade"] > minreads) & (df["relative_abundance"] > relative_abundance) & (df[taxa].notnull())]
-    else:
-        filtered_merged = df[(df["domain"] == "Bacteria")  & (df["reads_from_clade"] > minreads) & (df[taxa].notnull()) & (df.iloc[:,df.columns.get_loc(taxa)+1].isnull())]
-
-    # Group the data and count the number of rows in each group
-    grouped_df = filtered_merged.drop_duplicates().groupby(['sample', 'method']).size().reset_index(name='counts')
-    
-    # Pivot the data for plotting
-    pivot_df = grouped_df.pivot(index='sample', columns='method', values='counts').fillna(0)
-    
-    # Create a colormap
-    cmap = matplotlib.colormaps.get_cmap('tab20c')
-
-    # Generate colors from the colormap
-    colors = cmap(np.linspace(0, 1, len(pivot_df.columns)))
-
-    # Create a figure and axis with larger width
-    fig, ax = plt.subplots(figsize=(20, 10))  # Increase the width of the figure
-
-    # Plot with smaller bar width
-    pivot_df.plot(kind='bar', stacked=False, color=colors, edgecolor = "black", ax=ax, width=0.6)  # Decrease the width of the bars
-
-    # Remove top and right borders
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.xaxis.grid(False)
-
-    # Add more ticks to y-axis
-    ax.yaxis.set_major_locator(ticker.MultipleLocator(2)) 
-
-    plt.title(f' {taxa} per sample')
-    plt.xlabel('Sample')
-    plt.ylabel(f'{taxa} count')
-
-    # Specify the legend position
-    plt.legend(loc='upper left')
-    
-    # Return the figure
-    return fig
-
-
 ###################################
 ########## Main script ############
 ###################################
@@ -219,6 +176,8 @@ dataframes = [
     (pd.read_csv(os.path.join(input_dir, "Kraken2_BBmap_report.csv")), "kraken2_bbmap"),
     (pd.read_csv(os.path.join(input_dir, "Metaphlan4_Bowtie_report.csv")), "metaphlan4_bowtie"),
     (pd.read_csv(os.path.join(input_dir, "Metaphlan4_BBmap_report.csv")), "metaphlan4_bbmap"),
+    (pd.read_csv(os.path.join(input_dir, "Bracken_Bowtie_report.csv")), "bracken_bowtie"),
+    (pd.read_csv(os.path.join(input_dir, "Bracken_BBmap_report.csv")), "bracken_bbmap"),
 ]
 
 # Use separate loops to iterate over the dataframes and the plot functions
@@ -240,26 +199,3 @@ for df, name in dataframes:
         plot = plot_relative_abundance_bacteria(df, rank, minreads, f"{name.split('_')[1]}, {name.split('_')[0]}", relative_abundance)
         plot.savefig(os.path.join(output_file, f"{name}_{rank}.png"), dpi=300, bbox_inches='tight')
         plt.close(plot)
-
-
-### COMPARISON OF NUMBER OF DIFFERENT CLADES DETECTED BY DIFFERENT METHODS ####
-for df, name in dataframes:
-    df['method'] = name
-
-dfs = [df for df, name in dataframes]
-
-merged_df = pd.concat(dfs, ignore_index=True).drop_duplicates()
-
-for rank in rank_names:
-    # Call the function with the rank name
-    plot = method_comparison_bact_taxa(merged_df, rank, minreads, relative_abundance)
-    plot.savefig(os.path.join(output_file, f"{rank}_method_comparison.png"), dpi=300, bbox_inches='tight')
-    plt.close(plot)
-
-    plot = plot_number_of_reads(merged_df, rank, minreads, relative_abundance)
-    plot.savefig(os.path.join(output_file, f"{rank}_number_of_reads.png"), dpi=300, bbox_inches='tight')
-    plt.close(plot)
-
-    plot = plot_number_of_reads_log(merged_df, rank, minreads, relative_abundance)
-    plot.savefig(os.path.join(output_file, f"{rank}_number_of_reads_log.png"), dpi=300, bbox_inches='tight')
-    plt.close(plot)

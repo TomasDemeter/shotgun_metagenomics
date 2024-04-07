@@ -5,8 +5,8 @@ rule kraken2_bbmap:
     input:
         unmapped1   = rules.bbmap_default.output.unmapped1,
         unmapped2   = rules.bbmap_default.output.unmapped2,
-        #kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
-        kraken2_db  = rules.kraken2_build_standard_db.output.standard_db
+        kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
+        #kraken2_db  = rules.kraken2_build_standard_db.output.standard_db
     output:
         report          = RESULT_DIR + "Kraken2_bbmap/{sample}_kraken2_report.txt",
         classified1     = RESULT_DIR + "Kraken2_bbmap/{sample}_classified_1.fq",

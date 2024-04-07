@@ -41,6 +41,9 @@ def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame
         'percentage': 'relative_abundance'
     })
 
+    # Replace underscores with spaces in 'species' column
+    filled_df['species'] = filled_df['species'].str.replace('_', ' ')
+    
     # remove strain column
     filled_df = filled_df.drop('strain', axis=1)
 
