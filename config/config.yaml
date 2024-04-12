@@ -53,13 +53,13 @@ Multiqc:
 MetaPhlAn4_profiling:
   threads: 32
   mem_mb: 100000
-  input_type: fastq 
+  input_type: fastq # use fastq when running for the first time or bowtie2out if rerunning with new metaphlan parameters
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
   index: mpa_vJun23_CHOCOPhlAnSGB_202307
   analysis_type: rel_ab_w_read_stats
   mapq_threshold: 5
   read_min_length: 70
-  robust_average: 0.2
+  robust_average: 0.1
   csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 
 kraken2:
@@ -67,7 +67,7 @@ kraken2:
   mem_mb: 400000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
-  confidence: 0.80 # was 0.80
+  confidence: 0.20 # was 0.80
   gzip_compressed: gzip-compressed
   standard_db: ../inputs/genomes/kraken2/kraken2_standard_db/
   standard_db_url: https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20240112.tar.gz
@@ -101,5 +101,5 @@ StrainPhlAn:
   
 plotting_kraken_metaphlan:
   csv_location: ../results/Kraken_Bracken_Metaphlan_output/
-  min_reads: 10
+  min_reads: 1
   relative_abundance: 0.0

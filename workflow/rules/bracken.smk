@@ -4,8 +4,8 @@
 rule bracken:
     input:
         kraken_output = rules.kraken2.output.report,
-        #kraken_db     = rules.kraken2_build_standard_db.output.standard_db,
-        kraken_db     = rules.kraken2_build_custom_db.output.custom_kraken2_db,
+        kraken_db     = rules.kraken2_build_standard_db.output.standard_db,
+        #kraken_db     = rules.kraken2_build_custom_db.output.custom_kraken2_db,
         bracken_db    = rules.bracken_build_std_db.output.sentinel
     output:
         bracken_output   = config["bracken"]["output_dir"] + "{sample}.bracken",
