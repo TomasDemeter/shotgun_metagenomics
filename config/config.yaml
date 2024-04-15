@@ -13,9 +13,11 @@ refs:
 # BBduk
 bbduk:
   threads: 32
-  mem_mb: 100000
+  mem_mb: 200000
   trim_quality: 10 # 5-10 for resequencing
-  trim_side: r
+  mink: 11
+  quality_trim: rl
+  kmer_trim: r
   kmer_size: 23 # default 23; depends on adapter size
   hdist: 1 # allowed mismatches
 

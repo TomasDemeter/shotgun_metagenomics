@@ -20,10 +20,12 @@ rule bbduk:
         "bbsuite_env"
     params:
         quality_treshold    = config["bbduk"]["trim_quality"],
-        trimming_side       = config["bbduk"]["trim_side"],
+        kmer_trim           = config["bbduk"]["kmer_trim"],
         kmer_size           = config["bbduk"]["kmer_size"],
         hdist               = config["bbduk"]["hdist"],
-        adapters            = config["refs"]["adapters"]
+        mink                = config["bbduk"]["mink"],
+        adapters            = config["refs"]["adapters"],
+        quality_trim        = config["bbduk"]["quality_trim"]
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/logs/bbduk; "
         "bbduk.sh "
@@ -32,11 +34,13 @@ rule bbduk:
         "out1={output.output_1} "
         "out2={output.output_2} "
         "trimq={params.quality_treshold} "
-        "ktrim={params.trimming_side} "
+        "ktrim={params.kmer_trim} "
+        "trimq={params.kmer_trim} "
         "k={params.kmer_size} "
         "hdist={params.hdist} "
         "ref={params.adapters} "
         "stats={output.stats} "
+        "mink={params.mink} "
         "tbo "
         "tpe"
 

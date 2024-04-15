@@ -32,6 +32,7 @@ rule MetaPhlAn4_bbmap_profiling:
         "metaphlan "
         "{input.read_1} "
         "{input.read_2} "
+        "--output_file {output.composition_profile} "
         "-s {output.sams} "
         "--bowtie2out {output.bowtie2out} "
         "--nproc {threads} "
@@ -41,8 +42,7 @@ rule MetaPhlAn4_bbmap_profiling:
         "-t {params.analysis_type} "
         "--stat_q {params.robust_average} "
         "--read_min_len {params.read_min_length} "
-        "--min_mapq_val {params.mapq_threshold} "
-        "--output_file {output.composition_profile}"
+        "--min_mapq_val {params.mapq_threshold}"
 
 ################################################
 # Generating csv style reports from Metaphlan4 #
