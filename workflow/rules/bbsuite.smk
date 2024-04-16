@@ -35,7 +35,7 @@ rule bbduk:
         "out2={output.output_2} "
         "trimq={params.quality_treshold} "
         "ktrim={params.kmer_trim} "
-        "trimq={params.kmer_trim} "
+        "qtrim={params.quality_trim} "
         "k={params.kmer_size} "
         "hdist={params.hdist} "
         "ref={params.adapters} "
