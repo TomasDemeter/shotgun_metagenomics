@@ -36,6 +36,7 @@ rule bowtie2_mapping:
         logs                = WORKING_DIR + "Bowtie2/logs/{sample}_bowtie2.txt"
     params:
         unmapped_prefix     = WORKING_DIR + "Bowtie2/{sample}_unmapped",
+        time = "3-00:00:00"
     message:
         "Mapping {wildcards.sample} reads to human genome using Bowtie2"
     threads:

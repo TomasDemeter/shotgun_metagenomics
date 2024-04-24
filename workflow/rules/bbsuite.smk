@@ -145,7 +145,7 @@ rule bbmap_default:
         config["bbmap"]["threads"]
     resources:
         mem_mb = config["bbmap"]["mem_mb"],
-        time = "2-00:00:00"
+        time = "3-00:00:00"
     params:
         human_genome    = config["refs"]["human_genome"]
     conda: 
