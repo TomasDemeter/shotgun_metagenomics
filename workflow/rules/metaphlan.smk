@@ -29,7 +29,7 @@ rule MetaPhlAn4_profiling:
     shell:
         "mkdir -p {RESULT_DIR}MetaPhlAn4/bowtie2out/; "
         "metaphlan "
-        "{input.read_1} "
+        "{input.read_1},"
         "{input.read_2} "
         "--samout {output.sams} "
         "--bowtie2out {output.bowtie2out} "
