@@ -49,7 +49,7 @@ rule kraken2processing_bbmap:
     output:
         merged_kraken2_report = config["kraken2"]["csv_output_merged"] + "Kraken2_BBmap_report.csv"
     params:
-        reports = RESULT_DIR + "Kraken2/"
+        reports = RESULT_DIR + "Kraken2_bbmap/"
     conda:
         "kraken2_env"
     message:
