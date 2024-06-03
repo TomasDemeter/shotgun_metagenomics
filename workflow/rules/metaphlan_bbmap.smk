@@ -54,7 +54,7 @@ rule metaphlan4processing_bbmap:
     output:
         merged_metaphlan4_report = config["MetaPhlAn4_profiling"]["csv_output_merged"] + "Metaphlan4_BBmap_report.csv"
     params:
-        reports = RESULT_DIR + "MetaPhlAn4/profiles/"    
+        reports = RESULT_DIR + "MetaPhlAn4_bbmap/profiles/"    
     conda:
         "kraken2_env"
     message:
