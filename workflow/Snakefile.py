@@ -28,7 +28,7 @@ samplefile  = config["refs"]["samples"]
 # Samples and conditions #
 ##########################
 # create lists containing the sample names and conditions
-samples = pd.read_csv(samplefile, dtype = str, index_col = 0)
+samples = pd.read_csv(samplefile, dtype = str, index_col = 0, header = None)
 SAMPLES = samples.index.tolist()
 
 ###################
