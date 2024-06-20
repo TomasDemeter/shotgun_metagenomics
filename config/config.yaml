@@ -107,3 +107,6 @@ plotting_kraken_metaphlan:
   csv_location: ../results/Kraken_Bracken_Metaphlan_output/
   min_reads: 1
   relative_abundance: 0.0
+
+phyloseq:
+  mem_mb: 10000

@@ -43,6 +43,7 @@ BRACKEN         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_Bowtie_r
 BRACKEN_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_BBmap_report.csv"
 STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
+PHYLOSEQ        = RESULT_DIR + "Phyloseq/Metaphlan4_Bowtie_report.rds"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
 #STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 
@@ -66,7 +67,7 @@ include: "rules/bracken_build.smk"
 include: "rules/bracken.smk"
 include: "rules/bracken_bbmap.smk"
 include: "rules/plotting_kraken_metaphlan_bracken.smk"
-
+include: "rules/create_phyloseq.smk"
 
 ############
 # Pipeline #
@@ -80,6 +81,7 @@ rule all:
         KRAKEN2_BBMAP,
         BRACKEN,
         BRACKEN_BBMAP,
-        PLOTS
+        PLOTS,
+        PHYLOSEQ
     message:
         "Shotgun metagenomic pipeline run complete!"
