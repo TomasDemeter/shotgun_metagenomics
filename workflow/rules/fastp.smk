@@ -1,5 +1,5 @@
 #########################
-# RNA-seq read trimming #
+# seq read trimming #
 #########################
 rule fastp:
     input:

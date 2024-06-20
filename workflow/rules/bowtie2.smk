@@ -3,7 +3,7 @@
 #############################
 rule bowtie2_index:
     input:
-        human_genome = config["refs"]["human_genome"]
+        human_genome = rules.download_human_genome.output.human_genome_ensembl
     output:
         genome_index = directory(config["refs"]["bowtie_index"])
     message:
@@ -26,9 +26,9 @@ rule bowtie2_index:
 #################################
 rule bowtie2_mapping:
     input:
-        genome_index = rules.bowtie2_index.output.genome_index,
-        read_1 = rules.fastp.output.trimmed_1,
-        read_2 = rules.fastp.output.trimmed_2
+        genome_index    = rules.bowtie2_index.output.genome_index,
+        read_1          = rules.fastp.output.trimmed_1,
+        read_2          = rules.fastp.output.trimmed_2
     output:
         aligned_sam         = temp(WORKING_DIR + "Bowtie2/{sample}_aligned.sam"),
         unmapped1           = WORKING_DIR + "Bowtie2/{sample}_unmapped.1.gz",

@@ -49,6 +49,7 @@ PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_
 #########
 # rules #
 #########
+include: "rules/download_human_genome.smk"
 include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"
 include: "rules/bbsuite.smk"
@@ -81,4 +82,4 @@ rule all:
         BRACKEN_BBMAP,
         PLOTS
     message:
-        "Metagenomic pipeline run complete!"
+        "Shotgun metagenomic pipeline run complete!"

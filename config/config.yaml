@@ -4,11 +4,13 @@ working_dir: ../inputs/
 
 # samples to condition
 refs:
+  samples: ../inputs/raw_reads/metadata.csv
+  adapters: ../inputs/adapters/adapters.fa
   bowtie_index: ../inputs/genomes/human/bowtie_indices/
   bbsuite_index: ../inputs/genomes/human/bbmap_indices
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-  samples: ../inputs/raw_reads/metadata.csv
-  adapters: ../inputs/adapters/adapters.fa
+  human_genome_dir: ../inputs/genomes/human/
+  human_genome_ensembl_link: https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 
 # BBduk
 bbduk:
@@ -69,13 +71,13 @@ kraken2:
   mem_mb: 400000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
-  confidence: 0.20 # was 0.80
+  confidence: 0.80 
   gzip_compressed: gzip-compressed
   standard_db: ../inputs/genomes/kraken2/kraken2_standard_db/
   standard_db_url: https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20240112.tar.gz
   custom_kraken2_db: ../inputs/genomes/kraken2/kraken2_custom/kraken2_custom_db/
   downloaded_genomes: ../inputs/genomes/kraken2/kraken2_custom/downloaded_genomes/ # where to download genomes from ncbi
-  domains: bacteria,archaea
+  domains: bacteria
   rename_fasta_headers: ../inputs/genomes/kraken2/kraken2_custom/fasta_renamed/
   csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 

@@ -49,7 +49,7 @@ rule bbduk:
 #########################
 rule build_bbmap_index:
     input:
-        genome = config["refs"]["human_genome"]
+        genome = rules.download_human_genome.output.human_genome_ensembl
     output:
         index = directory(config["refs"]["bbsuite_index"])
     message:
@@ -147,7 +147,7 @@ rule bbmap_default:
         mem_mb = config["bbmap"]["mem_mb"],
         time = "3-00:00:00"
     params:
-        human_genome    = config["refs"]["human_genome"]
+        human_genome    = rules.download_human_genome.output.human_genome_ensembl
     conda: 
         "bbsuite_env"
     shell:
