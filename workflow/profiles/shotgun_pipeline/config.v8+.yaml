@@ -1,0 +1,242 @@
+executor: slurm
+
+default-resources:
+  mem_mb: 10240
+  runtime: 60
+  cpus_per_task: 1
+  slurm_partition: "standard"
+  slurm_account: "kouyos.virology.uzh"
+  output: "logs/{rule}/{jobid}.out"
+  error: "logs/{rule}/{jobid}.err"
+  slurm_extra: "'--qos=long --mail-type=END,FAIL --mail-user=tomas.demeter@uzh.ch'"
+
+jobs: 50
+printshellcmds: True
+rerun-incomplete: True
+keep-going: True
+keep-incomplete: False
+restart-times: 3
+use-conda: True
+conda-frontend: mamba
+
+
+set-resources:
+  bbduk:
+    cpus_per_task: 64
+    mem_mb: max((200000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  build_bbmap_index:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bbmap_coarse:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bbmap_default:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bowtie2_index: #
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 10 * attempt))
+    runtime: max((30 * attempt), (input.size_mb // 1024 * 4 * attempt ))
+  
+  bowtie2_mapping:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken2processing_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken_build_std_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken_build_cst_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  bracken2processing:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  create_phyloseq:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  download_human_genome:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  fastp:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  FastQC:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2processing_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_build_standard_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  download_NCBI_genomes:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  download_GTDB_genomes:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  rename_fasta_headers:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_build_custom_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2mpa:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2processing_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_build_standard_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  download_NCBI_genomes:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  download_GTDB_genomes:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  rename_fasta_headers:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2_build_custom_db:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2mpa:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+
+  merge_kraken2:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  kraken2processing:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  MetaPhlAn4_bbmap_profiling:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  metaphlan4processing_bbmap:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  MetaPhlAn4_build:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  MetaPhlAn4_profiling:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  metaphlan4processing:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  multiqc:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  sample2markers:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+
+  extract_markers:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+  
+  StrainPhlAn_profiling:
+    cpus_per_task: 64
+    mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
+    runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))

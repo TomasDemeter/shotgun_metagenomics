@@ -8,7 +8,7 @@
 # to run the pipeline use this command #
 ########################################
 '''
-snakemake -s Snakefile.py --profile slurm_snakemake -n
+tmux new-session -d 'snakemake -s Snakefile.py --workflow-profile profiles/16S_pipeline/  -n'
 '''
 
 ####################
