@@ -8,7 +8,7 @@ default-resources:
   slurm_account: "kouyos.virology.uzh"
   output: "logs/{rule}/{jobid}.out"
   error: "logs/{rule}/{jobid}.err"
-  slurm_extra: "'--qos=long --mail-type=END,FAIL --mail-user=tomas.demeter@uzh.ch'"
+  slurm_extra: "'--qos=long --mail-type=BEGIN,END,FAIL --mail-user=tomas.demeter@uzh.ch'"
 
 jobs: 50
 printshellcmds: True
@@ -51,7 +51,7 @@ set-resources:
   bowtie2_index: 
     cpus_per_task: 32
     mem_mb: max((10000 * attempt), (input.size_mb * 10 * attempt))
-    runtime: max((30 * attempt), (input.size_mb // 1024 * 4 * attempt ))
+    runtime: max((60 * attempt), (input.size_mb // 1024 * 8 * attempt ))
   
   bowtie2_mapping:
     cpus_per_task: 64

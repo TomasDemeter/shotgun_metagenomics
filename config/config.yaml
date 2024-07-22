@@ -4,7 +4,7 @@ working_dir: ../inputs/
 
 # samples to condition
 refs:
-  samples: ../inputs/raw_reads/metadata.csv
+  samples: ../workflow/metadata/metadata.csv
   adapters: ../inputs/adapters/adapters.fa
   bowtie_index: ../inputs/genomes/human/bowtie_indices/
   bbsuite_index: ../inputs/genomes/human/bbmap_indices

@@ -30,7 +30,7 @@ rule MetaPhlAn4_bbmap_profiling:
         "{input.read_2} "
         "-s {output.sams} "
         "--bowtie2out {output.bowtie2out} "
-        "--nproc {threads} "
+        "--nproc $(nproc) "
         "--input_type {params.input_type} "
         "--index {params.index} "
         "--bowtie2db {params.bowtie2db} "

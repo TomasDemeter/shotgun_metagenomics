@@ -19,7 +19,7 @@ rule sample2markers:
         "--input {input} "
         "--output_dir {output.consensus_markers_dir} "
         "--database {params.database} "
-        "--nprocs {threads}"
+        "--nprocs $(nproc)"
 
 #######################################
 # extract the markers for StrainPhlAn #
@@ -75,7 +75,7 @@ rule StrainPhlAn_profiling:
         #"--clade_markers {input.clade_markers} "
         "--references {params.reference_genomes} "
         "--output_dir {output.alignments_dir} "
-        "--nprocs {threads} "
+        "--nprocs $(nproc) "
         "--clade {params.clade} "
         "--print_clades_only "  # clade_markers and print_clades_only are exclusive
         "--database {params.database} "

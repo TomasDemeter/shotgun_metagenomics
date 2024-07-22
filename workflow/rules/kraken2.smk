@@ -27,7 +27,7 @@ rule kraken2:
         "kraken2 "
         "--db {input.kraken2_db} "
         "--{params.paired} "
-        "--threads {threads} "
+        "--threads 0 "
         "--{params.gzip_compressed} "
         "--classified-out {params.classified} "
         "--unclassified-out {params.unclassified} "

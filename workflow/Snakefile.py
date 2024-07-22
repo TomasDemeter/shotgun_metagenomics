@@ -8,7 +8,7 @@
 # to run the pipeline use this command #
 ########################################
 '''
-tmux new-session -d 'snakemake -s Snakefile.py --workflow-profile profiles/16S_pipeline/  -n'
+snakemake -s Snakefile.py --workflow-profile profiles/shotgun_pipeline/  -n
 '''
 
 ####################

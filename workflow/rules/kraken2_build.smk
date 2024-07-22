@@ -26,7 +26,7 @@ rule download_NCBI_genomes:
         "python3 scripts/get_ncbi_other_domains.py "
         "--domain {params.domain} "
         "--folder {output.downloaded_genomes} "
-        "--processors {threads}"
+        "--processors $(nprocs)"
 
 rule download_GTDB_genomes:
     output:
@@ -55,7 +55,7 @@ rule rename_fasta_headers:
     shell:
         "mv {input.downloaded_genomes_GTDB}/* {input.downloaded_genomes_NCBI}; "
         "mkdir -p {output.rename_fasta_headers}; "
-        "python3 scripts/rename_fasta_headers.py --processors {threads}; "
+        "python3 scripts/rename_fasta_headers.py --processors $(nproc); "
         "rm -r {input.downloaded_genomes_GTDB}"
 
 rule kraken2_build_custom_db:
@@ -79,9 +79,8 @@ rule kraken2_build_custom_db:
         "mv {input.nucl_accession2taxid} {output.taxonomy_dir}; "
         "python3 scripts/unzip_add_library.py "
         "--genome_folder {input.rename_fasta_headers}/ "
-        "--processors {threads} "
+        "--processors $(nproc) "
         "--database {output.custom_kraken2_db}/; "
         "kraken2-build "
         "--build "
-        "--db {output.custom_kraken2_db} "
-        "--threads {threads}"
+        "--db {output.custom_kraken2_db}"
