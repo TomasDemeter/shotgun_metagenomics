@@ -11,19 +11,15 @@ rule MetaPhlAn4_profiling:
         bowtie2out          = RESULT_DIR + "MetaPhlAn4/bowtie2out/{sample}_bowtie2out_metagenome.bz2",
         sams                = RESULT_DIR + "MetaPhlAn4/sams/{sample}.sam.bz2"
     params:
-        input_type      = config["MetaPhlAn4_profiling"]["input_type"],
-        bowtie2db       = config["MetaPhlAn4_profiling"]["bowtie2db"],
-        index           = config["MetaPhlAn4_profiling"]["index"],
-        analysis_type   = config["MetaPhlAn4_profiling"]["analysis_type"],
-        read_min_length = config["MetaPhlAn4_profiling"]["read_min_length"],
-        mapq_threshold  = config["MetaPhlAn4_profiling"]["mapq_threshold"],
-        robust_average  = config["MetaPhlAn4_profiling"]["robust_average"]
+        input_type          = config["MetaPhlAn4_profiling"]["input_type"],
+        bowtie2db           = config["MetaPhlAn4_profiling"]["bowtie2db"],
+        index               = config["MetaPhlAn4_profiling"]["index"],
+        analysis_type       = config["MetaPhlAn4_profiling"]["analysis_type"],
+        read_min_length     = config["MetaPhlAn4_profiling"]["read_min_length"],
+        mapq_threshold      = config["MetaPhlAn4_profiling"]["mapq_threshold"],
+        robust_average      = config["MetaPhlAn4_profiling"]["robust_average"]
     message:
         "Profiling the composition of microbial communities in {wildcards.sample} using MetaPhlAn 4"
-    threads:
-        config["MetaPhlAn4_profiling"]["threads"]
-    resources:
-        mem_mb = config["MetaPhlAn4_profiling"]["mem_mb"]
     conda: 
         "metaphlan_env"
     shell:
@@ -48,11 +44,11 @@ rule MetaPhlAn4_profiling:
 ################################################
 rule metaphlan4processing:
     input:
-        profiles = expand(rules.MetaPhlAn4_profiling.output.composition_profile, sample = SAMPLES)
+        profiles                    = expand(rules.MetaPhlAn4_profiling.output.composition_profile, sample = SAMPLES)
     output:
-        merged_metaphlan4_report = config["MetaPhlAn4_profiling"]["csv_output_merged"] + "Metaphlan4_Bowtie_report.csv"
+        merged_metaphlan4_report    = config["MetaPhlAn4_profiling"]["csv_output_merged"] + "Metaphlan4_Bowtie_report.csv"
     params:
-        reports = RESULT_DIR + "MetaPhlAn4/profiles/"
+        reports                     = RESULT_DIR + "MetaPhlAn4/profiles/"
     conda:
         "kraken2_env"
     message:

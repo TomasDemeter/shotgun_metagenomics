@@ -14,8 +14,6 @@ refs:
 
 # BBduk
 bbduk:
-  threads: 32
-  mem_mb: 200000
   trim_quality: 10 # 5-10 for resequencing
   mink: 11
   quality_trim: rl
@@ -25,8 +23,6 @@ bbduk:
 
   # BBmap
 bbmap:
-  threads: 32
-  mem_mb: 1500000
   fast: true
   minid: 0.9
   maxindel: 3
@@ -35,28 +31,12 @@ bbmap:
 
 # read quality trimming
 fastp:
-  threads: 32
-  mem_mb: 100000
   phread_quality: 30 # Phred+33 score (> 15 for Proton Ion, > 30 or more for Illumina)
   cut_window_size: 4
   cut_mean_quality: 20
   length_required: 50 
 
-bowtie:
-  threads: 32
-  mem_mb: 1000000
-
-FastQC:
-  installation_dir: /home/tdemet/data/conda/envs/multiqc_env/bin
-  threads: 32
-  mem_mb: 10000
-  
-Multiqc:
-  mem_mb: 100000
-
 MetaPhlAn4_profiling:
-  threads: 32
-  mem_mb: 100000
   input_type: fastq # use fastq when running for the first time or bowtie2out if rerunning with new metaphlan parameters
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
   index: mpa_vJun23_CHOCOPhlAnSGB_202307
@@ -67,8 +47,6 @@ MetaPhlAn4_profiling:
   csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 
 kraken2:
-  threads: 32
-  mem_mb: 400000
   kraken2_db: ../inputs/genomes/kraken2db/
   paired: paired
   confidence: 0.80 
@@ -82,8 +60,6 @@ kraken2:
   csv_output_merged: ../results/Kraken_Bracken_Metaphlan_output/
 
 bracken:
-  threads: 32
-  mem_mb: 400000
   kmer_length: 35 # default 35 for kraken2
   read_length: 100 # default 100
   treshold: 10 # [Default = 10]:: specifies the minimum number of reads required for a classification
@@ -93,8 +69,6 @@ bracken:
 
 
 StrainPhlAn:
-  threads: 32
-  mem_mb: 100000
   clade: t__SGB17097
   reference_genomes: ../inputs/genomes/strainphlan_genomes/Corynebacterium_accolens/*.bz2
   strainphlan_samples: ["0010009_unknown_Nasal_Nostrilright", "0010020_unknown_Nasal_Nostrilleft"]
@@ -107,6 +81,3 @@ plotting_kraken_metaphlan:
   csv_location: ../results/Kraken_Bracken_Metaphlan_output/
   min_reads: 1
   relative_abundance: 0.0
-
-phyloseq:
-  mem_mb: 10000

@@ -15,13 +15,9 @@ rule kraken2_build_standard_db:
 
 rule download_NCBI_genomes:
     output:
-        downloaded_genomes = directory(config["kraken2"]["downloaded_genomes"])
+        downloaded_genomes  = directory(config["kraken2"]["downloaded_genomes"])
     params:
-        domain = config["kraken2"]["domains"]
-    threads:
-        config["kraken2"]["threads"]
-    resources: 
-        mem_mb = config["kraken2"]["mem_mb"]
+        domain              = config["kraken2"]["domains"]
     conda:
         "kraken2_env"
     message:
@@ -38,10 +34,6 @@ rule download_GTDB_genomes:
         nodes_dmp               = "nodes.dmp",
         nucl_accession2taxid    = "nucl.accession2taxid",
         gtdb_genomes_reps_dir   = directory("gtdb_genomes_reps")
-    threads:
-        config["kraken2"]["threads"]
-    resources: 
-        mem_mb = config["kraken2"]["mem_mb"]
     conda:
         "kraken2_env"
     message:
@@ -55,11 +47,7 @@ rule rename_fasta_headers:
         downloaded_genomes_NCBI = rules.download_NCBI_genomes.output.downloaded_genomes,
         downloaded_genomes_GTDB = rules.download_GTDB_genomes.output.gtdb_genomes_reps_dir
     output:
-        rename_fasta_headers = directory(config["kraken2"]["rename_fasta_headers"])
-    threads:
-        config["kraken2"]["threads"]
-    resources:
-        mem_mb = config["kraken2"]["mem_mb"]
+        rename_fasta_headers    = directory(config["kraken2"]["rename_fasta_headers"])
     conda:
         "kraken2_build"
     message:
@@ -78,13 +66,8 @@ rule kraken2_build_custom_db:
         nucl_accession2taxid    = rules.download_GTDB_genomes.output.nucl_accession2taxid,
         rename_fasta_headers    = rules.rename_fasta_headers.output.rename_fasta_headers
     output:
-        custom_kraken2_db = directory(config["kraken2"]["custom_kraken2_db"]),
-        taxonomy_dir      = directory(config["kraken2"]["custom_kraken2_db"] + "taxonomy"), # this worked before. make dir and move names, nodes and nucl_accession2taxid to taxonomy folder
-    threads:
-        config["kraken2"]["threads"]
-    resources: 
-        mem_mb = 600000,
-        time = "7-00:00:00"
+        custom_kraken2_db       = directory(config["kraken2"]["custom_kraken2_db"]),
+        taxonomy_dir            = directory(config["kraken2"]["custom_kraken2_db"] + "taxonomy"),
     conda:
         "kraken2_env"
     message:

@@ -3,10 +3,10 @@
 #####################################################################
 rule kraken2:
     input:
-        unmapped1   = rules.bowtie2_mapping.output.unmapped1,
-        unmapped2   = rules.bowtie2_mapping.output.unmapped2,
-        #kraken2_db  = rules.kraken2_build_custom_db.output.custom_kraken2_db
-        kraken2_db  = rules.kraken2_build_standard_db.output.standard_db
+        unmapped1       = rules.bowtie2_mapping.output.unmapped1,
+        unmapped2       = rules.bowtie2_mapping.output.unmapped2,
+        #kraken2_db      = rules.kraken2_build_custom_db.output.custom_kraken2_db
+        kraken2_db      = rules.kraken2_build_standard_db.output.standard_db
     output:
         report          = RESULT_DIR + "Kraken2/{sample}_kraken2_report.txt",
         classified1     = RESULT_DIR + "Kraken2/{sample}_classified_1.fq",
@@ -19,10 +19,6 @@ rule kraken2:
         gzip_compressed = config["kraken2"]["gzip_compressed"],
         classified      = RESULT_DIR + "Kraken2/{sample}_classified#.fq",
         unclassified    = RESULT_DIR + "Kraken2/{sample}_unclassified#.fq"
-    threads:
-        config["kraken2"]["threads"]
-    resources: 
-        mem_mb = config["kraken2"]["mem_mb"]
     conda:
         "kraken2_env"
     message:
@@ -45,11 +41,11 @@ rule kraken2:
 #############################################
 rule kraken2processing:
     input:
-        report_inputs   = expand(rules.kraken2.output.report, sample = SAMPLES),
+        report_inputs           = expand(rules.kraken2.output.report, sample = SAMPLES),
     output:
-        merged_kraken2_report = config["kraken2"]["csv_output_merged"] + "Kraken2_Bowtie_report.csv"
+        merged_kraken2_report   = config["kraken2"]["csv_output_merged"] + "Kraken2_Bowtie_report.csv"
     params:
-        reports = RESULT_DIR + "Kraken2/"
+        reports                 = RESULT_DIR + "Kraken2/"
     conda:
         "kraken2_env"
     message:

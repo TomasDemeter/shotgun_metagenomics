@@ -3,18 +3,14 @@
 ###########################################
 rule bracken_build_std_db:
     input:
-        kraken_db = rules.kraken2_build_standard_db.output.standard_db
+        kraken_db   = rules.kraken2_build_standard_db.output.standard_db
     output:
-        sentinel = WORKING_DIR + "genomes/bracken_std_build_done"
+        sentinel    = WORKING_DIR + "genomes/bracken_std_build_done"
     params:
         kmer_length = config["bracken"]["kmer_length"],
         read_length = config["bracken"]["read_length"]
     message:
         "Dividing each genome in Kraken2 standard database and classifying them with Bracken"
-    threads:
-        config["bracken"]["threads"]
-    resources: 
-        mem_mb = config["bracken"]["mem_mb"],
     conda: 
         "kraken2_env"
     shell:
@@ -30,19 +26,14 @@ rule bracken_build_std_db:
 ########################################
 rule bracken_build_cst_db:
     input:
-        kraken_db = rules.kraken2_build_custom_db.output.custom_kraken2_db
+        kraken_db   = rules.kraken2_build_custom_db.output.custom_kraken2_db
     output:
-        sentinel = WORKING_DIR + "genomes/bracken_cst_build_done"
+        sentinel    = WORKING_DIR + "genomes/bracken_cst_build_done"
     params:
         kmer_length = config["bracken"]["kmer_length"],
         read_length = config["bracken"]["read_length"]
     message:
         "Dividing each genome in Kraken2 custom database and classifying them with Bracken"
-    threads:
-        config["bracken"]["threads"]
-    resources: 
-        mem_mb = config["bracken"]["mem_mb"],
-        time = "24:00:00"
     conda: 
         "kraken2_env"
     shell:

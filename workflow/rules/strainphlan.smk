@@ -3,18 +3,14 @@
 ##########################################################################
 rule sample2markers:
     input:
-        metaphlan_inputs = expand(RESULT_DIR + "MetaPhlAn4/sams/{sample}.sam.bz2", sample=config["StrainPhlAn"]["strainphlan_samples"])
+        metaphlan_inputs        = expand(RESULT_DIR + "MetaPhlAn4/sams/{sample}.sam.bz2", sample=config["StrainPhlAn"]["strainphlan_samples"])
     output:
         consensus_markers_dir   = directory(RESULT_DIR + "StrainPhlAn/consensus_markers/"),
         markers_outputs         = expand(RESULT_DIR + "StrainPhlAn/consensus_markers/{sample}.pkl", sample=config["StrainPhlAn"]["strainphlan_samples"])
     params:
-        database = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl"
+        database                = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl"
     conda:
         "metaphlan_env"
-    threads:
-        config["StrainPhlAn"]["threads"]
-    resources:
-        mem_mb = config["StrainPhlAn"]["mem_mb"]
     message:
         "Producing the consensus-marker files which are the input for StrainPhlAn"
     shell:
@@ -30,19 +26,15 @@ rule sample2markers:
 #######################################
 rule extract_markers:
     input:
-        consensus_markers_dir = rules.sample2markers.output.consensus_markers_dir
+        consensus_markers_dir   = rules.sample2markers.output.consensus_markers_dir
     output:
-        clade_markers_dir   = directory(RESULT_DIR + "StrainPhlAn/clade_markers/"),
-        clade_markers       = RESULT_DIR + "StrainPhlAn/clade_markers/" + config["StrainPhlAn"]["clade"] + ".fna"
+        clade_markers_dir       = directory(RESULT_DIR + "StrainPhlAn/clade_markers/"),
+        clade_markers           = RESULT_DIR + "StrainPhlAn/clade_markers/" + config["StrainPhlAn"]["clade"] + ".fna"
     params:
-        clades      = config["StrainPhlAn"]["clade"],
-        database    = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl"
+        clades                  = config["StrainPhlAn"]["clade"],
+        database                = config["MetaPhlAn4_profiling"]["bowtie2db"] + config["MetaPhlAn4_profiling"]["index"] + ".pkl"
     conda:
         "metaphlan_env"
-    threads:
-        config["StrainPhlAn"]["threads"]
-    resources:
-        mem_mb = config["StrainPhlAn"]["mem_mb"]
     message:
         "Extracting the markers from the consensus-marker files"
     shell:
@@ -57,13 +49,13 @@ rule extract_markers:
 #####################################################################
 rule StrainPhlAn_profiling:
     input:
-        clade_markers_dir   = rules.extract_markers.output.clade_markers_dir,
-        consensus_markers      = rules.sample2markers.output.markers_outputs,
-        clade_markers       = rules.extract_markers.output.clade_markers
+        clade_markers_dir       = rules.extract_markers.output.clade_markers_dir,
+        consensus_markers       = rules.sample2markers.output.markers_outputs,
+        clade_markers           = rules.extract_markers.output.clade_markers
     output:
-        #output_tree         = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
-        alignments_dir      = directory(RESULT_DIR + "StrainPhlAn/alignments/"),
-        clades_list         = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv" # clade_list and output_tree are exclusive
+        #output_tree             = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre",
+        alignments_dir          = directory(RESULT_DIR + "StrainPhlAn/alignments/"),
+        clades_list             = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv" # clade_list and output_tree are exclusive
     params:
         reference_genomes       = config["StrainPhlAn"]["reference_genomes"],
         clade                   = config["StrainPhlAn"]["clade"],
@@ -74,10 +66,6 @@ rule StrainPhlAn_profiling:
         trim_sequences          = config["StrainPhlAn"]["trim_sequences"]
     conda:
         "metaphlan_env"
-    threads:
-        config["StrainPhlAn"]["threads"]
-    resources:
-        mem_mb = config["StrainPhlAn"]["mem_mb"]
     message:
         "Producing the consensus-marker files which are the input for StrainPhlAn"
     shell:

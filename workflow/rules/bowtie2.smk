@@ -8,10 +8,6 @@ rule bowtie2_index:
         genome_index = directory(config["refs"]["bowtie_index"])
     message:
         "generating Bowtie2 genome index"
-    threads:
-        config["bowtie"]["threads"]
-    resources:
-        mem_mb = config["bowtie"]["mem_mb"]
     conda: 
         "fastp_bowtie2"
     shell:
@@ -26,9 +22,9 @@ rule bowtie2_index:
 #################################
 rule bowtie2_mapping:
     input:
-        genome_index    = rules.bowtie2_index.output.genome_index,
-        read_1          = rules.fastp.output.trimmed_1,
-        read_2          = rules.fastp.output.trimmed_2
+        genome_index        = rules.bowtie2_index.output.genome_index,
+        read_1              = rules.fastp.output.trimmed_1,
+        read_2              = rules.fastp.output.trimmed_2
     output:
         aligned_sam         = temp(WORKING_DIR + "Bowtie2/{sample}_aligned.sam"),
         unmapped1           = WORKING_DIR + "Bowtie2/{sample}_unmapped.1.gz",
@@ -36,13 +32,8 @@ rule bowtie2_mapping:
         logs                = WORKING_DIR + "Bowtie2/logs/{sample}_bowtie2.txt"
     params:
         unmapped_prefix     = WORKING_DIR + "Bowtie2/{sample}_unmapped",
-        time = "3-00:00:00"
     message:
         "Mapping {wildcards.sample} reads to human genome using Bowtie2"
-    threads:
-        config["bowtie"]["threads"]
-    resources:
-        mem_mb = config["bowtie"]["mem_mb"]
     conda: 
         "fastp_bowtie2"
     shell:

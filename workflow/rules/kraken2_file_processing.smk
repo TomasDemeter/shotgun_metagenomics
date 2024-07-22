@@ -3,11 +3,11 @@
 ####################################################
 rule kraken2mpa:
     input:
-        report = rules.kraken2.output.report
+        report          = rules.kraken2.output.report
     output:
-        mpa_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/{sample}_kraken2_mpa_report.txt"
+        mpa_report      = RESULT_DIR + "Kraken2/metaphlan_style_reports/{sample}_kraken2_mpa_report.txt"
     params:
-        report_style = config["kraken2"]["report_style"]
+        report_style    = config["kraken2"]["report_style"]
     conda:
         "kraken2_env"
     message:
@@ -23,11 +23,11 @@ rule kraken2mpa:
 #################################################
 rule merge_kraken2:
     input:
-        reports = expand(rules.kraken2mpa.output.mpa_report, sample = SAMPLES)
+        reports         = expand(rules.kraken2mpa.output.mpa_report, sample = SAMPLES)
     params:
-        kraken2_dir = RESULT_DIR + "Kraken2/metaphlan_style_reports/"
+        kraken2_dir     = RESULT_DIR + "Kraken2/metaphlan_style_reports/"
     output:
-        merged_report = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
+        merged_report   = RESULT_DIR + "Kraken2/metaphlan_style_reports/kraken2_output_merged.csv"
     conda:
         "kraken2_env"
     message:
