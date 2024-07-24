@@ -29,7 +29,7 @@ rule MetaPhlAn4_profiling:
         "{input.read_2} "
         "--samout {output.sams} "
         "--bowtie2out {output.bowtie2out} "
-        "--nproc $(nproc) "
+        "--nproc {resources.cpus_per_task} "
         "--input_type {params.input_type} "
         "--index {params.index} "
         "--bowtie2db {params.bowtie2db} "

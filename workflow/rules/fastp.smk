@@ -27,7 +27,7 @@ rule fastp:
         "-I {input.read_2} "
         "-o {output.trimmed_1} "
         "-O {output.trimmed_2} "
-        "--thread 0 "
+        "--thread {resources.cpus_per_task} "
         "--qualified_quality_phred {params.phread_quality} "
         "--cut_front "
         "--cut_tail "

@@ -15,7 +15,7 @@ rule bowtie2_index:
         "bowtie2-build "
         "{input.human_genome} "
         "{output.genome_index}/GRCh38_index "
-        "--threads 32"
+        "--threads {resources.cpus_per_task}"
 
 #################################
 # Mapping reads to human genome #
@@ -44,7 +44,7 @@ rule bowtie2_mapping:
         "-2 {input.read_2} "
         "-S {output.aligned_sam} "
         "--un-conc-gz {params.unmapped_prefix}.gz "
-        "--threads 64 "
         "--very-sensitive "
         "--dovetail "
+        "--threads {resources.cpus_per_task} "
         "2> {output.logs}"

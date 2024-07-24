@@ -27,7 +27,7 @@ rule kraken2_bbmap:
         "kraken2 "
         "--db {input.kraken2_db} "
         "--{params.paired} "
-        "--threads 0 "
+        "--threads {resources.cpus_per_task} "
         "--{params.gzip_compressed} "
         "--classified-out {params.classified} "
         "--unclassified-out {params.unclassified} "

@@ -75,7 +75,7 @@ rule StrainPhlAn_profiling:
         #"--clade_markers {input.clade_markers} "
         "--references {params.reference_genomes} "
         "--output_dir {output.alignments_dir} "
-        "--nprocs $(nproc) "
+        "--nprocs {resources.cpus_per_task} "
         "--clade {params.clade} "
         "--print_clades_only "  # clade_markers and print_clades_only are exclusive
         "--database {params.database} "

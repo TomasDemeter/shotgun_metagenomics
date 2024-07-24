@@ -28,8 +28,8 @@ set-resources:
   
   build_bbmap_index:
     cpus_per_task: 32
-    mem_mb: max((30000 * attempt), (input.size_mb * 40 * attempt))
-    runtime: max((10 * attempt), (input.size_mb // 80 * attempt ))
+    mem_mb: 50000 * attempt
+    runtime: 60 * attempt
   
   bbmap_coarse:
     cpus_per_task: 64
@@ -62,7 +62,7 @@ set-resources:
 
   FastQC:
     cpus_per_task: 64
-    mem_mb: max((10000 * attempt), (input.size_mb * 2 * attempt))
+    mem_mb: max((15000 * attempt), (input.size_mb * 3 * attempt))
     runtime: max((5 * attempt), (input.size_mb // 1024 * attempt ))
   
   multiqc:
@@ -74,24 +74,34 @@ set-resources:
 
   
   kraken2_build_standard_db:
-    cpus_per_task: 1
-    mem_mb: 10000 * attempt
-    runtime: 90 * attempt
+    cpus_per_task: 64
+    mem_mb: 30000 * attempt
+    runtime: 180 * attempt
   
   kraken2:
     cpus_per_task: 64
-    mem_mb: 10000 * attempt
-    runtime: 5 * attempt
+    mem_mb: 30000 * attempt
+    runtime: 15 * attempt
   
   kraken2_bbmap:
     cpus_per_task: 64
-    mem_mb: 10000 * attempt
-    runtime: 5 * attempt
+    mem_mb: 30000 * attempt
+    runtime: 15 * attempt
   
   #kraken2_build_custom_db:
   #  cpus_per_task: 64
   #  mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
   #  runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
+
+  bracken_build_std_db:
+    cpus_per_task: 64
+    mem_mb: 10000 * attempt
+    runtime: 5 * attempt
+
+  #bracken_build_cst_db:
+  #  cpus_per_task: 64
+  #  mem_mb: 10000 * attempt
+  #  runtime: 5 * attempt
 
 
 
