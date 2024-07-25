@@ -81,12 +81,12 @@ set-resources:
   kraken2:
     cpus_per_task: 64
     mem_mb: 30000 * attempt
-    runtime: 15 * attempt
+    runtime: 30 * attempt
   
   kraken2_bbmap:
     cpus_per_task: 64
     mem_mb: 30000 * attempt
-    runtime: 15 * attempt
+    runtime: 30 * attempt
   
   #kraken2_build_custom_db:
   #  cpus_per_task: 64
