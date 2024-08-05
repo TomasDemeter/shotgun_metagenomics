@@ -103,15 +103,13 @@ set-resources:
   #  mem_mb: 10000 * attempt
   #  runtime: 5 * attempt
 
-
-
   MetaPhlAn4_profiling:
     cpus_per_task: 64
-    mem_mb: 30000 * attempt
-    runtime: 10 * attempt  
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt  
 
   MetaPhlAn4_bbmap_profiling:
     cpus_per_task: 64
-    mem_mb: 30000 * attempt
-    runtime: 10 * attempt
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
   
