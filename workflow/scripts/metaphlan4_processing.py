@@ -28,27 +28,31 @@ def process_df(df):
     return df
 
 
-def clean_columns_and_remove_duplicates(filled_df: pd.DataFrame) -> pd.DataFrame:
+def clean_columns(filled_df: pd.DataFrame) -> pd.DataFrame:
     # Define the columns to be cleaned
     cols_to_clean = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species']
 
     # Apply the lambda function to each element of the DataFrame
     filled_df[cols_to_clean] = filled_df[cols_to_clean].apply(lambda col: col.map(lambda x: str(x).split('__')[-1] if pd.notnull(x) else x))
 
+    # Replace underscores with spaces in 'species' column
+    filled_df['species'] = filled_df['species'].str.replace('_', ' ')
+    
+    # Remove strain column
+    filled_df = filled_df.drop('strain', axis=1)
+
+    # Group by all columns except 'estimated_number_of_reads_from_the_clade' and 'percentage'
+    # Sum 'estimated_number_of_reads_from_the_clade' and 'relative_abundance' for non-unique rows
+    sum_columns = ['estimated_number_of_reads_from_the_clade', 'relative_abundance']
+    group_columns = [col for col in filled_df.columns if col not in sum_columns]
+    
+    filled_df = filled_df.groupby(group_columns, as_index=False)[sum_columns].sum()
+
     # Rename columns
     filled_df = filled_df.rename(columns={
         'estimated_number_of_reads_from_the_clade': 'reads_from_clade',
         'percentage': 'relative_abundance'
     })
-
-    # Replace underscores with spaces in 'species' column
-    filled_df['species'] = filled_df['species'].str.replace('_', ' ')
-    
-    # remove strain column
-    filled_df = filled_df.drop('strain', axis=1)
-
-    # Remove duplicates
-    filled_df = filled_df.drop_duplicates()
 
     return filled_df
 
@@ -83,7 +87,7 @@ for file_path in file_list:
 
     # Process the DataFrame
     df = process_df(df)
-    df = clean_columns_and_remove_duplicates(df)
+    df = clean_columns(df)
     df = extract_filename_and_insert(file_path, df)
 
     # Append the processed DataFrame to the master DataFrame
