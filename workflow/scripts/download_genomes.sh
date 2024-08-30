@@ -35,7 +35,7 @@ do
     # Compress the output file
     bzip2 "$output_dir/$accession.fasta"
 
-    sleep 1 # wait for 3 seconds to avoid rate limiting
+    sleep 1 # wait for a seconds to avoid rate limiting
 done
 
 echo "Processing completed."
