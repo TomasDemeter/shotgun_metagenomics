@@ -82,10 +82,8 @@ rule all:
         BRACKEN_BBMAP,
         PLOTS,
         PHYLOSEQ,
-        rules.all_clades.output.clade_markers_done,
-        lambda wildcards: expand(RESULT_DIR + "StrainPhlAn/alignments/{clade}/",
-                                 clade=get_all_clades(RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"))
-    message:
-        "Shotgun metagenomic pipeline run complete!"
+        rules.StrainPhlAn_get_SGB.output.clades_list,
+        get_all_trees,
+        get_all_visualizations
     message:
         "Shotgun metagenomic pipeline run complete!"

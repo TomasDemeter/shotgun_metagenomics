@@ -4,7 +4,7 @@ working_dir: ../inputs/
 
 # samples to condition
 refs:
-  samples: ../workflow/metadata/metadata.csv
+  samples: metadata/metadata.csv
   adapters: ../inputs/adapters/adapters.fa
   bowtie_index: ../inputs/genomes/human/bowtie_indices/
   bbsuite_index: ../inputs/genomes/human/bbmap_indices
@@ -71,7 +71,6 @@ bracken:
 StrainPhlAn:
   clade: t__SGB7863
   reference_genomes: ../inputs/genomes/strainphlan_genomes/Corynebacterium_accolens/*.bz2
-  strainphlan_samples: ["ERR5194382", "ERR5194385", "ERR5194387", "ERR5194390", "ERR5194391"]
   marker_in_n_samples: 0 # how many samples need the marker for the sample to be kept (default 80)
   sample_with_n_markers: 0 # how many samples need to have a marker for the marker to be kept (default 80)
   breadth_thres: 0 # percetage of marker sequence that has to be covered by reads (default 80)

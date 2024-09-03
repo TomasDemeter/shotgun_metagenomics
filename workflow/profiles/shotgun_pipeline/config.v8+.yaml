@@ -21,6 +21,10 @@ conda-frontend: mamba
 
 
 set-resources:
+
+###########
+# BBsuite # 
+###########
   bbduk:
     cpus_per_task: 32
     mem_mb: max((20000 * attempt), (input.size_mb * 5 * attempt))
@@ -41,13 +45,17 @@ set-resources:
     mem_mb: 200000 * attempt
     runtime: 1440 * attempt
 
-
-
+#########
+# Fastp # 
+#########
   fastp:
     cpus_per_task: 64
     mem_mb: max((5000 * attempt), (input.size_mb // 2 * attempt))
     runtime: max((45 * attempt), (input.size_mb // 100 * attempt ))
 
+###########
+# Bowtie2 # 
+###########
   bowtie2_index: 
     cpus_per_task: 32
     mem_mb: max((10000 * attempt), (input.size_mb * 10 * attempt))
@@ -58,21 +66,25 @@ set-resources:
     mem_mb: max((10000 * attempt), (input.size_mb * 1.5 * attempt))
     runtime: max((60 * attempt), (input.size_mb // 80 * attempt ))
 
-
-
+##########
+# FastQC # 
+##########
   FastQC:
     cpus_per_task: 64
     mem_mb: max((15000 * attempt), (input.size_mb * 3 * attempt))
     runtime: max((5 * attempt), (input.size_mb // 1024 * attempt ))
-  
+
+###########
+# MultiQC # 
+###########
   multiqc:
     cpus_per_task: 1
     mem_mb: 10000 * attempt
     runtime: 5 * attempt
 
-
-
-  
+###########
+# Kraken2 # 
+###########
   kraken2_build_standard_db:
     cpus_per_task: 64
     mem_mb: 30000 * attempt
@@ -93,6 +105,9 @@ set-resources:
   #  mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
   #  runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
 
+###########
+# Bracken # 
+###########
   bracken_build_std_db:
     cpus_per_task: 64
     mem_mb: 10000 * attempt
@@ -103,6 +118,9 @@ set-resources:
   #  mem_mb: 10000 * attempt
   #  runtime: 5 * attempt
 
+#############
+# MetaPhlAn # 
+#############
   MetaPhlAn4_profiling:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
@@ -112,4 +130,21 @@ set-resources:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
     runtime: 20 * attempt
-  
+
+###############
+# StrainPhlAn # 
+###############
+  sample2markers:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
+
+  StrainPhlAn_get_SGB:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
+
+  StrainPhlAn_profiling:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
