@@ -3,7 +3,6 @@
 ##################
 rule multiqc:
     input:
-        bbduk_input         = expand(rules.bbduk.output.stats, sample=SAMPLES),
         fastp_input_html    = expand(rules.fastp.output.html, sample=SAMPLES),
         fastp_input_json    = expand(rules.fastp.output.json, sample=SAMPLES),
         bowtie_input        = expand(rules.bowtie2_mapping.output.logs, sample=SAMPLES),

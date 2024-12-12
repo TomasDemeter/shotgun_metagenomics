@@ -9,6 +9,7 @@
 ########################################
 '''
 snakemake -s Snakefile.py --workflow-profile profiles/shotgun_pipeline/  -n
+snakemake -s Snakefile.py --profile profiles/default -n
 '''
 
 ####################
