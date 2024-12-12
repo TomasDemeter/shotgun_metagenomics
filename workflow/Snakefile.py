@@ -43,8 +43,7 @@ BRACKEN         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_Bowtie_r
 BRACKEN_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_BBmap_report.csv"
 PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
 PHYLOSEQ        = RESULT_DIR + "Phyloseq/Metaphlan4_Bowtie_report.rds"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 
 #########
 # rules #
@@ -82,7 +81,7 @@ rule all:
         BRACKEN_BBMAP,
         PLOTS,
         PHYLOSEQ,
-        rules.StrainPhlAn_get_SGB.output.clades_list,
+        STRAINPHLAN,
         get_all_trees,
         get_all_visualizations
     message:
