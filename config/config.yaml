@@ -1,5 +1,5 @@
 # directories
-result_dir:  ../results/          # should be kept
+result_dir:  ../results/
 working_dir: ../inputs/           
 
 # samples to condition
@@ -7,27 +7,9 @@ refs:
   samples: metadata/metadata.csv
   adapters: ../inputs/adapters/adapters.fa
   bowtie_index: ../inputs/genomes/human/bowtie_indices/
-  bbsuite_index: ../inputs/genomes/human/bbmap_indices
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
   human_genome_dir: ../inputs/genomes/human/
   human_genome_ensembl_link: https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-
-# BBduk
-bbduk:
-  trim_quality: 10 # 5-10 for resequencing
-  mink: 11
-  quality_trim: rl
-  kmer_trim: r
-  kmer_size: 23 # default 23; depends on adapter size
-  hdist: 1 # allowed mismatches
-
-  # BBmap
-bbmap:
-  fast: true
-  minid: 0.9
-  maxindel: 3
-  minhits: 2
-  k: 14
 
 # read quality trimming
 fastp:

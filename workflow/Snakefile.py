@@ -36,15 +36,11 @@ SAMPLES = samples.index.tolist()
 ###################
 MULTIQC         = RESULT_DIR + "MultiQC/multiqc_report.html"
 METAPHLAN       = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Metaphlan4_Bowtie_report.csv"
-METAPHLAN_BBMAP = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Metaphlan4_BBmap_report.csv"
 KRAKEN2         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_Bowtie_report.csv"
-KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_BBmap_report.csv"
 BRACKEN         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_Bowtie_report.csv"
-BRACKEN_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_BBmap_report.csv"
-PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
+PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_bowtie_domains.png"
 PHYLOSEQ        = RESULT_DIR + "Phyloseq/Metaphlan4_Bowtie_report.rds"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 
 #########
 # rules #
@@ -52,19 +48,15 @@ PHYLOSEQ        = RESULT_DIR + "Phyloseq/Metaphlan4_Bowtie_report.rds"
 include: "rules/download_human_genome.smk"
 include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"
-include: "rules/bbsuite.smk"
 include: "rules/fastqc.smk"
 include: "rules/multiqc.smk"
 include: "rules/metaphlan_build.smk"
 include: "rules/metaphlan.smk"
-include: "rules/metaphlan_bbmap.smk"
 include: "rules/kraken2_build.smk"
 include: "rules/kraken2.smk"
-include: "rules/kraken2_bbmap.smk"
 include: "rules/strainphlan.smk"
 include: "rules/bracken_build.smk"
 include: "rules/bracken.smk"
-include: "rules/bracken_bbmap.smk"
 include: "rules/plotting_kraken_metaphlan_bracken.smk"
 include: "rules/create_phyloseq.smk"
 
@@ -75,14 +67,11 @@ rule all:
     input:
         MULTIQC,
         METAPHLAN,
-        METAPHLAN_BBMAP,
         KRAKEN2,
-        KRAKEN2_BBMAP,
         BRACKEN,
-        BRACKEN_BBMAP,
         PLOTS,
         PHYLOSEQ,
-        rules.StrainPhlAn_get_SGB.output.clades_list,
+        STRAINPHLAN,
         get_all_trees,
         get_all_visualizations
     message:

@@ -28,11 +28,8 @@ def method_comparison_bact_taxa(df, taxa, minreads, relative_abundance):
     pivot_df = grouped_df.pivot(index='sample', columns='method', values='counts').fillna(0)
     
     method_to_color = {
-        'metaphlan4_bbmap': '#C17FDE',
         'metaphlan4_bowtie': '#895B9E',
-        'kraken2_bbmap': '#FFB21F',
         'kraken2_bowtie': '#A87614',
-        'bracken_bbmap': '#1BA6F2',
         'bracken_bowtie': '#1378B0',
     }
     
@@ -74,7 +71,7 @@ def common_taxa(df, taxa, minreads, relative_abundance):
     for sample in species_per_method_sample.index.get_level_values('sample').unique():
         taxa_sets = [set(taxa) for taxa in species_per_method_sample.loc[(slice(None), sample)].values]
         taxa_counts = {taxa: sum([taxa in taxa_set for taxa_set in taxa_sets]) for taxa in set.union(*taxa_sets)}
-        common_taxa_per_sample[sample] = {taxa for taxa, count in taxa_counts.items() if count >= 6}  # change this to the number of methods
+        common_taxa_per_sample[sample] = {taxa for taxa, count in taxa_counts.items() if count >= 3}  # change this to the number of methods
 
         # Count the number of common taxa for each sample
     common_taxa_counts = {sample: len(taxa) for sample, taxa in common_taxa_per_sample.items()}
@@ -154,11 +151,8 @@ rank_names = ["species", "genus", "family"]
 # Create a list of tuples containing the dataframes and their corresponding names
 dataframes = [
     (pd.read_csv(os.path.join(input_dir, "Kraken2_Bowtie_report.csv")), "kraken2_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Kraken2_BBmap_report.csv")), "kraken2_bbmap"),
     (pd.read_csv(os.path.join(input_dir, "Metaphlan4_Bowtie_report.csv")), "metaphlan4_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Metaphlan4_BBmap_report.csv")), "metaphlan4_bbmap"),
     (pd.read_csv(os.path.join(input_dir, "Bracken_Bowtie_report.csv")), "bracken_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Bracken_BBmap_report.csv")), "bracken_bbmap"),
 ]
 
 ### COMPARISON OF NUMBER OF DIFFERENT CLADES DETECTED BY DIFFERENT METHODS ####

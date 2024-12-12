@@ -22,29 +22,6 @@ conda-frontend: mamba
 
 set-resources:
 
-###########
-# BBsuite # 
-###########
-  bbduk:
-    cpus_per_task: 32
-    mem_mb: max((20000 * attempt), (input.size_mb * 5 * attempt))
-    runtime: max((5 * attempt), (input.size_mb // 1024 * attempt ))
-  
-  build_bbmap_index:
-    cpus_per_task: 32
-    mem_mb: 50000 * attempt
-    runtime: 60 * attempt
-  
-  bbmap_coarse:
-    cpus_per_task: 64
-    mem_mb: 200000 * attempt
-    runtime: 1440 * attempt
-  
-  bbmap_default:
-    cpus_per_task: 64
-    mem_mb: 200000 * attempt
-    runtime: 1440 * attempt
-
 #########
 # Fastp # 
 #########
@@ -94,12 +71,7 @@ set-resources:
     cpus_per_task: 64
     mem_mb: 45000 * attempt
     runtime: 30 * attempt
-  
-  kraken2_bbmap:
-    cpus_per_task: 64
-    mem_mb: 45000 * attempt
-    runtime: 30 * attempt
-  
+    
   #kraken2_build_custom_db:
   #  cpus_per_task: 64
   #  mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
@@ -125,11 +97,6 @@ set-resources:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
     runtime: 20 * attempt  
-
-  MetaPhlAn4_bbmap_profiling:
-    cpus_per_task: 64
-    mem_mb: 40000 * attempt
-    runtime: 20 * attempt
 
 ###############
 # StrainPhlAn # 

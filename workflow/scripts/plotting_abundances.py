@@ -173,11 +173,8 @@ relative_abundance = float(sys.argv[4])
 # Create a list of tuples containing the dataframes and their corresponding names
 dataframes = [
     (pd.read_csv(os.path.join(input_dir, "Kraken2_Bowtie_report.csv")), "kraken2_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Kraken2_BBmap_report.csv")), "kraken2_bbmap"),
     (pd.read_csv(os.path.join(input_dir, "Metaphlan4_Bowtie_report.csv")), "metaphlan4_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Metaphlan4_BBmap_report.csv")), "metaphlan4_bbmap"),
     (pd.read_csv(os.path.join(input_dir, "Bracken_Bowtie_report.csv")), "bracken_bowtie"),
-    (pd.read_csv(os.path.join(input_dir, "Bracken_BBmap_report.csv")), "bracken_bbmap"),
 ]
 
 # Use separate loops to iterate over the dataframes and the plot functions
