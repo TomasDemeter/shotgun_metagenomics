@@ -3,11 +3,11 @@
 #########################
 rule fastp:
     input:
-        read_1              = WORKING_DIR + "raw_reads/{sample}_1.fq.gz",
-        read_2              = WORKING_DIR + "raw_reads/{sample}_2.fq.gz"
+        read_1              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_FWD_read"],
+        read_2              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_REV_read"]
     output:   
-        trimmed_1           = WORKING_DIR + "fastp/{sample}_1.fastq.gz",
-        trimmed_2           = WORKING_DIR + "fastp/{sample}_2.fastq.gz",
+        trimmed_1           = WORKING_DIR + "fastp/{sample}" + config["pattern_FWD_read"] + config["suffix"],
+        trimmed_2           = WORKING_DIR + "fastp/{sample}" + config["pattern_REV_read"] + config["suffix"],
         html                = WORKING_DIR + "fastp/logs/{sample}_fastp.html",
         json                = WORKING_DIR + "fastp/logs/{sample}_fastp.json"        
     message:

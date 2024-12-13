@@ -2,6 +2,10 @@
 result_dir:  ../results/
 working_dir: ../inputs/           
 
+suffix: ".fastq.gz"
+pattern_FWD_read: "_R1"
+pattern_REV_read: "_R2"
+
 # samples to condition
 refs:
   samples: metadata/metadata.csv

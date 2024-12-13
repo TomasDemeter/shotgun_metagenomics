@@ -6,10 +6,10 @@ rule FastQC:
         trimmed_read_1  = rules.fastp.output.trimmed_1,
         trimmed_read_2  = rules.fastp.output.trimmed_2
     output:
-        html_1          = WORKING_DIR + "FastQC/{sample}_1_fastqc.html",
-        zip_file_1      = WORKING_DIR + "FastQC/{sample}_1_fastqc.zip",
-        html_2          = WORKING_DIR + "FastQC/{sample}_2_fastqc.html",
-        zip_file_2      = WORKING_DIR + "FastQC/{sample}_2_fastqc.zip"        
+        html_1          = WORKING_DIR + "FastQC/{sample}" + config["pattern_FWD_read"] + "_fastqc.html",
+        zip_file_1      = WORKING_DIR + "FastQC/{sample}" + config["pattern_FWD_read"] + "_fastqc.zip",
+        html_2          = WORKING_DIR + "FastQC/{sample}" + config["pattern_REV_read"] + "_fastqc.html",
+        zip_file_2      = WORKING_DIR + "FastQC/{sample}" + config["pattern_REV_read"] + "_fastqc.zip"        
     params:
         output_dir      = directory(WORKING_DIR + "FastQC/")        
     message:
