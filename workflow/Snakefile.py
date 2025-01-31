@@ -23,14 +23,14 @@ import pandas as pd
 configfile: "../config/config.yaml" # where to find parameters
 WORKING_DIR = config["working_dir"]
 RESULT_DIR  = config["result_dir"]
-samplefile  = config["refs"]["samples"]
 
 ##########################
 # Samples and conditions #
 ##########################
 # create lists containing the sample names and conditions
-samples = pd.read_csv(samplefile, dtype = str, index_col = 0, header = None)
-SAMPLES = samples.index.tolist()
+samples_df = pd.read_csv(config["refs"]["metadata"])
+SAMPLES = samples_df['sample_id'].unique().tolist()
+
 
 ###################
 # Desired outputs #
@@ -72,8 +72,8 @@ rule all:
         BRACKEN,
         PLOTS,
         PHYLOSEQ,
-        STRAINPHLAN,
-        get_all_trees,
-        get_all_visualizations
+        #STRAINPHLAN,
+        #get_all_trees,
+        #get_all_visualizations
     message:
         "Shotgun metagenomic pipeline run complete!"

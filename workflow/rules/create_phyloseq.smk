@@ -13,7 +13,7 @@ rule create_phyloseq:
     params:
         reports_dir             = RESULT_DIR + "Kraken_Bracken_Metaphlan_output",
         output_dir              = RESULT_DIR + "Phyloseq/",
-        metadata                = config["refs"]["samples"]
+        metadata                = config["refs"]["metadata"]
     message:
         "Creating phyloseq objects"
     conda: 

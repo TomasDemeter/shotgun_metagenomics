@@ -8,7 +8,7 @@ pattern_REV_read: "_R2"
 
 # samples to condition
 refs:
-  samples: metadata/metadata.csv
+  metadata: metadata/metadata.csv
   adapters: ../inputs/adapters/adapters.fa
   bowtie_index: ../inputs/genomes/human/bowtie_indices/
   human_genome: ../inputs/genomes/human/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
@@ -23,7 +23,7 @@ fastp:
   length_required: 50 
 
 MetaPhlAn4_profiling:
-  input_type: fastq # use fastq when running for the first time or bowtie2out if rerunning with new metaphlan parameters
+  input_type: bowtie2out # use fastq when running for the first time or bowtie2out if rerunning with new metaphlan parameters
   bowtie2db: ../inputs/genomes/metaphlan_bowtie2db/
   index: mpa_vJun23_CHOCOPhlAnSGB_202307
   analysis_type: rel_ab_w_read_stats
@@ -57,10 +57,10 @@ bracken:
 StrainPhlAn:
   clade: t__SGB7863
   reference_genomes: ../inputs/genomes/strainphlan_genomes/Corynebacterium_accolens/*.bz2
-  marker_in_n_samples: 0 # how many samples need the marker for the sample to be kept (default 80)
-  sample_with_n_markers: 0 # how many samples need to have a marker for the marker to be kept (default 80)
-  breadth_thres: 0 # percetage of marker sequence that has to be covered by reads (default 80)
-  trim_sequences: 0 # number of bases to trim from the start and end of the marker sequence (default 50)
+  marker_in_n_samples: 80 # how many samples need the marker for the sample to be kept (default 80)
+  sample_with_n_markers: 80 # how many samples need to have a marker for the marker to be kept (default 80)
+  breadth_thres: 80 # percetage of marker sequence that has to be covered by reads (default 80)
+  trim_sequences: 50 # number of bases to trim from the start and end of the marker sequence (default 50)
   mutation_rates: true
   sample_with_n_markers_after_filt: 10
   phylophlan_mode: "accurate"

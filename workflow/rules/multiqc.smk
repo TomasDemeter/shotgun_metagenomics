@@ -12,7 +12,6 @@ rule multiqc:
         outdir              = directory(RESULT_DIR + "MultiQC/"),
         output              = RESULT_DIR + "MultiQC/multiqc_report.html"
     params:
-        bbduk_logs          = WORKING_DIR + "BBsuite/logs/bbduk/",
         fastp_logs          = WORKING_DIR + "fastp/logs/",
         bowtie_logs         = WORKING_DIR + "Bowtie2/logs/",
         fastqc_zip          = WORKING_DIR + "FastQC/"
@@ -26,5 +25,4 @@ rule multiqc:
         "--outdir {output.outdir} "
         "{params.fastp_logs} "
         "{params.bowtie_logs} "
-        "{params.bbduk_logs} "
         "{params.fastqc_zip}"

@@ -3,8 +3,8 @@
 #########################
 rule fastp:
     input:
-        read_1              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_FWD_read"],
-        read_2              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_REV_read"]
+        read_1              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_FWD_read"] + config["suffix"],
+        read_2              = WORKING_DIR + "raw_reads/{sample}" + config["pattern_REV_read"] + config["suffix"]
     output:   
         trimmed_1           = WORKING_DIR + "fastp/{sample}" + config["pattern_FWD_read"] + config["suffix"],
         trimmed_2           = WORKING_DIR + "fastp/{sample}" + config["pattern_REV_read"] + config["suffix"],
@@ -36,4 +36,4 @@ rule fastp:
         "--length_required {params.length_required} "
         "--html {output.html} "
         "--json {output.json} "
-        "--adapter_fasta {params.adapters}"
+        "--detect_adapter_for_pe"

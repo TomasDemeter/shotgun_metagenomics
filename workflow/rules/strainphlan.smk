@@ -139,7 +139,7 @@ rule StrainPhlAn_visualization:
     input:
         tree = RESULT_DIR + "StrainPhlAn/alignments/{clade}/RAxML_bestTree.{clade}.StrainPhlAn4.tre",
         alignment = RESULT_DIR + "StrainPhlAn/alignments/{clade}/{clade}.StrainPhlAn4_concatenated.aln",
-        metadata = config["refs"]["samples"]
+        metadata = config["refs"]["metadata"]
     output:
         tree1 = RESULT_DIR + "StrainPhlAn/visualizations/{clade}_tree_1.png",
         tree2 = RESULT_DIR + "StrainPhlAn/visualizations/{clade}_tree_2.png"

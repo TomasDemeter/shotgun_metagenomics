@@ -26,7 +26,7 @@ set-resources:
 # Fastp # 
 #########
   fastp:
-    cpus_per_task: 64
+    cpus_per_task: 16
     mem_mb: max((5000 * attempt), (input.size_mb // 2 * attempt))
     runtime: max((45 * attempt), (input.size_mb // 100 * attempt ))
 
@@ -40,7 +40,7 @@ set-resources:
   
   bowtie2_mapping:
     cpus_per_task: 64
-    mem_mb: max((10000 * attempt), (input.size_mb * 1.5 * attempt))
+    mem_mb: max((10000 * attempt), (input.size_mb * 5 * attempt))
     runtime: max((60 * attempt), (input.size_mb // 80 * attempt ))
 
 ##########
@@ -96,7 +96,7 @@ set-resources:
   MetaPhlAn4_profiling:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
-    runtime: 20 * attempt  
+    runtime: 180 * attempt  
 
 ###############
 # StrainPhlAn # 
@@ -104,14 +104,14 @@ set-resources:
   sample2markers:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
-    runtime: 20 * attempt
+    runtime: 90 * attempt
 
   StrainPhlAn_get_SGB:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
-    runtime: 20 * attempt
+    runtime: 240 * attempt
 
   StrainPhlAn_profiling:
     cpus_per_task: 64
     mem_mb: 40000 * attempt
-    runtime: 20 * attempt
+    runtime: 90 * attempt
