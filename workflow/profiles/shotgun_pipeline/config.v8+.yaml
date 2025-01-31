@@ -8,7 +8,7 @@ default-resources:
   slurm_account: "kouyos.virology.uzh"
   output: "logs/{rule}/{jobid}.out"
   error: "logs/{rule}/{jobid}.err"
-  slurm_extra: "'--qos=long --mail-type=END,FAIL --mail-user=tomas.demeter@uzh.ch'"
+  slurm_extra: "'--qos=long --mail-type=BEGIN,END,FAIL --mail-user=tomas.demeter@uzh.ch'"
 
 jobs: 50
 printshellcmds: True
@@ -21,6 +21,10 @@ conda-frontend: mamba
 
 
 set-resources:
+
+###########
+# BBsuite # 
+###########
   bbduk:
     cpus_per_task: 32
     mem_mb: max((20000 * attempt), (input.size_mb * 5 * attempt))
@@ -28,8 +32,8 @@ set-resources:
   
   build_bbmap_index:
     cpus_per_task: 32
-    mem_mb: max((30000 * attempt), (input.size_mb * 40 * attempt))
-    runtime: max((10 * attempt), (input.size_mb // 80 * attempt ))
+    mem_mb: 50000 * attempt
+    runtime: 60 * attempt
   
   bbmap_coarse:
     cpus_per_task: 64
@@ -41,67 +45,106 @@ set-resources:
     mem_mb: 200000 * attempt
     runtime: 1440 * attempt
 
-
-
+#########
+# Fastp # 
+#########
   fastp:
     cpus_per_task: 64
     mem_mb: max((5000 * attempt), (input.size_mb // 2 * attempt))
     runtime: max((45 * attempt), (input.size_mb // 100 * attempt ))
 
+###########
+# Bowtie2 # 
+###########
   bowtie2_index: 
     cpus_per_task: 32
     mem_mb: max((10000 * attempt), (input.size_mb * 10 * attempt))
-    runtime: max((30 * attempt), (input.size_mb // 1024 * 4 * attempt ))
+    runtime: max((60 * attempt), (input.size_mb // 1024 * 8 * attempt ))
   
   bowtie2_mapping:
     cpus_per_task: 64
     mem_mb: max((10000 * attempt), (input.size_mb * 1.5 * attempt))
     runtime: max((60 * attempt), (input.size_mb // 80 * attempt ))
 
-
-
+##########
+# FastQC # 
+##########
   FastQC:
     cpus_per_task: 64
-    mem_mb: max((10000 * attempt), (input.size_mb * 2 * attempt))
+    mem_mb: max((15000 * attempt), (input.size_mb * 3 * attempt))
     runtime: max((5 * attempt), (input.size_mb // 1024 * attempt ))
-  
+
+###########
+# MultiQC # 
+###########
   multiqc:
     cpus_per_task: 1
     mem_mb: 10000 * attempt
     runtime: 5 * attempt
 
-
-
-  
+###########
+# Kraken2 # 
+###########
   kraken2_build_standard_db:
-    cpus_per_task: 1
-    mem_mb: 10000 * attempt
-    runtime: 90 * attempt
+    cpus_per_task: 64
+    mem_mb: 30000 * attempt
+    runtime: 180 * attempt
   
   kraken2:
     cpus_per_task: 64
-    mem_mb: 10000 * attempt
-    runtime: 5 * attempt
+    mem_mb: 45000 * attempt
+    runtime: 30 * attempt
   
   kraken2_bbmap:
     cpus_per_task: 64
-    mem_mb: 10000 * attempt
-    runtime: 5 * attempt
+    mem_mb: 45000 * attempt
+    runtime: 30 * attempt
   
   #kraken2_build_custom_db:
   #  cpus_per_task: 64
   #  mem_mb: max((10000 * attempt), (input.size_mb * 50 * attempt))
   #  runtime: max((2 * attempt), (input.size_mb // 30 * attempt ))
 
+###########
+# Bracken # 
+###########
+  bracken_build_std_db:
+    cpus_per_task: 64
+    mem_mb: 10000 * attempt
+    runtime: 5 * attempt
 
+  #bracken_build_cst_db:
+  #  cpus_per_task: 64
+  #  mem_mb: 10000 * attempt
+  #  runtime: 5 * attempt
 
+#############
+# MetaPhlAn # 
+#############
   MetaPhlAn4_profiling:
     cpus_per_task: 64
-    mem_mb: 30000 * attempt
-    runtime: 10 * attempt  
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt  
 
   MetaPhlAn4_bbmap_profiling:
     cpus_per_task: 64
-    mem_mb: 30000 * attempt
-    runtime: 10 * attempt
-  
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
+
+###############
+# StrainPhlAn # 
+###############
+  sample2markers:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
+
+  StrainPhlAn_get_SGB:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt
+
+  StrainPhlAn_profiling:
+    cpus_per_task: 64
+    mem_mb: 40000 * attempt
+    runtime: 20 * attempt

@@ -5,7 +5,6 @@ rule kraken2:
     input:
         unmapped1       = rules.bowtie2_mapping.output.unmapped1,
         unmapped2       = rules.bowtie2_mapping.output.unmapped2,
-        #kraken2_db      = rules.kraken2_build_custom_db.output.custom_kraken2_db
         kraken2_db      = rules.kraken2_build_standard_db.output.standard_db
     output:
         report          = RESULT_DIR + "Kraken2/{sample}_kraken2_report.txt",
@@ -27,7 +26,7 @@ rule kraken2:
         "kraken2 "
         "--db {input.kraken2_db} "
         "--{params.paired} "
-        "--threads {threads} "
+        "--threads {resources.cpus_per_task} "
         "--{params.gzip_compressed} "
         "--classified-out {params.classified} "
         "--unclassified-out {params.unclassified} "

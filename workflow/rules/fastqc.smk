@@ -21,4 +21,4 @@ rule FastQC:
         "fastqc "
         "{input.trimmed_read_1} {input.trimmed_read_2} "
         "--outdir {params.output_dir} "
-        "--threads {threads}"
+        "--threads {resources.cpus_per_task}"

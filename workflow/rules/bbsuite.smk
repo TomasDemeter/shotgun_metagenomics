@@ -25,6 +25,7 @@ rule bbduk:
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/logs/bbduk; "
         "bbduk.sh "
+        "threads={resources.cpus_per_task} "
         "in1={input.read_1} "
         "in2={input.read_2} "
         "out1={output.output_1} "
@@ -55,9 +56,10 @@ rule build_bbmap_index:
     shell:
         "mkdir -p {output.index}; "
         "bbmap.sh "
-        "threads={threads} "
+        "threads={resources.cpus_per_task} "
         "ref={input.genome} "
         "path={output.index}"
+        
 
 ################################################
 # Filtering human reads with coarse parameters #
@@ -87,7 +89,7 @@ rule bbmap_coarse:
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
         "bbmap.sh "
-        "threads={threads} "
+        "threads={resources.cpus_per_task} "
         "in1={input.read_1} "
         "in2={input.read_2} "
         "outm1={params.mapped_to_human1} "
@@ -136,7 +138,7 @@ rule bbmap_default:
     shell:
         "mkdir -p {WORKING_DIR}BBsuite/BBmap; "
         "bbmap.sh "
-        "threads={threads} "
+        "threads={resources.cpus_per_task} "
         "in1={input.read_1} "
         "in2={input.read_2} "
         "outm1={output.mapped_to_human1} "

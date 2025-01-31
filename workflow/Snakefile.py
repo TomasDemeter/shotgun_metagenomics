@@ -8,7 +8,7 @@
 # to run the pipeline use this command #
 ########################################
 '''
-tmux new-session -d 'snakemake -s Snakefile.py --workflow-profile profiles/16S_pipeline/  -n'
+snakemake -s Snakefile.py --workflow-profile profiles/shotgun_pipeline/  -n
 '''
 
 ####################
@@ -41,11 +41,9 @@ KRAKEN2         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_Bowtie_r
 KRAKEN2_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Kraken2_BBmap_report.csv"
 BRACKEN         = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_Bowtie_report.csv"
 BRACKEN_BBMAP   = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/Bracken_BBmap_report.csv"
-STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 PLOTS           = RESULT_DIR + "Kraken_Bracken_Metaphlan_output/figures/kraken2_bbmap_domains.png"
 PHYLOSEQ        = RESULT_DIR + "Phyloseq/Metaphlan4_Bowtie_report.rds"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/RAxML_result." + config["StrainPhlAn"]["clade"] + ".StrainPhlAn4.tre"
-#STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
+STRAINPHLAN     = RESULT_DIR + "StrainPhlAn/alignments/print_clades_only.tsv"
 
 #########
 # rules #
@@ -82,6 +80,9 @@ rule all:
         BRACKEN,
         BRACKEN_BBMAP,
         PLOTS,
-        PHYLOSEQ
+        PHYLOSEQ,
+        STRAINPHLAN,
+        get_all_trees,
+        get_all_visualizations
     message:
         "Shotgun metagenomic pipeline run complete!"

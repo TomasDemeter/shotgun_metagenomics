@@ -16,7 +16,7 @@ rule bracken_build_std_db:
     shell:
         "bracken-build "
         "-d {input.kraken_db} "
-        "-t {threads} "
+        "-t {resources.cpus_per_task} "
         "-k {params.kmer_length} "
         "-l {params.read_length}; "
         "touch {output.sentinel}"
@@ -39,7 +39,7 @@ rule bracken_build_cst_db:
     shell:
         "bracken-build "
         "-d {input.kraken_db} "
-        "-t {threads} "
+        "-t {resources.cpus_per_task} "
         "-k {params.kmer_length} "
         "-l {params.read_length}; "
         "touch {output.sentinel}"
